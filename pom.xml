@@ -56,6 +56,7 @@
         <module>api-gateway</module>
         <module>discovery-service</module>
         <module>student-service</module>
+        <module>identity-service</module>
     </modules>
 
     <build>
