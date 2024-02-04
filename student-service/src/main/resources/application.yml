@@ -2,10 +2,14 @@ spring:
   application:
     name: student-service
   datasource:
-    url: jdbc:postgresql://postgres:5432/student-service
+    url: jdbc:postgresql://localhost:5432/student-service
     driver-class-name: org.postgresql.Driver
     username: qaisar
     password: qaisar
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog.xml
+    liquibase-schema: develop
   jpa:
     show-sql: true
     hibernate:
