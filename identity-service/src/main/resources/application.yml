@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: identity-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/identity-service
+    username: qaisar
+    password: qaisar
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/changelog.xml
+    liquibase-schema: develop
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+jwt:
+  secret: hjf203cupnacs2039r1mjkc1ascdjkfkds9sdnfasb8ica1
+  lifetime: 30m
+server:
+  port: 8083
