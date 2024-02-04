@@ -1,1 +1,1 @@
-# University Portal 🥰
+# University Portal 
