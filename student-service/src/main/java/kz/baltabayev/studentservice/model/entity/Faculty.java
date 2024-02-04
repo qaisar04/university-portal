@@ -1,6 +1,7 @@
 package kz.baltabayev.studentservice.model.entity;
 
 import jakarta.persistence.*;
+import kz.baltabayev.studentservice.model.enums.FacultyName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,7 @@ public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private FacultyName name;
     private String dean;
     @OneToMany(mappedBy = "faculty")
     private List<Student> students;
