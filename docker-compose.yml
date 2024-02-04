@@ -1,0 +1,13 @@
+version: '3'
+services:
+  postgres:
+    container_name: student-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: student-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+        - "5432:5432"
+    volumes:
+      - ./volumes/student:/data/postgres
