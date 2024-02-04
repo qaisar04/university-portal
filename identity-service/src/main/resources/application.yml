@@ -15,7 +15,7 @@ spring:
     hibernate:
       ddl-auto: validate
 jwt:
-  secret: hjf203cupnacs2039r1mjkc1ascdjkfkds9sdnfasb8ica1
+  secret: HSK203KSOSLCS2039R1MJKS1ACSDJKFKDS9SDNFASB8ICA1
   lifetime: 30m
 server:
   port: 8083
