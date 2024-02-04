@@ -55,6 +55,7 @@
     <modules>
         <module>api-gateway</module>
         <module>discovery-service</module>
+        <module>student-service</module>
     </modules>
 
     <build>
