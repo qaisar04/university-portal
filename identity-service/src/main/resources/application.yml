@@ -1,6 +1,6 @@
 spring:
   application:
-    name: identity-service
+    name: IDENTITY-SERVICE
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/identity-service
@@ -13,9 +13,13 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
 jwt:
   secret: HSK203KSOSLCS2039R1MJKS1ACSDJKFKDS9SDNFASB8ICA1
   lifetime: 30m
 server:
-  port: 8083
+  port: 0

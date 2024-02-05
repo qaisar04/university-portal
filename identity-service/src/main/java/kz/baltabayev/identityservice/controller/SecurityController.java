@@ -7,10 +7,7 @@ import kz.baltabayev.identityservice.model.dto.UserRequest;
 import kz.baltabayev.identityservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -18,6 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class SecurityController {
 
     private final UserService userService;
+
+    @GetMapping("/status/check")
+    public String status() {
+        return "Working";
+    }
 
     @PostMapping("/register")
     ResponseEntity<String> register(@Valid @RequestBody UserRequest userRequest) {

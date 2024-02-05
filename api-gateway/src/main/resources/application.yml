@@ -9,10 +9,14 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: indentity-service
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/auth/**
         - id: student-service
           uri: lb://STUDENT-SERVICE
           predicates:
-            - Path=/student/**
+            - Path=/students/**
           filters:
             - AuthenticationFilter
         - id: discovery-server

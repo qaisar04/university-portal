@@ -7,12 +7,15 @@ spring:
     username: qaisar
     password: qaisar
   liquibase:
-    enabled: true
+    enabled: false
     change-log: classpath:db/changelog/changelog.xml
-    liquibase-schema: develop
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: validate
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
 server:
   port: 8081

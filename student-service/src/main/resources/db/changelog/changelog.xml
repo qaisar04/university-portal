@@ -6,5 +6,6 @@
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
         logicalFilePath="db/changelog.xml">
 
-    <include file="001-create-tables.xml" relativeToChangelogFile="true"/>
+    <include file="001-create-scheme.xml" relativeToChangelogFile="true"/>
+    <include file="002-create-tables.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

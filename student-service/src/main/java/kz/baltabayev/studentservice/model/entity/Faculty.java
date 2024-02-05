@@ -19,6 +19,7 @@ public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
     private FacultyName name;
     private String dean;
     @OneToMany(mappedBy = "faculty")
