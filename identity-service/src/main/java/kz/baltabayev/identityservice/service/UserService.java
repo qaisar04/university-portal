@@ -1,6 +1,5 @@
 package kz.baltabayev.identityservice.service;
 
-
 import kz.baltabayev.identityservice.exception.InvalidCredentialsException;
 import kz.baltabayev.identityservice.exception.PasswordMismatchException;
 import kz.baltabayev.identityservice.exception.UserAlreadyExistsException;
@@ -9,6 +8,7 @@ import kz.baltabayev.identityservice.model.dto.AuthRequest;
 import kz.baltabayev.identityservice.model.dto.TokenResponse;
 import kz.baltabayev.identityservice.model.dto.UserRequest;
 import kz.baltabayev.identityservice.model.entity.User;
+import kz.baltabayev.identityservice.model.types.Role;
 import kz.baltabayev.identityservice.repository.UserRepository;
 import kz.baltabayev.identityservice.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
@@ -36,11 +35,12 @@ public class UserService {
     public void register(UserRequest userRequest) {
         validatePasswordConfirmation(userRequest.getPassword(), userRequest.getConfirmPassword());
 
-        if (findByEmail(userRequest.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException("The user with the specified email exists.");
+        if (findByUsername(userRequest.getUsername()).isPresent()) {
+            throw new UserAlreadyExistsException("The user with the specified username exists.");
         }
 
         User user = userMapper.toModel(userRequest);
+        user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -59,8 +59,8 @@ public class UserService {
         return new TokenResponse(token);
     }
 
-    public Optional<User> findByEmail(String username) {
-        return userRepository.findByEmail(username);
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     private void validatePasswordConfirmation(String password, String confirmPassword) {

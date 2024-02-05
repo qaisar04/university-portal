@@ -1,6 +1,6 @@
 spring:
   application:
-    name: IDENTITY-SERVICE
+    name: indentity-service
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/identity-service
@@ -22,4 +22,4 @@ jwt:
   secret: HSK203KSOSLCS2039R1MJKS1ACSDJKFKDS9SDNFASB8ICA1
   lifetime: 30m
 server:
-  port: 0
+  port: 8585

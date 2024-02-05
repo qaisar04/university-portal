@@ -13,7 +13,7 @@ public class RouteValidator {
             "/auth/register",
             "/auth/authenticate",
             "/eureka",
-            "auth/status/check"
+            "auth/status"
     );
 
     public Predicate<ServerHttpRequest> isSecured =
