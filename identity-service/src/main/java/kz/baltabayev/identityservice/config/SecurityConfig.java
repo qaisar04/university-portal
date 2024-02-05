@@ -34,7 +34,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth //todo authorizeHttpRequests -> authorizeExchange
-                        .requestMatchers("/security/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(((request, response, authException) -> {

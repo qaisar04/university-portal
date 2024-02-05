@@ -16,7 +16,7 @@ public class SecurityController {
 
     private final UserService userService;
 
-    @GetMapping("/status/check")
+    @GetMapping("/status")
     public String status() {
         return "Working";
     }
