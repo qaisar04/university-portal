@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/security")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class SecurityController {
 
@@ -25,7 +25,7 @@ public class SecurityController {
         return ResponseEntity.ok("User is saved!");
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/authenticate")
     public ResponseEntity<TokenResponse> authenticate(@RequestBody AuthRequest authRequest) {
         return ResponseEntity.ok(userService.authenticate(authRequest));
     }
