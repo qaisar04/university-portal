@@ -10,11 +10,11 @@ spring:
     gateway:
       routes:
         - id: indentity-service
-          uri: lb://IDENTITY-SERVICE
+          uri: lb://indentity-service
           predicates:
             - Path=/auth/**
         - id: student-service
-          uri: lb://STUDENT-SERVICE
+          uri: lb://student-service
           predicates:
             - Path=/students/**
           filters:
