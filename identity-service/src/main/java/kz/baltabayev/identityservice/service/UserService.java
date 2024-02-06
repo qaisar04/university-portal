@@ -39,6 +39,10 @@ public class UserService {
             throw new UserAlreadyExistsException("The user with the specified username exists.");
         }
 
+        if (findByUsername(userRequest.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException("The user with the specified email exists.");
+        }
+
         User user = userMapper.toModel(userRequest);
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
