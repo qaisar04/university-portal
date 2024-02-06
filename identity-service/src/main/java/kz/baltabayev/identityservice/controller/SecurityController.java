@@ -2,11 +2,13 @@ package kz.baltabayev.identityservice.controller;
 
 import jakarta.validation.Valid;
 import kz.baltabayev.identityservice.model.dto.AuthRequest;
+import kz.baltabayev.identityservice.model.dto.EmailMessageDto;
 import kz.baltabayev.identityservice.model.dto.TokenResponse;
 import kz.baltabayev.identityservice.model.dto.UserRequest;
 import kz.baltabayev.identityservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class SecurityController {
 
     private final UserService userService;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @GetMapping("/status")
     public String status() {
@@ -24,6 +27,8 @@ public class SecurityController {
     @PostMapping("/register")
     ResponseEntity<String> register(@Valid @RequestBody UserRequest userRequest) {
         userService.register(userRequest);
+        kafkaTemplate.send("email-sending-greeting-queue", new EmailMessageDto(
+                userRequest.getEmail(), "Hello, " + userRequest.getUsername() + "!"));
         return ResponseEntity.ok("User is saved!");
     }
 

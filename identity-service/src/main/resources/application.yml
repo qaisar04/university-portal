@@ -1,6 +1,17 @@
 spring:
   application:
     name: indentity-service
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: http://localhost:9092
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: false
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/identity-service
