@@ -51,4 +51,9 @@ public class GradeServiceImpl implements GradeService {
                 .average()
                 .orElse(0.0);
     }
+
+    @Override
+    public List<Grade> getByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+        return gradeRepository.findByStudentIdAndSubjectId(studentId, subjectId);
+    }
 }

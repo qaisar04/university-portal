@@ -17,4 +17,6 @@ public interface GradeService {
     Grade update(Grade grade);
 
     Double getAverageScoreByStudentId(Long studentId);
+
+    List<Grade> getByStudentIdAndSubjectId(Long studentId, Long subjectId);
 }
