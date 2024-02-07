@@ -1,5 +1,6 @@
 package kz.baltabayev.gradingservice.service.impl;
 
+import kz.baltabayev.gradingservice.client.StudentServiceClient;
 import kz.baltabayev.gradingservice.model.entity.Grade;
 import kz.baltabayev.gradingservice.repository.GradeRepository;
 import kz.baltabayev.gradingservice.service.GradeService;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
+    private final StudentServiceClient studentServiceClient;
 
     @Override
     public Grade save(Grade grade) {
