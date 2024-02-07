@@ -1,4 +1,4 @@
-package socialapp.loggingstarter.config;
+package kz.baltabayev.loggingstarter.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Data;

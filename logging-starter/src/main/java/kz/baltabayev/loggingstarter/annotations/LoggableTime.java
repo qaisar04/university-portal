@@ -1,4 +1,4 @@
-package socialapp.loggingstarter.annotations;
+package kz.baltabayev.loggingstarter.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

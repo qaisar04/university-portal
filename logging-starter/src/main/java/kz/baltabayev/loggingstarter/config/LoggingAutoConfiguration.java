@@ -1,6 +1,7 @@
-package socialapp.loggingstarter.config;
+package kz.baltabayev.loggingstarter.config;
 
 import jakarta.annotation.PostConstruct;
+import kz.baltabayev.loggingstarter.aspects.LoggingMethodExecutionAspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -8,8 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import socialapp.loggingstarter.aspects.LoggingMethodExecutionAspect;
-import socialapp.loggingstarter.aspects.LoggingTimeExecutionAspect;
+import kz.baltabayev.loggingstarter.aspects.LoggingTimeExecutionAspect;
 
 /**
  * The {@code LoggingAutoConfiguration} class is responsible for configuring and enabling logging aspects

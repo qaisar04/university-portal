@@ -1,5 +1,6 @@
-package socialapp.loggingstarter.aspects;
+package kz.baltabayev.loggingstarter.aspects;
 
+import kz.baltabayev.loggingstarter.annotations.LoggableTime;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -7,8 +8,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import socialapp.loggingstarter.annotations.LoggableInfo;
-import socialapp.loggingstarter.annotations.LoggableTime;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LoggingTimeExecutionAspect {
 
-    @Pointcut("(within(@socialapp.loggingstarter.annotations.LoggableTime *) || execution(@socialapp.loggingstarter.annotations.LoggableTime * *(..))) && execution(* *(..))")
+    @Pointcut("(within(@kz.baltabayev.loggingstarter.annotations.LoggableTime *) || execution(@kz.baltabayev.loggingstarter.annotations.LoggableTime * *(..))) && execution(* *(..))")
     public void annotatedByLoggableTime() {
     }
 

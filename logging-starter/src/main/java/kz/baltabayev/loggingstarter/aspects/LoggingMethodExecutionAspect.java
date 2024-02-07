@@ -1,4 +1,4 @@
-package socialapp.loggingstarter.aspects;
+package kz.baltabayev.loggingstarter.aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.util.StopWatch;
-import socialapp.loggingstarter.annotations.LoggableInfo;
+import kz.baltabayev.loggingstarter.annotations.LoggableInfo;
 
 /**
  * The {@code LoggingMethodExecutionAspect} class is an AspectJ aspect responsible for logging method executions
@@ -32,7 +32,7 @@ import socialapp.loggingstarter.annotations.LoggableInfo;
 @Slf4j
 public class LoggingMethodExecutionAspect {
 
-    @Pointcut("(within(@socialapp.loggingstarter.annotations.LoggableInfo *) || execution(@socialapp.loggingstarter.annotations.LoggableInfo * *(..))) && execution(* *(..))")
+    @Pointcut("(within(@kz.baltabayev.loggingstarter.annotations.LoggableInfo *) || execution(@kz.baltabayev.loggingstarter.annotations.LoggableInfo * *(..))) && execution(* *(..))")
     public void annotatedByLoggable() {
     }
 
