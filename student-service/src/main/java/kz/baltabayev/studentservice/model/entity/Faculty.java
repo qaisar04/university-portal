@@ -22,6 +22,4 @@ public class Faculty {
     @Enumerated(EnumType.STRING)
     private FacultyName name;
     private String dean;
-    @OneToMany(mappedBy = "faculty")
-    private List<Student> students;
 }

@@ -15,11 +15,11 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    public void deleteStudent(Long id) {
+    public void delete(Long id) {
         studentRepository.deleteById(id);
     }
 
-    public Optional<Student> getStuden(Long id) {
+    public Optional<Student> get(Long id) {
         return studentRepository.findById(id);
     }
 
@@ -31,11 +31,11 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public List<Student> getAllStudents() {
+    public List<Student> getAll() {
         return studentRepository.findAll();
     }
 
-    public List<Student> getAllStudentsByFaculty(FacultyName facultyName) {
+    public List<Student> getAllByFaculty(FacultyName facultyName) {
         return studentRepository.findAllByFacultyName(facultyName);
     }
 }
