@@ -1,6 +1,7 @@
 package kz.baltabayev.studentservice.model.service;
 
 import kz.baltabayev.studentservice.model.entity.Student;
+import kz.baltabayev.studentservice.model.enums.FacultyName;
 import kz.baltabayev.studentservice.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public List<Student> getAllStudentsByFaculty(String facultyName) {
+    public List<Student> getAllStudentsByFaculty(FacultyName facultyName) {
         return studentRepository.findAllByFacultyName(facultyName);
     }
 }
