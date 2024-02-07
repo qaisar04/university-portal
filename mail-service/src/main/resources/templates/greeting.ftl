@@ -1,68 +1,28 @@
-<!DOCTYPE html>
-<html lang="ru">
+<!doctype html>
+<html lang="en">
 <head>
-    <title>${subject}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>NewsLetter</title>
     <style>
-        /* Стили для заголовка */
-        h1 {
-            color: #333;
+        #subject {
+            color: #000000;
+            font-size: 20px;
+            font-weight: bold;
             text-align: center;
-            font-family: Arial, sans-serif;
-            text-transform: uppercase;
         }
-
-        /* Стили для контейнера */
         .content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-        }
-
-        /* Стили для параграфа */
-        p {
-            color: #666;
-            line-height: 1.6;
-            font-size: 18px;
-            font-family: Georgia, serif;
-        }
-
-        /* Стили для ссылки */
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        /* Стили для кнопки */
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-transform: uppercase;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
-        }
-
-        body {
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
+            color: #000000;
+            font-size: 16px;
+            text-align: justify;
         }
     </style>
 </head>
 <body>
-<div class="content">
-    <h1>Добро пожаловать!</h1>
-    <p>${content}</p>
-</div>
+<h1 id="subject">${subject}</h1>
+<h1>Welcome!</h1>
+<p class="content">${content}</p>
 </body>
 </html>
