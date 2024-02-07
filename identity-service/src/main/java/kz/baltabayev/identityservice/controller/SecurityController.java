@@ -19,16 +19,11 @@ public class SecurityController {
     private final UserService userService;
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    @GetMapping("/status")
-    public String status() {
-        return "Working";
-    }
-
     @PostMapping("/register")
     ResponseEntity<String> register(@Valid @RequestBody UserRequest userRequest) {
         userService.register(userRequest);
         kafkaTemplate.send("email-sending-greeting-queue", new EmailMessageDto(
-                userRequest.getEmail(), "Hello, " + userRequest.getUsername() + "!"));
+                userRequest.getMail(), "Hello, " + userRequest.getName() + "!"));
         return ResponseEntity.ok("User is saved!");
     }
 

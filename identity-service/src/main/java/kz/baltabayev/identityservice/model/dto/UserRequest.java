@@ -2,7 +2,9 @@ package kz.baltabayev.identityservice.model.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import kz.baltabayev.identityservice.model.types.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,7 +20,7 @@ public class UserRequest {
 
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Invalid email format")
-    private String email;
+    private String mail;
 
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 6, message = "Password must be at least 6 characters")
@@ -26,4 +28,6 @@ public class UserRequest {
 
     @NotBlank(message = "Confirm Password cannot be blank")
     private String confirmPassword;
+
+    private Long inviteCode;
 }

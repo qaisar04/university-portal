@@ -2,7 +2,7 @@ spring:
   application:
     name: grading-service
   datasource:
-    url: jdbc:postgresql://postgres-grading:5432/grading-service
+    url: jdbc:postgresql://localhost:5434/grading-service
     username: qaisar
     password: qaisar
     driver-class-name: org.postgresql.Driver

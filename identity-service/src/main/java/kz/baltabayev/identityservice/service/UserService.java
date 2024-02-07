@@ -1,5 +1,6 @@
 package kz.baltabayev.identityservice.service;
 
+import kz.baltabayev.identityservice.client.StudentServiceClient;
 import kz.baltabayev.identityservice.exception.InvalidCredentialsException;
 import kz.baltabayev.identityservice.exception.PasswordMismatchException;
 import kz.baltabayev.identityservice.exception.UserAlreadyExistsException;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static kz.baltabayev.identityservice.model.types.Role.*;
+
 @Service
 @RequiredArgsConstructor
 @LoggableInfo
@@ -31,6 +34,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StudentServiceClient studentServiceClient;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userDetailsService;
@@ -43,12 +47,15 @@ public class UserService {
             throw new UserAlreadyExistsException("The user with the specified username exists.");
         }
 
-        if (findByUsername(userRequest.getEmail()).isPresent()) {
+        if (findByUsername(userRequest.getMail()).isPresent()) {
             throw new UserAlreadyExistsException("The user with the specified email exists.");
         }
 
-        User user = userMapper.toModel(userRequest);
-        user.setRole(Role.USER);
+        if(userRequest.getRole().equals(STUDENT)) {
+            studentServiceClient.create(userMapper.toStudentRequest(userRequest));
+        }
+
+        User user = userMapper.toUser(userRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }

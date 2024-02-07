@@ -2,6 +2,7 @@ package kz.baltabayev.studentservice.controller;
 
 import kz.baltabayev.studentservice.mapper.StudentMapper;
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
+import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.model.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,8 @@ public class StudentController {
     private final StudentService studentService;
     private final StudentMapper studentMapper;
 
-    @RequestMapping("/status/check")
-    public String status() {
-        return "Working";
-    }
-
     @PostMapping("/create")
-    public ResponseEntity<?> createStudent(@RequestBody StudentRequest studentRequest) {
+    public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
         return ResponseEntity.ok(studentService.save(studentMapper.toStudent(studentRequest)));
     }
 }

@@ -36,6 +36,6 @@ public class StudentService {
     }
 
     public List<Student> getAllByFaculty(FacultyName facultyName) {
-        return studentRepository.findAllByFacultyName(facultyName);
+        return studentRepository.findAllByFaculty(facultyName);
     }
 }
