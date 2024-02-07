@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "role", ignore = true)
     User toUser(UserRequest userRequest);
 
     StudentRequest toStudentRequest(UserRequest userRequest);

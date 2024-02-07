@@ -29,5 +29,5 @@ public class UserRequest {
     @NotBlank(message = "Confirm Password cannot be blank")
     private String confirmPassword;
 
-    private Long inviteCode;
+    private String inviteCode;
 }

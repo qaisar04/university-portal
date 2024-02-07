@@ -1,5 +1,6 @@
 package kz.baltabayev.identityservice.service;
 
+import kz.baltabayev.identityservice.client.InviteCodeService;
 import kz.baltabayev.identityservice.client.StudentServiceClient;
 import kz.baltabayev.identityservice.exception.InvalidCredentialsException;
 import kz.baltabayev.identityservice.exception.PasswordMismatchException;
@@ -33,29 +34,23 @@ import static kz.baltabayev.identityservice.model.types.Role.*;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final StudentServiceClient studentServiceClient;
+    private final InviteCodeService inviteCodeService;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userDetailsService;
     private final JwtTokenUtils jwtTokenUtils;
+    private final PasswordEncoder passwordEncoder;
 
     public void register(UserRequest userRequest) {
-        validatePasswordConfirmation(userRequest.getPassword(), userRequest.getConfirmPassword());
-
-        if (findByUsername(userRequest.getUsername()).isPresent()) {
-            throw new UserAlreadyExistsException("The user with the specified username exists.");
-        }
-
-        if (findByUsername(userRequest.getMail()).isPresent()) {
-            throw new UserAlreadyExistsException("The user with the specified email exists.");
-        }
-
-        if(userRequest.getRole().equals(STUDENT)) {
-            studentServiceClient.create(userMapper.toStudentRequest(userRequest));
-        }
+        validateUserDetails(userRequest);
 
         User user = userMapper.toUser(userRequest);
+        String inviteCode = userRequest.getInviteCode();
+        if(!inviteCode.isBlank() && !inviteCode.isEmpty()) {
+            user.setRole(Role.valueOf(inviteCodeService.useInviteCode(inviteCode)));
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -74,6 +69,10 @@ public class UserService {
         return new TokenResponse(token);
     }
 
+    public String generateInviteCode(Role role) {
+        return inviteCodeService.generate(role.name()).getBody();
+    }
+
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -82,5 +81,17 @@ public class UserService {
         if (!password.equals(confirmPassword)) {
             throw new PasswordMismatchException("Passwords don't match.");
         }
+    }
+
+    private void validateUserDetails(UserRequest userRequest) {
+        if (findByUsername(userRequest.getUsername()).isPresent()) {
+            throw new UserAlreadyExistsException("The user with the specified username exists.");
+        }
+
+        if (findByUsername(userRequest.getMail()).isPresent()) {
+            throw new UserAlreadyExistsException("The user with the specified email exists.");
+        }
+
+        validatePasswordConfirmation(userRequest.getPassword(), userRequest.getConfirmPassword());
     }
 }

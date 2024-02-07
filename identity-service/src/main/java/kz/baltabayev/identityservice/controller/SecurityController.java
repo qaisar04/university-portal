@@ -5,10 +5,12 @@ import kz.baltabayev.identityservice.model.dto.AuthRequest;
 import kz.baltabayev.identityservice.model.dto.EmailMessageDto;
 import kz.baltabayev.identityservice.model.dto.TokenResponse;
 import kz.baltabayev.identityservice.model.dto.UserRequest;
+import kz.baltabayev.identityservice.model.types.Role;
 import kz.baltabayev.identityservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,5 +32,11 @@ public class SecurityController {
     @PostMapping("/authenticate")
     public ResponseEntity<TokenResponse> authenticate(@RequestBody AuthRequest authRequest) {
         return ResponseEntity.ok(userService.authenticate(authRequest));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/generate/{role}")
+    public ResponseEntity<String> generate(@PathVariable String role) {
+        return ResponseEntity.ok(userService.generateInviteCode(Role.valueOf(role.toUpperCase())));
     }
 }

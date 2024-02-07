@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -31,12 +30,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
 
     @Override
     public Role getRoleByInviteCode(String code) {
-        return Optional.ofNullable(redisTemplate.opsForValue().get(code))
-                .map(role -> {
-                    redisTemplate.delete(code);
-                    return role;
-                })
-                .orElseThrow(() -> new InvalidCodeException(code));
+        return redisTemplate.opsForValue().get(code);
     }
 
     private String generateCode() {
