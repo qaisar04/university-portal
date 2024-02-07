@@ -22,6 +22,17 @@ services:
       - "5433:5432"
     volumes:
       - ./volumes/identity:/data/postgres
+  postgres-grading:
+    container_name: grading-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: grading-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./volumes/grading:/data/postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     networks:

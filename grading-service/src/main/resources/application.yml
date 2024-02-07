@@ -1,1 +1,18 @@
-
+spring:
+  application:
+    name: grading-service
+  datasource:
+    url: jdbc:postgresql://postgres-grading:5432/grading-service
+    username: qaisar
+    password: qaisar
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+server:
+  port: 8087
