@@ -1,6 +1,6 @@
 package kz.baltabayev.identityservice.service;
 
-import kz.baltabayev.identityservice.client.InviteCodeService;
+import kz.baltabayev.identityservice.client.InviteCodeClient;
 import kz.baltabayev.identityservice.client.StudentServiceClient;
 import kz.baltabayev.identityservice.exception.InvalidCredentialsException;
 import kz.baltabayev.identityservice.exception.PasswordMismatchException;
@@ -25,8 +25,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static kz.baltabayev.identityservice.model.types.Role.*;
-
 @Service
 @RequiredArgsConstructor
 @LoggableInfo
@@ -35,7 +33,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final StudentServiceClient studentServiceClient;
-    private final InviteCodeService inviteCodeService;
+    private final InviteCodeClient inviteCodeClient;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService userDetailsService;
@@ -48,7 +46,7 @@ public class UserService {
         User user = userMapper.toUser(userRequest);
         String inviteCode = userRequest.getInviteCode();
         if(!inviteCode.isBlank() && !inviteCode.isEmpty()) {
-            user.setRole(Role.valueOf(inviteCodeService.useInviteCode(inviteCode)));
+            user.setRole(Role.valueOf(inviteCodeClient.useInviteCode(inviteCode)));
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -70,7 +68,7 @@ public class UserService {
     }
 
     public String generateInviteCode(Role role) {
-        return inviteCodeService.generate(role.name()).getBody();
+        return inviteCodeClient.generate(role.name()).getBody();
     }
 
     public Optional<User> findByUsername(String username) {
