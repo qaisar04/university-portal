@@ -1,11 +1,16 @@
 package kz.baltabayev.invitationcodeservice.service.impl;
 
+import com.google.common.hash.Hashing;
+import kz.baltabayev.invitationcodeservice.exception.InvalidCodeException;
 import kz.baltabayev.invitationcodeservice.model.types.Role;
 import kz.baltabayev.invitationcodeservice.service.InviteCodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -26,11 +31,19 @@ public class InviteCodeServiceImpl implements InviteCodeService {
 
     @Override
     public Role getRoleByInviteCode(String code) {
-        return redisTemplate.opsForValue().get(code);
+        return Optional.ofNullable(redisTemplate.opsForValue().get(code))
+                .map(role -> {
+                    redisTemplate.delete(code);
+                    return role;
+                })
+                .orElseThrow(() -> new InvalidCodeException(code));
     }
 
     private String generateCode() {
         UUID uuid = UUID.randomUUID();
-        return uuid.toString();
+        byte[] hash = Hashing.sha256().hashString(uuid.toString(), StandardCharsets.UTF_8).asBytes();
+        String base64Encoded = Base64.getUrlEncoder().encodeToString(hash);
+        int desiredLength = 8;
+        return base64Encoded.substring(0, desiredLength).toUpperCase();
     }
 }

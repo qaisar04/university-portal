@@ -26,8 +26,8 @@ public class InviteCodeController {
         }
     }
 
-    @GetMapping("/role/{code}")
-    public ResponseEntity<Role> getRole(@PathVariable String code) {
+    @GetMapping("/link/{code}")
+    public ResponseEntity<Role> useInviteCode(@PathVariable String code) {
         return ResponseEntity.ok(inviteCodeService.getRoleByInviteCode(code));
     }
 }
