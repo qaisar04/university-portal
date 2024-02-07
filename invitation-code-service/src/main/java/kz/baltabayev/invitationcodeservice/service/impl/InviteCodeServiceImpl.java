@@ -22,7 +22,7 @@ public class InviteCodeServiceImpl implements InviteCodeService {
 
     @Override
     public String generateInviteCode(Role role) {
-        //todo: add validation for code
+        //todo: add validation
         String code = generateCode();
         redisTemplate.opsForValue().set(code, role);
         redisTemplate.expire(code, 24, TimeUnit.HOURS);
