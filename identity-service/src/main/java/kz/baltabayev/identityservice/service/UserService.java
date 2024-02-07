@@ -11,6 +11,8 @@ import kz.baltabayev.identityservice.model.entity.User;
 import kz.baltabayev.identityservice.model.types.Role;
 import kz.baltabayev.identityservice.repository.UserRepository;
 import kz.baltabayev.identityservice.utils.JwtTokenUtils;
+import kz.baltabayev.loggingstarter.annotations.LoggableInfo;
+import kz.baltabayev.loggingstarter.annotations.LoggableTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,6 +25,8 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@LoggableInfo
+@LoggableTime(name = "UserService")
 public class UserService {
 
     private final UserRepository userRepository;

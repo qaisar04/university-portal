@@ -32,5 +32,9 @@ eureka:
 jwt:
   secret: HSK203KSOSLCS2039R1MJKS1ACSDJKFKDS9SDNFASB8ICA1
   lifetime: 30m
+app:
+  common:
+    logging:
+      enabled: true
 server:
   port: 8585
