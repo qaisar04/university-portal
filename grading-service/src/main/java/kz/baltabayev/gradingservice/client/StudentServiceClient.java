@@ -12,5 +12,4 @@ public interface StudentServiceClient {
 
     @GetMapping
     ResponseEntity<List<Student>> getAllStudents();
-
 }

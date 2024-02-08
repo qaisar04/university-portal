@@ -2,6 +2,9 @@ spring:
   application:
     name: indentity-service
   kafka:
+    queues:
+      student: student-saving-queue
+      email: email-sending-greeting-queue
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

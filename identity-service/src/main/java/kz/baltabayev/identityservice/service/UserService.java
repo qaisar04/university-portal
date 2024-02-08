@@ -18,6 +18,7 @@ import kz.baltabayev.identityservice.utils.JwtTokenUtils;
 import kz.baltabayev.loggingstarter.annotations.LoggableInfo;
 import kz.baltabayev.loggingstarter.annotations.LoggableTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -45,28 +46,28 @@ public class UserService {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
 
+    @Value("${spring.kafka.queues.student}")
+    private String studentQueue;
+
+    @Value("${spring.kafka.queues.email}")
+    private String emailSendingQueue;
+
     public void register(UserRequest userRequest) {
-    validateUserDetails(userRequest);
+        validateUserDetails(userRequest);
 
-    User user = userMapper.toUser(userRequest);
-    String inviteCode = userRequest.getInviteCode();
-    if(!inviteCode.isBlank() && !inviteCode.isEmpty()) {
-        user.setRole(inviteCodeClient.useInviteCode(inviteCode).getBody());
+        User user = userMapper.toUser(userRequest);
+        String inviteCode = userRequest.getInviteCode();
+        if (!inviteCode.isBlank() && !inviteCode.isEmpty()) {
+            user.setRole(inviteCodeClient.useInviteCode(inviteCode).getBody());
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        sendGreetingEmail(userRequest);
+        saveStudentIfRoleIsStudent(userRequest, user);
+
+        userRepository.save(user);
     }
-
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-    kafkaTemplate.send("email-sending-greeting-queue", new EmailMessageDto(
-            userRequest.getEmail(), "Hello, " + userRequest.getName() + "! Welcome to our service!"));
-
-    if(user.getRole() != null && user.getRole().equals(Role.STUDENT)) {
-    kafkaTemplate.send("student-saving-queue", new StudentRequest(
-            userRequest.getName(), userRequest.getEmail()
-    ));
-}
-
-    userRepository.save(user);
-}
 
     public TokenResponse authenticate(AuthRequest authRequest) {
         try {
@@ -107,5 +108,18 @@ public class UserService {
         }
 
         validatePasswordConfirmation(userRequest.getPassword(), userRequest.getConfirmPassword());
+    }
+
+    private void sendGreetingEmail(UserRequest userRequest) {
+        kafkaTemplate.send(emailSendingQueue, new EmailMessageDto(
+                userRequest.getEmail(), "Hello, " + userRequest.getName() + "! Welcome to our service!"));
+    }
+
+    private void saveStudentIfRoleIsStudent(UserRequest userRequest, User user) {
+        if (user.getRole() != null && user.getRole().equals(Role.STUDENT)) {
+            kafkaTemplate.send(studentQueue, new StudentRequest(
+                    userRequest.getName(), userRequest.getEmail()
+            ));
+        }
     }
 }
