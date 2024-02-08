@@ -2,14 +2,11 @@ package kz.baltabayev.identityservice.controller;
 
 import jakarta.validation.Valid;
 import kz.baltabayev.identityservice.model.dto.AuthRequest;
-import kz.baltabayev.identityservice.model.dto.EmailMessageDto;
 import kz.baltabayev.identityservice.model.dto.TokenResponse;
 import kz.baltabayev.identityservice.model.dto.UserRequest;
-import kz.baltabayev.identityservice.model.types.Role;
 import kz.baltabayev.identityservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
