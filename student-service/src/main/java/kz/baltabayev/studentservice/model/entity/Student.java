@@ -1,5 +1,6 @@
 package kz.baltabayev.studentservice.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import kz.baltabayev.studentservice.model.enums.FacultyName;
 import kz.baltabayev.studentservice.model.enums.Gender;
@@ -20,10 +21,12 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonProperty("name")
     private String name;
     private String lastname;
     private LocalDate birthdate;
-    private String mail;
+    @JsonProperty("email")
+    private String email;
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private Integer course;

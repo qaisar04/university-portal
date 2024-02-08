@@ -6,10 +6,9 @@ import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.model.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/students")
@@ -22,5 +21,10 @@ public class StudentController {
     @PostMapping("/create")
     public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
         return ResponseEntity.ok(studentService.save(studentMapper.toStudent(studentRequest)));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Student>> getAllStudents() {
+        return ResponseEntity.ok(studentService.getAll());
     }
 }
