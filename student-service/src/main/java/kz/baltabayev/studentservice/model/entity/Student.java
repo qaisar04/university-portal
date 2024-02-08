@@ -21,11 +21,9 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JsonProperty("name")
     private String name;
     private String lastname;
     private LocalDate birthdate;
-    @JsonProperty("email")
     private String email;
     @Enumerated(EnumType.STRING)
     private Gender gender;
