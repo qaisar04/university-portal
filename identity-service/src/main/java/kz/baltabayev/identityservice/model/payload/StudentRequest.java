@@ -1,6 +1,7 @@
 package kz.baltabayev.identityservice.model.payload;
 
-public class StudentRequest  {
-    private String firstname;
-    private String mail;
+public record StudentRequest(
+        String name,
+        String email
+) {
 }

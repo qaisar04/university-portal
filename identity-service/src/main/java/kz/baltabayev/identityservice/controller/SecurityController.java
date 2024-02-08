@@ -19,13 +19,10 @@ import org.springframework.web.bind.annotation.*;
 public class SecurityController {
 
     private final UserService userService;
-    private final KafkaTemplate<String, EmailMessageDto> kafkaTemplate;
 
     @PostMapping("/register")
     ResponseEntity<String> register(@Valid @RequestBody UserRequest userRequest) {
         userService.register(userRequest);
-        kafkaTemplate.send("email-sending-greeting-queue", new EmailMessageDto(
-                userRequest.getMail(), "Hello, " + userRequest.getName() + "!"));
         return ResponseEntity.ok("User is saved!");
     }
 

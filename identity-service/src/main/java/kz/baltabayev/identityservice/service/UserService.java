@@ -7,15 +7,18 @@ import kz.baltabayev.identityservice.exception.PasswordMismatchException;
 import kz.baltabayev.identityservice.exception.UserAlreadyExistsException;
 import kz.baltabayev.identityservice.mapper.UserMapper;
 import kz.baltabayev.identityservice.model.dto.AuthRequest;
+import kz.baltabayev.identityservice.model.dto.EmailMessageDto;
 import kz.baltabayev.identityservice.model.dto.TokenResponse;
 import kz.baltabayev.identityservice.model.dto.UserRequest;
 import kz.baltabayev.identityservice.model.entity.User;
+import kz.baltabayev.identityservice.model.payload.StudentRequest;
 import kz.baltabayev.identityservice.model.types.Role;
 import kz.baltabayev.identityservice.repository.UserRepository;
 import kz.baltabayev.identityservice.utils.JwtTokenUtils;
 import kz.baltabayev.loggingstarter.annotations.LoggableInfo;
 import kz.baltabayev.loggingstarter.annotations.LoggableTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -39,19 +43,31 @@ public class UserService {
     private final CustomUserDetailsService userDetailsService;
     private final JwtTokenUtils jwtTokenUtils;
     private final PasswordEncoder passwordEncoder;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
 
     public void register(UserRequest userRequest) {
-        validateUserDetails(userRequest);
+    validateUserDetails(userRequest);
 
-        User user = userMapper.toUser(userRequest);
-        String inviteCode = userRequest.getInviteCode();
-        if(!inviteCode.isBlank() && !inviteCode.isEmpty()) {
-            user.setRole(inviteCodeClient.useInviteCode(inviteCode).getBody());
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+    User user = userMapper.toUser(userRequest);
+    String inviteCode = userRequest.getInviteCode();
+    if(!inviteCode.isBlank() && !inviteCode.isEmpty()) {
+        user.setRole(inviteCodeClient.useInviteCode(inviteCode).getBody());
     }
+
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+    kafkaTemplate.send("email-sending-greeting-queue", new EmailMessageDto(
+            userRequest.getEmail(), "Hello, " + userRequest.getName() + "! Welcome to our service!"));
+
+    if(user.getRole() != null && user.getRole().equals(Role.STUDENT)) {
+    kafkaTemplate.send("student-saving-queue", new StudentRequest(
+            userRequest.getName(), userRequest.getEmail()
+    ));
+}
+
+    userRepository.save(user);
+}
 
     public TokenResponse authenticate(AuthRequest authRequest) {
         try {
@@ -64,6 +80,7 @@ public class UserService {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.username());
         String token = jwtTokenUtils.generateToken(userDetails);
+
         return new TokenResponse(token);
     }
 
@@ -86,7 +103,7 @@ public class UserService {
             throw new UserAlreadyExistsException("The user with the specified username exists.");
         }
 
-        if (findByUsername(userRequest.getMail()).isPresent()) {
+        if (findByUsername(userRequest.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("The user with the specified email exists.");
         }
 
