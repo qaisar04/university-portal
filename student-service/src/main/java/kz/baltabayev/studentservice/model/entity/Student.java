@@ -1,6 +1,5 @@
 package kz.baltabayev.studentservice.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import kz.baltabayev.studentservice.model.enums.FacultyName;
 import kz.baltabayev.studentservice.model.enums.Gender;
