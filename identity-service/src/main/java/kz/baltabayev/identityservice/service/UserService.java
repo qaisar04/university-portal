@@ -46,7 +46,7 @@ public class UserService {
         User user = userMapper.toUser(userRequest);
         String inviteCode = userRequest.getInviteCode();
         if(!inviteCode.isBlank() && !inviteCode.isEmpty()) {
-            user.setRole(Role.valueOf(inviteCodeClient.useInviteCode(inviteCode)));
+            user.setRole(inviteCodeClient.useInviteCode(inviteCode).getBody());
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

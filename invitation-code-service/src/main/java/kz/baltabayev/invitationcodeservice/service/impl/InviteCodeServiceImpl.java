@@ -1,7 +1,6 @@
 package kz.baltabayev.invitationcodeservice.service.impl;
 
 import com.google.common.hash.Hashing;
-import kz.baltabayev.invitationcodeservice.exception.InvalidCodeException;
 import kz.baltabayev.invitationcodeservice.model.types.Role;
 import kz.baltabayev.invitationcodeservice.service.InviteCodeService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,9 @@ public class InviteCodeServiceImpl implements InviteCodeService {
 
     @Override
     public Role getRoleByInviteCode(String code) {
-        return redisTemplate.opsForValue().get(code);
+        Role role = redisTemplate.opsForValue().get(code);
+        redisTemplate.delete(code);
+        return role;
     }
 
     private String generateCode() {
