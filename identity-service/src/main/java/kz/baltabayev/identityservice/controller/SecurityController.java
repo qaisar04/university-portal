@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class SecurityController {
 
     private final UserService userService;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, EmailMessageDto> kafkaTemplate;
 
     @PostMapping("/register")
     ResponseEntity<String> register(@Valid @RequestBody UserRequest userRequest) {
@@ -37,6 +37,6 @@ public class SecurityController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/generate/{role}")
     public ResponseEntity<String> generate(@PathVariable String role) {
-        return ResponseEntity.ok(userService.generateInviteCode(Role.valueOf(role.toUpperCase())));
+        return ResponseEntity.ok(userService.generateInviteCode(role.toUpperCase()));
     }
 }

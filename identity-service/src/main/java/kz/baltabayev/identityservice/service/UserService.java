@@ -67,8 +67,8 @@ public class UserService {
         return new TokenResponse(token);
     }
 
-    public String generateInviteCode(Role role) {
-        return inviteCodeClient.generate(role.name()).getBody();
+    public String generateInviteCode(String role) {
+        return inviteCodeClient.generate(role).getBody();
     }
 
     public Optional<User> findByUsername(String username) {
