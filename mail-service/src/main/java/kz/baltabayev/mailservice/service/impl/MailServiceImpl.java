@@ -15,17 +15,37 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+/**
+ * MailServiceImpl is a class that provides a concrete implementation of the MailService interface.
+ * It uses the JavaMailSender and FreeMarker's Configuration for sending emails.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class MailServiceImpl implements MailService {
 
+    /**
+     * JavaMailSender for sending emails.
+     */
     private final JavaMailSender mailSender;
+
+    /**
+     * FreeMarker's Configuration for processing templates into strings.
+     */
     private final Configuration ftl;
 
+    /**
+     * The email of the sender.
+     */
     @Value("${spring.mail.sender.email}")
     private String sender;
 
+    /**
+     * Sends an email message.
+     *
+     * @param message The EmailMessageDto object containing the details of the email message to be sent.
+     * @param type The MailMessageType enum value representing the type of the email message.
+     */
     @Override
     public void send(EmailMessageDto message, MailMessageType type) {
         var msg = mailSender.createMimeMessage();
@@ -38,7 +58,6 @@ public class MailServiceImpl implements MailService {
             );
 
             var template = ftl.getTemplate(type.getTemplate());
-
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, Map.of(
                     "content", message.message(),
                     "subject", type.getSubject()
