@@ -9,12 +9,7 @@ import org.mapstruct.Mapping;
 public interface StudentMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "lastname", ignore = true)
-    @Mapping(target = "birthdate", ignore = true)
-    @Mapping(target = "gender", ignore = true)
-    @Mapping(target = "course", ignore = true)
-    @Mapping(target = "faculty", ignore = true)
     Student toStudent(StudentRequest studentRequest);
 
-    StudentRequest toDto(Student student);
+    StudentRequest toDTO(Student student);
 }

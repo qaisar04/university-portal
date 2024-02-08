@@ -2,40 +2,21 @@ package kz.baltabayev.studentservice.model.service;
 
 import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.model.enums.FacultyName;
-import kz.baltabayev.studentservice.repository.StudentRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
-public class StudentService {
+public interface StudentService {
 
-    private final StudentRepository studentRepository;
+    void delete(Long id);
 
-    public void delete(Long id) {
-        studentRepository.deleteById(id);
-    }
+    Optional<Student> get(Long id);
 
-    public Optional<Student> get(Long id) {
-        return studentRepository.findById(id);
-    }
+    Student save(Student student);
 
-    public Student save(Student student) {
-        return studentRepository.save(student);
-    }
+    Student update(Student student);
 
-    public Student update(Student student) {
-        return studentRepository.save(student);
-    }
+    List<Student> getAll();
 
-    public List<Student> getAll() {
-        return studentRepository.findAll();
-    }
-
-    public List<Student> getAllByFaculty(FacultyName facultyName) {
-        return studentRepository.findAllByFaculty(facultyName);
-    }
+    List<Student> getAllByFaculty(FacultyName facultyName);
 }

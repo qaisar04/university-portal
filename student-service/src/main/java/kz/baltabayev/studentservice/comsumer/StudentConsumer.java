@@ -1,7 +1,7 @@
 package kz.baltabayev.studentservice.comsumer;
 
 import kz.baltabayev.studentservice.model.entity.Student;
-import kz.baltabayev.studentservice.model.service.StudentService;
+import kz.baltabayev.studentservice.model.service.impl.StudentServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class StudentConsumer {
 
-    private final StudentService studentService;
+    private final StudentServiceImpl studentService;
 
     @KafkaListener(topics = "${spring.kafka.queues.student}", groupId = "student-service")
     public void consumeStudent(Student student) {
