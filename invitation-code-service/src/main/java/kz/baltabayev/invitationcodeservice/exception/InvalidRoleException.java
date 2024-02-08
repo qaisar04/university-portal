@@ -1,7 +1,16 @@
 package kz.baltabayev.invitationcodeservice.exception;
 
+/**
+ * Exception thrown when an invalid role is provided.
+ */
 public class InvalidRoleException extends IllegalArgumentException {
-    public InvalidRoleException(String s) {
-        super(s);
+
+    /**
+     * Constructs a new InvalidRoleException with the specified detail message.
+     *
+     * @param message the detail message
+     */
+    public InvalidRoleException(String message) {
+        super(message);
     }
 }
