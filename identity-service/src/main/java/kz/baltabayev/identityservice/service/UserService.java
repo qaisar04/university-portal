@@ -116,10 +116,10 @@ public class UserService {
     }
 
     private void saveStudentIfRoleIsStudent(UserRequest userRequest, User user) {
-        if (user.getRole() != null && user.getRole().equals(Role.STUDENT)) {
-            kafkaTemplate.send(studentQueue, new StudentRequest(
-                    userRequest.getName(), userRequest.getEmail()
-            ));
-        }
+        Optional.ofNullable(user.getRole())
+                .filter(role -> role.equals(Role.STUDENT))
+                .ifPresent(role -> kafkaTemplate.send(studentQueue, new StudentRequest(
+                        userRequest.getName(), userRequest.getEmail()
+                )));
     }
 }
