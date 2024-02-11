@@ -9,9 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RestController
-@RequestMapping("/grade")
+@RequestMapping("/grades")
 @RequiredArgsConstructor
 public class GradingController {
 
@@ -28,6 +31,14 @@ public class GradingController {
     public ResponseEntity<Double> getAverageScore(@PathVariable Long studentId) {
         Double avgScore = gradeService.getAverageScoreByStudentId(studentId);
         return ResponseEntity.ok(avgScore);
+    }
+
+    @GetMapping("/student-id/{studentId}")
+    public ResponseEntity<List<GradeDto>> getByStudentId(@PathVariable Long studentId) {
+        List<GradeDto> gradesList = gradeService.getByStudentId(studentId).stream()
+                .map(gradeMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(gradesList);
     }
 
     @PutMapping("/update")
