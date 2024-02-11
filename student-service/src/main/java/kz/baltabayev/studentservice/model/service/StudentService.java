@@ -10,7 +10,7 @@ public interface StudentService {
 
     void delete(Long id);
 
-    Optional<Student> get(Long id);
+    Student get(Long id);
 
     Student save(Student student);
 

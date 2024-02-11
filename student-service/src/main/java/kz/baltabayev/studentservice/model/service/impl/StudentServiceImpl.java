@@ -1,6 +1,7 @@
 package kz.baltabayev.studentservice.model.service.impl;
 
 import kz.baltabayev.studentservice.client.GradingServiceClient;
+import kz.baltabayev.studentservice.exception.StudentNotFoundException;
 import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.model.enums.FacultyName;
 import kz.baltabayev.studentservice.model.service.StudentService;
@@ -25,8 +26,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<Student> get(Long id) {
-        return studentRepository.findById(id);
+    public Student get(Long id) {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
     }
 
     @Override
