@@ -40,6 +40,11 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
+    public void deleteByStudentId(Long studentId) {
+        gradeRepository.deleteByStudentId(studentId);
+    }
+
+    @Override
     public Grade update(Grade grade) {
         return gradeRepository.save(grade);
     }

@@ -3,7 +3,6 @@ package kz.baltabayev.gradingservice.service;
 import kz.baltabayev.gradingservice.model.entity.Grade;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface GradeService {
     Grade save(Grade grade);
@@ -15,6 +14,8 @@ public interface GradeService {
     List<Grade> getByStudentId(Long studentId);
 
     void deleteById(Long id);
+
+    void deleteByStudentId(Long studentId);
 
     Grade update(Grade grade);
 
