@@ -1,4 +1,4 @@
-package kz.baltabayev.gradingservice.model.entity;
+package kz.baltabayev.gradingservice.model.dto;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
