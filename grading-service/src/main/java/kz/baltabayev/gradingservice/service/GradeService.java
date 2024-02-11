@@ -12,6 +12,8 @@ public interface GradeService {
 
     Grade getById(Long id);
 
+    List<Grade> getByStudentId(Long studentId);
+
     void deleteById(Long id);
 
     Grade update(Grade grade);
