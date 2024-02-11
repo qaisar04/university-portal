@@ -44,7 +44,8 @@ public class GradeServiceImpl implements GradeService {
         return gradeRepository.save(grade);
     }
 
-    private List<Grade> getByStudentId(Long studentId) {
+    @Override
+    public List<Grade> getByStudentId(Long studentId) {
         return gradeRepository.findByStudentId(studentId);
     }
 
