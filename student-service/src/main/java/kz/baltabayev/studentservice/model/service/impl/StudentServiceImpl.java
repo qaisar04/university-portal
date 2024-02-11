@@ -1,5 +1,6 @@
 package kz.baltabayev.studentservice.model.service.impl;
 
+import kz.baltabayev.studentservice.client.GradingServiceClient;
 import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.model.enums.FacultyName;
 import kz.baltabayev.studentservice.model.service.StudentService;
@@ -15,9 +16,11 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final GradingServiceClient gradingServiceClient;
 
     @Override
     public void delete(Long id) {
+        gradingServiceClient.deleteByStudentId(id);
         studentRepository.deleteById(id);
     }
 
