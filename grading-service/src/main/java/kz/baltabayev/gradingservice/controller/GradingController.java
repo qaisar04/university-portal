@@ -30,12 +30,15 @@ public class GradingController {
         return ResponseEntity.ok(avgScore);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateGrade(@RequestBody GradeDto gradeDto) {
+        Grade updatedDrade = gradeService.update(gradeMapper.toEntity(gradeDto));
+        return ResponseEntity.ok(updatedDrade);
+    }
 
-
-
-
-
-
-
-
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteGrade(@PathVariable Long id) {
+        gradeService.deleteById(id);
+        return ResponseEntity.ok("Grade with id %s was successfully deleted".formatted(id));
+    }
 }
