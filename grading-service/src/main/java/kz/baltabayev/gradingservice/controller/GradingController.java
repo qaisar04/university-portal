@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RestController
-@RequestMapping("/grades")
+@RequestMapping("/api/v1/grade")
 @RequiredArgsConstructor
 public class GradingController {
 
@@ -33,7 +33,7 @@ public class GradingController {
         return ResponseEntity.ok(avgScore);
     }
 
-    @GetMapping("/student-id/{studentId}")
+    @GetMapping("/student/{studentId}")
     public ResponseEntity<List<GradeDto>> getByStudentId(@PathVariable Long studentId) {
         List<GradeDto> gradesList = gradeService.getByStudentId(studentId).stream()
                 .map(gradeMapper::toDto)
@@ -47,9 +47,15 @@ public class GradingController {
         return ResponseEntity.ok(updatedDrade);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGrade(@PathVariable Long id) {
         gradeService.deleteById(id);
         return ResponseEntity.ok("Grade with id %s was successfully deleted".formatted(id));
+    }
+
+    @DeleteMapping("/student/{studentId}")
+    public ResponseEntity<String> deleteGradeByStudentId(@PathVariable Long studentId) {
+        gradeService.deleteByStudentId(studentId);
+        return ResponseEntity.ok("Grade with studentId %s was successfully deleted".formatted(studentId));
     }
 }
