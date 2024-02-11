@@ -10,7 +10,7 @@ public interface GradeService {
 
     List<Grade> getAll();
 
-    Optional<Grade> getById(Long id);
+    Grade getById(Long id);
 
     void deleteById(Long id);
 

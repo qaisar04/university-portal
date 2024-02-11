@@ -1,6 +1,7 @@
 package kz.baltabayev.gradingservice.service.impl;
 
 import kz.baltabayev.gradingservice.client.StudentServiceClient;
+import kz.baltabayev.gradingservice.exception.GradeNotFoundException;
 import kz.baltabayev.gradingservice.model.entity.Grade;
 import kz.baltabayev.gradingservice.repository.GradeRepository;
 import kz.baltabayev.gradingservice.service.GradeService;
@@ -28,8 +29,9 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public Optional<Grade> getById(Long id) {
-        return gradeRepository.findById(id);
+    public Grade getById(Long id) {
+        return gradeRepository.findById(id)
+                .orElseThrow(() -> new GradeNotFoundException(id));
     }
 
     @Override
