@@ -69,6 +69,7 @@
         <module>identity-service</module>
         <module>grading-service</module>
         <module>invitation-code-service</module>
+        <module>subject-service</module>
     </modules>
 
     <build>
