@@ -28,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +65,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         sendGreetingEmail(userRequest);
-        saveStudentIfRoleIsStudent(userRequest, user);
+        checkRole(userRequest, user);
 
         userRepository.save(user);
     }
@@ -115,11 +116,15 @@ public class UserService {
                 userRequest.getEmail(), "Hello, " + userRequest.getName() + "! Welcome to our service!"));
     }
 
-    private void saveStudentIfRoleIsStudent(UserRequest userRequest, User user) {
-        Optional.ofNullable(user.getRole())
+    private void checkRole(UserRequest userRequest, User user) {
+        Stream.ofNullable(user.getRole())
                 .filter(role -> role.equals(Role.STUDENT))
-                .ifPresent(role -> kafkaTemplate.send(studentQueue, new StudentRequest(
-                        userRequest.getName(), userRequest.getEmail()
-                )));
+                .findFirst()
+                .ifPresentOrElse(
+                        role -> kafkaTemplate.send(studentQueue, new StudentRequest(
+                                userRequest.getName(), userRequest.getEmail()
+                        )),
+                        () -> user.setRole(Role.USER)
+                );
     }
 }
