@@ -33,6 +33,20 @@ services:
       - "5434:5432"
     volumes:
       - ./volumes/grading:/data/postgres
+  mysql-subject:
+    container_name: subject-service-db
+    image: mysql:8.3.0
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: subject-service
+      MYSQL_USER: qaisar
+      MYSQL_PASSWORD: qaisar
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./volumes/subject:/var/lib/mysql
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     networks:
