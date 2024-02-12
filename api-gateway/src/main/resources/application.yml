@@ -25,6 +25,12 @@ spring:
             - Path=/eureka/web
           filters:
             - SetPath=/
+        - id: invitation-code-service
+          uri: http://localhost:1465
+          predicates:
+            - Path=/invite-code/**
+          filters:
+            - AuthenticationFilter
         - id: discovery-server-static
           uri: http://localhost:8761
           predicates:
