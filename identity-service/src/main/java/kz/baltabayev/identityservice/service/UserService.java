@@ -46,7 +46,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-
     @Value("${spring.kafka.queues.student}")
     private String studentQueue;
 
@@ -121,9 +120,12 @@ public class UserService {
                 .filter(role -> role.equals(Role.STUDENT))
                 .findFirst()
                 .ifPresentOrElse(
-                        role -> kafkaTemplate.send(studentQueue, new StudentRequest(
-                                userRequest.getName(), userRequest.getEmail()
-                        )),
+                        role -> {
+                            studentServiceClient.create(userMapper.toStudentRequest(userRequest));
+                            kafkaTemplate.send(studentQueue, new StudentRequest(
+                                    userRequest.getName(), userRequest.getEmail()
+                            ));
+                        },
                         () -> user.setRole(Role.USER)
                 );
     }
