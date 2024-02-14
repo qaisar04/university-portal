@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    config:
+      uri: http://localhost:1991
+      name: api-gateway
+      profile: dev

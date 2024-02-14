@@ -40,7 +40,5 @@ logging:
     root: info
     org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: info
     org.springframework.cloud.gateway: trace
-jwt:
-  secret: HSK203KSOSLCS2039R1MJKS1ACSDJKFKDS9SDNFASB8ICA1
 server:
   port: 8080
