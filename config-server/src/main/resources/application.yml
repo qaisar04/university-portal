@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: native
   application:
     name: config-server
   cloud:
@@ -6,9 +8,9 @@ spring:
       server:
         git:
           uri: https://github.com/qaisar04/university-portal-configuration
-          username: ${GITHUB_USERNAME}
-          password: ${GITHUB_PASSWORD}
           clone-on-start: true
           default-label: main
+        native:
+          search-locations: classpath:/configurations
 server:
   port: 1991
