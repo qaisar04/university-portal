@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/qaisar04/university-portal-configuration
+          username: ${GITHUB_USERNAME}
+          password: ${GITHUB_PASSWORD}
+          clone-on-start: true
+          default-label: main
+server:
+  port: 1991
