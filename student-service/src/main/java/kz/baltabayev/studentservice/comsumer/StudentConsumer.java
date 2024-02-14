@@ -16,7 +16,6 @@ public class StudentConsumer {
 
     @KafkaListener(topics = "${spring.kafka.queues.student}", groupId = "student-service")
     public void consumeStudent(Student student) {
-        log.info("Consuming student: {}", student);
         studentService.save(student);
     }
 }
