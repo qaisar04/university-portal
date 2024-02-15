@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Entity
 @Builder
 @NoArgsConstructor
+@Table(name = "student_info")
 @AllArgsConstructor
 public class StudentInfo implements Serializable {
 
@@ -32,7 +33,6 @@ public class StudentInfo implements Serializable {
 
     private Long facultyId;
 
-    @NotNull
     @Column(name = "birth_date")
     private LocalDate birthDate;
 }

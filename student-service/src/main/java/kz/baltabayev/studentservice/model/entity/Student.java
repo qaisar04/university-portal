@@ -1,14 +1,10 @@
 package kz.baltabayev.studentservice.model.entity;
 
 import jakarta.persistence.*;
-import kz.baltabayev.studentservice.model.enums.FacultyName;
-import kz.baltabayev.studentservice.model.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @Entity
@@ -20,13 +16,9 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String lastname;
-    private LocalDate birthdate;
     private String email;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    private Integer course;
-    @Enumerated(EnumType.STRING)
-    private FacultyName faculty;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_info_id", referencedColumnName = "id")
+    private StudentInfo studentInfo;
 }
