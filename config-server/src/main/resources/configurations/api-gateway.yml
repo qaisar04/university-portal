@@ -19,6 +19,12 @@ spring:
             - Path=/students/**
           filters:
             - AuthenticationFilter
+        - id: grading-service
+          uri: lb://grading-service
+          predicates:
+            - Path=/api/v1/grade/**
+          filters:
+            - AuthenticationFilter
         - id: discovery-server
           uri: http://localhost:8761
           predicates:
