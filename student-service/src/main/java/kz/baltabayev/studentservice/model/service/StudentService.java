@@ -1,10 +1,8 @@
 package kz.baltabayev.studentservice.model.service;
 
 import kz.baltabayev.studentservice.model.entity.Student;
-import kz.baltabayev.studentservice.model.enums.FacultyName;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StudentService {
 
@@ -18,5 +16,5 @@ public interface StudentService {
 
     List<Student> getAll();
 
-    List<Student> getAllByFaculty(FacultyName facultyName);
+    List<Student> getAllByFacultyId(Long facultyId);
 }
