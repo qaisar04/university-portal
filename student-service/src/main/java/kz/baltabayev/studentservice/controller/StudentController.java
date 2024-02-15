@@ -23,6 +23,11 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAll());
     }
 
+    @GetMapping("/info/{id}")
+    public ResponseEntity<?> getInfoStudent(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.getInfo(id));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
         return ResponseEntity.ok(studentService.save(studentMapper.toStudent(studentRequest)));
