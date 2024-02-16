@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -34,11 +35,9 @@ public class GradingController {
     }
 
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<GradeDto>> getByStudentId(@PathVariable Long studentId) {
-        List<GradeDto> gradesList = gradeService.getByStudentId(studentId).stream()
-                .map(gradeMapper::toDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(gradesList);
+    public ResponseEntity<Map<Long, List<GradeDto>>> getByStudentId(@PathVariable Long studentId) {
+        Map<Long, List<GradeDto>> gradingList = gradeService.getByStudentId(studentId);
+        return ResponseEntity.ok(gradingList);
     }
 
     @PutMapping("/update")

@@ -1,7 +1,7 @@
 package kz.baltabayev.gradingservice.service.impl;
 
-import kz.baltabayev.gradingservice.client.StudentServiceClient;
 import kz.baltabayev.gradingservice.exception.GradeNotFoundException;
+import kz.baltabayev.gradingservice.model.dto.GradeDto;
 import kz.baltabayev.gradingservice.model.entity.Grade;
 import kz.baltabayev.gradingservice.repository.GradeRepository;
 import kz.baltabayev.gradingservice.service.GradeService;
@@ -9,22 +9,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
-    private final StudentServiceClient studentServiceClient;
 
     @Override
     public Grade save(Grade grade) {
         return gradeRepository.save(grade);
-    }
-
-    @Override
-    public List<Grade> getAll() {
-        return gradeRepository.findAll();
     }
 
     @Override
@@ -49,14 +45,18 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public List<Grade> getByStudentId(Long studentId) {
-        return gradeRepository.findByStudentId(studentId);
+    public Map<Long, List<GradeDto>> getByStudentId(Long studentId) {
+        return gradeRepository.findByStudentId(studentId)
+                .stream()
+                .collect(Collectors.groupingBy(Grade::getSubjectId,
+                        Collectors.mapping(grade -> new GradeDto(grade.getScore()), Collectors.toList())));
     }
 
     @Override
     public Double getAverageScoreByStudentId(Long studentId) {
-        return getByStudentId(studentId).stream()
-                .mapToDouble(Grade::getScore)
+        return getByStudentId(studentId).values().stream()
+                .flatMap(List::stream)
+                .mapToDouble(GradeDto::score)
                 .average()
                 .orElse(0.0);
     }
