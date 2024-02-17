@@ -47,6 +47,17 @@ services:
       - "3306:3306"
     volumes:
       - ./volumes/subject:/var/lib/mysql
+  postgres-scheduling:
+    container_name: scheduling-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: scheduling-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./volumes/scheduling:/data/postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     networks:

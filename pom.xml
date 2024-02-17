@@ -71,6 +71,7 @@
         <module>invitation-code-service</module>
         <module>subject-service</module>
         <module>config-server</module>
+        <module>scheduling-service</module>
     </modules>
 
     <build>
