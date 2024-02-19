@@ -1,11 +1,6 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/subject-service
-    password: qaisar
-    username: qaisar
-    driver-class-name: com.mysql.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-
+  config:
+    import: optional:configserver:http://localhost:1991
+  cloud:
+    config:
+      name: subject-service

@@ -1,34 +1,6 @@
 spring:
-  kafka:
-    queues:
-      greeting: email-sending-greeting-queue
-    consumer:
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: "*"
-      bootstrap-servers: http://localhost:9092
-  application:
-    name: mail-service
-  mail:
-    host: ${SMTP_HOST:smtp.gmail.com}
-    username: ${SMTP_USERNAME:baltabayevqaisar@gmail.com}
-    password: ${SMTP_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-    sender:
-      email: no-reply@university-portal.com
-    port: 587
-  freemarker:
-    template-loader-path: "classpath:/templates"
-server:
-  port: 8765
-
+  config:
+    import: optional:configserver:http://localhost:1991
+  cloud:
+    config:
+      name: mail-service
