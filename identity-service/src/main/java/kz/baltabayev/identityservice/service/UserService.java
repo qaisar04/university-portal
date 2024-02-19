@@ -57,15 +57,15 @@ public class UserService {
 
         User user = userMapper.toUser(userRequest);
         String inviteCode = userRequest.getInviteCode();
+
         if (!inviteCode.isBlank() && !inviteCode.isEmpty()) {
             user.setRole(inviteCodeClient.useInviteCode(inviteCode).getBody());
+            checkRole(userRequest, user);
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         sendGreetingEmail(userRequest);
-        checkRole(userRequest, user);
-
         userRepository.save(user);
     }
 
@@ -116,17 +116,10 @@ public class UserService {
     }
 
     private void checkRole(UserRequest userRequest, User user) {
-        Stream.ofNullable(user.getRole())
-                .filter(role -> role.equals(Role.STUDENT))
-                .findFirst()
-                .ifPresentOrElse(
-                        role -> {
-                            studentServiceClient.create(userMapper.toStudentRequest(userRequest));
-                            kafkaTemplate.send(studentQueue, new StudentRequest(
-                                    userRequest.getName(), userRequest.getEmail()
-                            ));
-                        },
-                        () -> user.setRole(Role.USER)
-                );
+         if (user.getRole().equals(Role.STUDENT)) {
+             kafkaTemplate.send(studentQueue, new StudentRequest(
+                     userRequest.getName(), userRequest.getEmail()
+             ));
+         }
     }
 }
