@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: subject-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/subject-service
+    password: qaisar
+    username: qaisar
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  liquibase:
+    enabled: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+server:
+  port: 0

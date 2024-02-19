@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: indentity-service
+  kafka:
+    queues:
+      student: student-saving-queue
+      email: email-sending-greeting-queue
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: http://localhost:9092
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: false
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/identity-service
+    username: qaisar
+    password: qaisar
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/changelog.xml
+    liquibase-schema: develop
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+jwt:
+  secret: HSK203KSOSLCS2039R1MJKS1ACSDJKFKDS9SDNFASB8ICA1
+  lifetime: 1000m
+app:
+  common:
+    logging:
+      enabled: true
+server:
+  port: 8585
