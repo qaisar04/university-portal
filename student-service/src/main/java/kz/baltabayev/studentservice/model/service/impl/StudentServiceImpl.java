@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +26,9 @@ public class StudentServiceImpl implements StudentService {
     public StudentInfoResponse getInfo(Long id) {
         Student student = get(id);
         StudentRequest studentRequest = studentMapper.toDto(student);
-        List<GradeResponse> gradeList = gradingServiceClient.getByStudentId(id).getBody();
-        return new StudentInfoResponse(studentRequest, gradeList);
+        Map<Long, List<GradeResponse>> grades = gradingServiceClient.getByStudentId(id).getBody();
+        studentRequest.setGpa(gradingServiceClient.getAverageScore(id).getBody());
+        return new StudentInfoResponse(studentRequest, grades);
     }
 
     @Override

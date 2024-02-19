@@ -30,6 +30,7 @@ public class StudentInfo implements Serializable {
     private Gender gender;
 
     private Integer course;
+    private Double gpa;
 
     private Long facultyId;
 
