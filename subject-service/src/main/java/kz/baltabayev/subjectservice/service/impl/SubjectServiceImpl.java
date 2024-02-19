@@ -28,6 +28,6 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Set<Subject> getByTeacherId(Set<Long> teacherId) {
-        return subjectRepository.findAllByTeacherIds(teacherId);
+        return null;
     }
 }

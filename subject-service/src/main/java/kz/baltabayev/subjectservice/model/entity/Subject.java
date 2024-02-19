@@ -17,6 +17,4 @@ public class Subject {
     private Long id;
     private String name;
     private Integer credits;
-    @ElementCollection
-    private Set<Long> teacherIds;
 }

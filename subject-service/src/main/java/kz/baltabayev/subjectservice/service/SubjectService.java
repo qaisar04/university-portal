@@ -11,5 +11,4 @@ public interface SubjectService {
     Subject save(Subject subject);
 
     Set<Subject> getByTeacherId(Set<Long> teacherId);
-
 }
