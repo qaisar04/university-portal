@@ -60,7 +60,7 @@ services:
     ports:
       - "3308:3303"
     volumes:
-      - ./volumes/subject:/var/lib/mysql
+      - ./volumes/storage:/var/lib/mysql
   postgres-scheduling:
     container_name: scheduling-service-db
     image: postgres:14
