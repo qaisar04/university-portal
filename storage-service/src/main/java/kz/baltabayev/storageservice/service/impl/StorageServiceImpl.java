@@ -36,13 +36,10 @@ public class StorageServiceImpl implements StorageService {
 
     public byte[] downloadImage(String fileName) {
         Optional<ImageData> imageData = storageRepository.findByName(fileName);
-//        if (imageData.isPresent()) {
-//            return ImageUtils.decompressImage(imageData.get().getImageData());
-//        }
-//        return new byte[0];
+        if (imageData.isPresent()) {
+            return ImageUtils.decompressImage(imageData.get().getImageData());
+        }
 
-        byte[] bytes = ImageUtils.decompressImage(imageData.get().getImageData());
-        return bytes;
-
+        return new byte[0];
     }
 }
