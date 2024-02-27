@@ -21,7 +21,7 @@ public class StorageServiceImpl implements StorageService {
         ImageData image = null;
         try {
             image = storageRepository.save(ImageData.builder()
-                    .name(file.getName())
+                    .name(file.getOriginalFilename())
                     .type(file.getContentType())
                     .imageData(ImageUtils.compressImage(file.getBytes()))
                     .build());
@@ -36,9 +36,13 @@ public class StorageServiceImpl implements StorageService {
 
     public byte[] downloadImage(String fileName) {
         Optional<ImageData> imageData = storageRepository.findByName(fileName);
-        if (imageData.isPresent()) {
-            return ImageUtils.decompressImage(imageData.get().getImageData());
-        }
-        return new byte[0];
+//        if (imageData.isPresent()) {
+//            return ImageUtils.decompressImage(imageData.get().getImageData());
+//        }
+//        return new byte[0];
+
+        byte[] bytes = ImageUtils.decompressImage(imageData.get().getImageData());
+        return bytes;
+
     }
 }

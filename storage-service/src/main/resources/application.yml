@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    password: qaisar
+    username: qaisar
+    url: jdbc:mysql://localhost:3308/storage-service
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
