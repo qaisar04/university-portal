@@ -72,6 +72,7 @@
         <module>subject-service</module>
         <module>config-server</module>
         <module>scheduling-service</module>
+        <module>storage-service</module>
     </modules>
 
     <build>
