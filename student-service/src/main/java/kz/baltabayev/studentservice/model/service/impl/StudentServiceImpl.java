@@ -1,6 +1,7 @@
 package kz.baltabayev.studentservice.model.service.impl;
 
 import kz.baltabayev.studentservice.client.GradingServiceClient;
+import kz.baltabayev.studentservice.client.StorageServiceClient;
 import kz.baltabayev.studentservice.exception.StudentNotFoundException;
 import kz.baltabayev.studentservice.mapper.StudentMapper;
 import kz.baltabayev.studentservice.model.dto.GradeResponse;
@@ -11,6 +12,7 @@ import kz.baltabayev.studentservice.model.service.StudentService;
 import kz.baltabayev.studentservice.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final GradingServiceClient gradingServiceClient;
+    private final StorageServiceClient storageServiceClient;
     private final StudentMapper studentMapper;
 
     public StudentInfoResponse getInfo(Long id) {
@@ -29,6 +32,11 @@ public class StudentServiceImpl implements StudentService {
         Map<Long, List<GradeResponse>> grades = gradingServiceClient.getByStudentId(id).getBody();
         studentRequest.setGpa(gradingServiceClient.getAverageScore(id).getBody());
         return new StudentInfoResponse(studentRequest, grades);
+    }
+
+    @Override
+    public void uploadAvatar(MultipartFile file, Long id) {
+//        storageServiceClient.uploadImage(file, id); fixme
     }
 
     @Override

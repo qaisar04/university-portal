@@ -1,45 +1,73 @@
 package kz.baltabayev.storageservice.service.impl;
 
-import kz.baltabayev.storageservice.entity.ImageData;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.*;
 import kz.baltabayev.storageservice.repository.StorageRepository;
 import kz.baltabayev.storageservice.service.StorageService;
-import kz.baltabayev.storageservice.util.ImageUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Optional;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class StorageServiceImpl implements StorageService {
 
     private final StorageRepository storageRepository;
+    private final AmazonS3 s3;
 
-    public String uploadImage(MultipartFile file) {
-        ImageData image = null;
-        try {
-            image = storageRepository.save(ImageData.builder()
-                    .name(file.getOriginalFilename())
-                    .type(file.getContentType())
-                    .imageData(ImageUtils.compressImage(file.getBytes()))
-                    .build());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return image != null
-                ? String.format("File upload successful: %s", file.getOriginalFilename())
-                : String.format("File upload failed: %s", file.getOriginalFilename());
+    @Override
+    public Bucket createBucket(String bucketName) {
+        return listS3Buckets().stream()
+                .filter(s -> s.getName().equals(bucketName))
+                .findFirst()
+                .orElseGet(() -> s3.createBucket(bucketName));
     }
 
-    public byte[] downloadImage(String fileName) {
-        Optional<ImageData> imageData = storageRepository.findByName(fileName);
-        if (imageData.isPresent()) {
-            return ImageUtils.decompressImage(imageData.get().getImageData());
+    public List<Bucket> listS3Buckets() {
+        return s3.listBuckets();
+    }
+
+    @Override
+    public void removeS3Bucket(String bucketName) {
+        s3.listObjects(bucketName)
+                .getObjectSummaries().stream()
+                .filter(Objects::nonNull)
+                .forEach(e -> s3.deleteObject(bucketName, e.getKey()));
+        s3.deleteBucket(bucketName);
+    }
+
+    @Override
+    public void uploadFile(String bucketName, String fileName, String filePath) {
+        s3.putObject(bucketName, fileName, new File(filePath));
+    }
+
+    public List<String> listFiles(String bucketName) {
+        ListObjectsV2Result listObjectsV2 = s3.listObjectsV2(bucketName);
+        List<String> files = new ArrayList<>();
+        for (S3ObjectSummary summary : listObjectsV2.getObjectSummaries()) {
+            files.add(summary.getKey());
         }
 
-        return new byte[0];
+        return files;
+    }
+
+    @Override
+    public String deleteFile(String bucketName, String fileName) {
+        s3.deleteObject(bucketName, fileName);
+        return "%s removed successfully".formatted(fileName);
+    }
+
+    @SneakyThrows
+    @Override
+    public void downloadFile(String bucketName, String fileName, String downloadPath) {
+        S3Object object = s3.getObject(bucketName, fileName);
+        S3ObjectInputStream inputStream = object.getObjectContent();
+        FileUtils.copyInputStreamToFile(inputStream, new File(downloadPath));
     }
 }

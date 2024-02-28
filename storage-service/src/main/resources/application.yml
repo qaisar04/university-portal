@@ -4,7 +4,16 @@ spring:
     username: qaisar
     url: jdbc:mysql://localhost:3308/storage-service
     driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    aws:
+      credentials:
+        access-key:
+        secret-key:
   jpa:
     hibernate:
       ddl-auto: create
     show-sql: true
+  application:
+    name: storage-service
+server:
+  port: 8012

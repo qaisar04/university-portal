@@ -1,6 +1,6 @@
 package kz.baltabayev.storageservice.repository;
 
-import kz.baltabayev.storageservice.entity.ImageData;
+import kz.baltabayev.storageservice.model.entity.ImageData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

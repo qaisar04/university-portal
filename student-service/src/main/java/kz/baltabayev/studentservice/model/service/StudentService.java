@@ -1,6 +1,7 @@
 package kz.baltabayev.studentservice.model.service;
 
 import kz.baltabayev.studentservice.model.entity.Student;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface StudentService {
 
     List<Student> getAll();
 
-    List<Student> getAllByFacultyId(Long facultyId);
+    void uploadAvatar(MultipartFile file, Long id);
 }

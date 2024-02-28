@@ -1,4 +1,4 @@
-package kz.baltabayev.storageservice.entity;
+package kz.baltabayev.storageservice.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,6 +18,8 @@ public class ImageData {
     private Long id;
     private String name;
     private String type;
+    @Enumerated(EnumType.STRING)
+    private AttachmentSource source;
     @Lob // Large Object - тип данных, который может хранить большое количество данных
     @Column(name = "imagedata", length = 1000)
     private byte[] imageData;

@@ -25,6 +25,7 @@ public class StudentInfo implements Serializable {
 
     private String firstname;
     private String lastname;
+    private String avatar;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
