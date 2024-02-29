@@ -2,7 +2,6 @@ package kz.baltabayev.storageservice.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
-import kz.baltabayev.storageservice.repository.StorageRepository;
 import kz.baltabayev.storageservice.service.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -18,10 +17,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class StorageServiceImpl implements StorageService {
 
-    private final StorageRepository storageRepository;
     private final AmazonS3 s3;
 
-    @Override
     public Bucket createBucket(String bucketName) {
         return listS3Buckets().stream()
                 .filter(s -> s.getName().equals(bucketName))
@@ -33,7 +30,6 @@ public class StorageServiceImpl implements StorageService {
         return s3.listBuckets();
     }
 
-    @Override
     public void removeS3Bucket(String bucketName) {
         s3.listObjects(bucketName)
                 .getObjectSummaries().stream()
@@ -63,8 +59,8 @@ public class StorageServiceImpl implements StorageService {
         return "%s removed successfully".formatted(fileName);
     }
 
-    @SneakyThrows
     @Override
+    @SneakyThrows
     public void downloadFile(String bucketName, String fileName, String downloadPath) {
         S3Object object = s3.getObject(bucketName, fileName);
         S3ObjectInputStream inputStream = object.getObjectContent();
