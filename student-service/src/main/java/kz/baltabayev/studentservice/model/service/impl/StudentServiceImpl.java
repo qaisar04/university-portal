@@ -11,6 +11,7 @@ import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.model.service.StudentService;
 import kz.baltabayev.studentservice.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ public class StudentServiceImpl implements StudentService {
     private final StorageServiceClient storageServiceClient;
     private final StudentMapper studentMapper;
 
+    @Override
     public StudentInfoResponse getInfo(Long id) {
         Student student = get(id);
         StudentRequest studentRequest = studentMapper.toDto(student);
@@ -35,8 +37,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void uploadAvatar(MultipartFile file, Long id) {
-//        storageServiceClient.uploadImage(file, id); fixme
+    public void uploadAvatar(Long id, MultipartFile file) {
+        Student student = get(id);
+        ResponseEntity<String> uploadImage = storageServiceClient.uploadImage("USER_PROFILE_IMAGE", id, file);
+        student.getStudentInfo().setAvatar(uploadImage.getBody());
     }
 
     @Override
@@ -66,7 +70,6 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll();
     }
 
-    @Override
     public List<Student> getAllByFacultyId(Long facultyId) {
         return studentRepository.findAllByStudentInfo_FacultyId(facultyId);
     }

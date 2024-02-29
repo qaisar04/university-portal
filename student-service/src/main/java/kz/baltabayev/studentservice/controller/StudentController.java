@@ -3,10 +3,11 @@ package kz.baltabayev.studentservice.controller;
 import kz.baltabayev.studentservice.mapper.StudentMapper;
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
 import kz.baltabayev.studentservice.model.entity.Student;
-import kz.baltabayev.studentservice.model.service.impl.StudentServiceImpl;
+import kz.baltabayev.studentservice.model.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentController {
 
-    private final StudentServiceImpl studentService;
+    private final StudentService studentService;
     private final StudentMapper studentMapper;
 
     @GetMapping
@@ -26,6 +27,14 @@ public class StudentController {
     @GetMapping("/info/{id}")
     public ResponseEntity<?> getInfoStudent(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getInfo(id));
+    }
+
+    @PatchMapping("{id}/avatar")
+    public ResponseEntity<String> uploadAvatar(
+            @RequestParam("file") MultipartFile file,
+            @PathVariable Long id) {
+        studentService.uploadAvatar(id, file);
+        return ResponseEntity.ok("Success");
     }
 
     @PostMapping("/create")
