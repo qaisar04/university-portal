@@ -28,10 +28,10 @@ public class StorageController {
 
     @GetMapping("/{bucketName}/{fileName}")
     public ResponseEntity<?> download(
-            @PathVariable String bucketName,
+            @PathVariable String source,
             @PathVariable String fileName
     ) {
-        var content = storageService.downloadFile(bucketName, fileName);
+        var content = storageService.downloadFile(source, fileName);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(new ByteArrayResource(content));

@@ -6,6 +6,7 @@ import kz.baltabayev.storageservice.model.entity.S3File;
 import kz.baltabayev.storageservice.model.types.ContentSource;
 import kz.baltabayev.storageservice.service.S3FileService;
 import kz.baltabayev.storageservice.service.StorageService;
+import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -54,15 +55,16 @@ public class StorageServiceImpl implements StorageService {
         Bucket bucket = createBucket(bucketName);
 
         var fileToUpload = convertMultiPartFileToFile(file);
-        s3.putObject(bucket.getName(),
-                file.getOriginalFilename(), fileToUpload);
+        s3.putObject(bucket.getName(), file.getOriginalFilename(), fileToUpload);
+        fileToUpload.delete();
+
         s3FileService.save(S3File.builder()
                 .fileName(file.getOriginalFilename())
                 .source(ContentSource.valueOf(source.toUpperCase()))
                 .target(id)
                 .build());
 
-        return file.getOriginalFilename();
+        return s3.getUrl(bucket.getName(), file.getOriginalFilename()).toString();
     }
 
     //todo: use it in the future for logic
@@ -87,9 +89,10 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     @SneakyThrows
-    public byte[] downloadFile(String bucketName, String fileName) {
-        S3Object object = s3.getObject(bucketName, fileName);
-        S3ObjectInputStream inputStream = object.getObjectContent();
+    public byte[] downloadFile(String source, String fileName) {
+        ContentSource contentSource = ContentSource.valueOf(source.toUpperCase());
+        S3Object object = s3.getObject(contentSource.getBucketName(), fileName);
+        @Cleanup S3ObjectInputStream inputStream = object.getObjectContent();
         return IOUtils.toByteArray(inputStream);
     }
 

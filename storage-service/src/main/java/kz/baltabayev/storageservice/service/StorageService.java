@@ -8,6 +8,6 @@ public interface StorageService {
 
     void deleteFile(String bucketName, String fileName);
 
-    byte[] downloadFile(String bucketName, String fileName);
+    byte[] downloadFile(String source, String fileName);
 
 }
