@@ -7,13 +7,17 @@ spring:
   cloud:
     aws:
       credentials:
-        access-key:
-        secret-key:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
   jpa:
     hibernate:
       ddl-auto: create
     show-sql: true
   application:
     name: storage-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
 server:
   port: 8012
