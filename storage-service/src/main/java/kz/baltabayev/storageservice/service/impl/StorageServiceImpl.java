@@ -9,7 +9,7 @@ import kz.baltabayev.storageservice.service.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -64,6 +65,7 @@ public class StorageServiceImpl implements StorageService {
         return file.getOriginalFilename();
     }
 
+    //todo: use it in the future for logic
     public List<String> listFiles(String bucketName) {
         ListObjectsV2Result listObjectsV2 = s3.listObjectsV2(bucketName);
         List<String> files = new ArrayList<>();
@@ -75,17 +77,20 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public String deleteFile(String bucketName, String fileName) {
+    public void deleteFile(String source, String fileName) {
+        ContentSource contentSource = ContentSource.valueOf(source.toUpperCase());
+        String bucketName = contentSource.getBucketName();
+        Optional<S3File> s3File = s3FileService.getByFileNameAndSource(fileName, contentSource);
+        s3File.ifPresent(file -> s3FileService.delete(file.getId()));
         s3.deleteObject(bucketName, fileName);
-        return "%s removed successfully".formatted(fileName);
     }
 
     @Override
     @SneakyThrows
-    public void downloadFile(String bucketName, String fileName, String downloadPath) {
+    public byte[] downloadFile(String bucketName, String fileName) {
         S3Object object = s3.getObject(bucketName, fileName);
         S3ObjectInputStream inputStream = object.getObjectContent();
-        FileUtils.copyInputStreamToFile(inputStream, new File(downloadPath));
+        return IOUtils.toByteArray(inputStream);
     }
 
     public static File convertMultiPartFileToFile(MultipartFile file) {
