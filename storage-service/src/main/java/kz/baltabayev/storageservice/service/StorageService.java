@@ -1,10 +1,11 @@
 package kz.baltabayev.storageservice.service;
 
-import com.amazonaws.services.s3.model.Bucket;
+import kz.baltabayev.storageservice.model.types.ContentSource;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
 
-    void uploadFile(String bucketName, String fileName, String filePath);
+    String uploadFile(String source, Long id, MultipartFile file);
 
     String deleteFile(String bucketName, String fileName);
 
