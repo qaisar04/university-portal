@@ -26,10 +26,6 @@ public class StorageServiceImpl implements StorageService {
                 .orElseGet(() -> s3.createBucket(bucketName));
     }
 
-    public List<Bucket> listS3Buckets() {
-        return s3.listBuckets();
-    }
-
     public void removeS3Bucket(String bucketName) {
         s3.listObjects(bucketName)
                 .getObjectSummaries().stream()
@@ -38,9 +34,15 @@ public class StorageServiceImpl implements StorageService {
         s3.deleteBucket(bucketName);
     }
 
+    public List<Bucket> listS3Buckets() {
+        return s3.listBuckets();
+    }
+
     @Override
-    public void uploadFile(String bucketName, String fileName, String filePath) {
+    public String uploadFile(String bucketName, String fileName, String filePath) {
         s3.putObject(bucketName, fileName, new File(filePath));
+
+        return fileName;
     }
 
     public List<String> listFiles(String bucketName) {
