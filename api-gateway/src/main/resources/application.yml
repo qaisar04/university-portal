@@ -1,6 +1,66 @@
+#spring:
+#  config:
+#    import: optional:configserver:http://localhost:1991
+#  cloud:
+#    config:
+#      name: api-gateway
+
 spring:
-  config:
-    import: optional:configserver:http://localhost:1991
+  application:
+    name: api-gateway
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8181/realms/university-portal-realm
+            user-name-attribute: qaisar04
+        registration:
+          keycloak:
+            client-id: microservice-auth
+            client-secret: 3HKbSVkL1AzQbnS8E73xnfkwbYc6oQdd
+            scope: openid
+#  main:
+#    web-application-type: reactive
+#  output:
+#    ansi:
+#      enabled: always
   cloud:
-    config:
-      name: api-gateway
+    gateway:
+      routes:
+        - id: indentity-service
+          uri: lb://indentity-service
+          predicates:
+            - Path=/auth/**
+        - id: student-service
+          uri: lb://student-service
+          predicates:
+            - Path=/students/**
+        - id: grading-service
+          uri: lb://grading-service
+          predicates:
+            - Path=/api/v1/grade/**
+        - id: discovery-server
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/web
+        - id: invitation-code-service
+          uri: http://localhost:1465
+          predicates:
+            - Path=/invite-code/**
+        - id: discovery-server-static
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/**
+logging:
+  level:
+    root: info
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: info
+    org.springframework.cloud.gateway: trace
+server:
+  port: 8080
+cors:
+  allowCredentials: false
+  allowedOrigins: http://localhost:4200,http://127.0.0.1:5500
+  allowedMethods: GET,POST,PUT,DELETE,OPTIONS,HEAD
+  allowedHeaders: origin,content-type,accept,authorization,cookie
