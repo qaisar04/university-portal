@@ -52,19 +52,18 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public String uploadFile(String source, Long id, MultipartFile file) {
         String bucketName = ContentSource.valueOf(source.toUpperCase()).getBucketName();
-        Bucket bucket = createBucket(bucketName);
+        String filename = file.getOriginalFilename();
 
         var fileToUpload = convertMultiPartFileToFile(file);
-        s3.putObject(bucket.getName(), file.getOriginalFilename(), fileToUpload);
-        fileToUpload.delete();
+        s3.putObject(bucketName, filename, fileToUpload);
 
         s3FileService.save(S3File.builder()
-                .fileName(file.getOriginalFilename())
+                .fileName(filename)
                 .source(ContentSource.valueOf(source.toUpperCase()))
                 .target(id)
                 .build());
 
-        return s3.getUrl(bucket.getName(), file.getOriginalFilename()).toString();
+        return s3.getUrl(bucketName, filename).toString();
     }
 
     //todo: use it in the future for logic
