@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: qaisar
       POSTGRES_PASSWORD: qaisar
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./volumes/student:/data/postgres
   postgres-grading:
@@ -88,7 +88,7 @@ services:
       - "10190:8080"
     depends_on:
       - keycloak-database
-    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/university-portal-realm.json" ]
+    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/realm-settings.json" ]
     volumes:
       - ./docker/keycloak/:/opt/keycloak/data/import/
   zookeeper:

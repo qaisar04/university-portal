@@ -1,10 +1,10 @@
 spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:10190/auth/realms/university-portal-realm
-          jwk-set-uri: http://localhost:10190/auth/realms/university-portal-realm/protocol/openid-connect/certs
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:10190/auth/realms/university-portal-realm
+#          jwk-set-uri: http://localhost:10190/auth/realms/university-portal-realm/protocol/openid-connect/certs
   kafka:
     queues:
       student: student-saving-queue
@@ -21,7 +21,7 @@ spring:
   application:
     name: student-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/student-service
+    url: jdbc:postgresql://localhost:5433/student-service
     driver-class-name: org.postgresql.Driver
     username: qaisar
     password: qaisar
