@@ -72,6 +72,36 @@ services:
       - "5435:5432"
     volumes:
       - ./volumes/scheduling:/data/postgres
+  keycloak-database:
+    container_name: keycloak-database
+    image: postgres:14
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: my_admin
+      POSTGRES_PASSWORD: my_password
+      POSTGRES_DB: keycloak_db
+    ports:
+      - "5432:5432"
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:legacy
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: keycloak-database
+      DB_DATABASE: keycloak_db
+      DB_USER: my_admin
+      DB_SCHEMA: public
+      DB_PASSWORD: my_password
+      KEYCLOAK_HOST_NAME: backend-keycloak-auth
+      KEYCLOAK_USER: kc_admin
+      KEYCLOAK_PASSWORD: kc_admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - keycloak-database
+    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/university-portal-realm.json" ]
+    volumes:
+      - ./docker/keycloak/:/opt/keycloak/data/import/
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     networks:
