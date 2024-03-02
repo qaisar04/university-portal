@@ -73,14 +73,14 @@ services:
       - "5432:5432"
   keycloak:
     container_name: keycloak
-    image: quay.io/keycloak/keycloak:23.0.7
+    image: quay.io/keycloak/keycloak:legacy
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: keycloak-database
       DB_DATABASE: keycloak_db
-      DB_USER: my_admin
+      DB_USER: admin
       DB_SCHEMA: public
-      DB_PASSWORD: my_password
+      DB_PASSWORD: admin
       KEYCLOAK_HOST_NAME: backend-keycloak-auth
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
