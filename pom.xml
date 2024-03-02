@@ -66,7 +66,6 @@
         <module>api-gateway</module>
         <module>discovery-service</module>
         <module>student-service</module>
-        <module>identity-service</module>
         <module>grading-service</module>
         <module>invitation-code-service</module>
         <module>subject-service</module>
