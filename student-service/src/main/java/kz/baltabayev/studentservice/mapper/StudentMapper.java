@@ -12,14 +12,15 @@ public interface StudentMapper {
 
     @Mappings({
             @Mapping(target = "id", ignore = true),
+            @Mapping(target = "firstname", source = "firstname"),
+            @Mapping(target = "lastname", source = "lastname"),
+            @Mapping(target = "birthDate", source = "birthdate"),
             @Mapping(target = "email", source = "email"),
-            @Mapping(target = "studentInfo.firstname", source = "name"),
-            @Mapping(target = "studentInfo.lastname", source = "lasname"),
-            @Mapping(target = "studentInfo.birthDate", source = "birthdate"),
-            @Mapping(target = "studentInfo.gender", source = "gender"),
-            @Mapping(target = "studentInfo.course", source = "course"),
-            @Mapping(target = "studentInfo.gpa", source = "gpa"),
-            @Mapping(target = "studentInfo.facultyId", source = "facultyId")
+            @Mapping(target = "gender", source = "gender"),
+            @Mapping(target = "course", source = "course"),
+            @Mapping(target = "gpa", source = "gpa"),
+            @Mapping(target = "facultyId", source = "facultyId"),
+            @Mapping(target = "avatar", source = "avatar")
     })
     Student toStudent(StudentRequest studentRequest);
 

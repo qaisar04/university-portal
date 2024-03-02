@@ -12,12 +12,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentRequest {
-    private String name;
-    private String lasname;
+    private String firstname;
+    private String lastname;
     private LocalDate birthdate;
     private String email;
     private Gender gender;
     private Integer course;
+    private String avatar;
     @Max(4)
     private Double gpa;
     private Long facultyId;
