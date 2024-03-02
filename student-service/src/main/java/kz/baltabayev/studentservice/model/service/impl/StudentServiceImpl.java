@@ -4,8 +4,6 @@ import kz.baltabayev.studentservice.client.GradingServiceClient;
 import kz.baltabayev.studentservice.client.StorageServiceClient;
 import kz.baltabayev.studentservice.exception.StudentNotFoundException;
 import kz.baltabayev.studentservice.mapper.StudentMapper;
-import kz.baltabayev.studentservice.model.dto.GradeResponse;
-import kz.baltabayev.studentservice.model.dto.StudentInfoResponse;
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
 import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.model.service.StudentService;
@@ -15,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -29,13 +25,11 @@ public class StudentServiceImpl implements StudentService {
     private final StudentMapper studentMapper;
 
     @Override
-    public StudentInfoResponse getInfo(Long id) {
+    public StudentRequest getInfo(Long id) {
         Student student = get(id);
         StudentRequest studentRequest = studentMapper.toDto(student);
-//        Map<Long, List<GradeResponse>> grades = gradingServiceClient.getByStudentId(id).getBody();
-        Map<Long, List<GradeResponse>> grades = new HashMap<>();
-//        studentRequest.setGpa(gradingServiceClient.getAverageScore(id).getBody());
-        return new StudentInfoResponse(studentRequest, grades);
+        studentRequest.setGpa(gradingServiceClient.getAverageScore(id).getBody());
+        return studentRequest;
     }
 
     @Override
