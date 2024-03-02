@@ -32,7 +32,7 @@ public class SecurityConfig {
                                 .anyRequest().authenticated())
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(Customizer.withDefaults())
+                .oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()))
                 .build();
     }
 
