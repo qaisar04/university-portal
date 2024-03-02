@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +32,9 @@ public class StudentServiceImpl implements StudentService {
     public StudentInfoResponse getInfo(Long id) {
         Student student = get(id);
         StudentRequest studentRequest = studentMapper.toDto(student);
-        Map<Long, List<GradeResponse>> grades = gradingServiceClient.getByStudentId(id).getBody();
-        studentRequest.setGpa(gradingServiceClient.getAverageScore(id).getBody());
+//        Map<Long, List<GradeResponse>> grades = gradingServiceClient.getByStudentId(id).getBody();
+        Map<Long, List<GradeResponse>> grades = new HashMap<>();
+//        studentRequest.setGpa(gradingServiceClient.getAverageScore(id).getBody());
         return new StudentInfoResponse(studentRequest, grades);
     }
 
@@ -40,7 +42,8 @@ public class StudentServiceImpl implements StudentService {
     public void uploadAvatar(Long id, MultipartFile file) {
         Student student = get(id);
         ResponseEntity<String> uploadImage = storageServiceClient.uploadImage("USER_PROFILE_IMAGE", id, file);
-        student.getStudentInfo().setAvatar(uploadImage.getBody());
+        student.setAvatar(uploadImage.getBody());
+        update(student);
     }
 
     @Override
@@ -71,6 +74,6 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public List<Student> getAllByFacultyId(Long facultyId) {
-        return studentRepository.findAllByStudentInfo_FacultyId(facultyId);
+        return studentRepository.findAllByFacultyId(facultyId);
     }
 }
