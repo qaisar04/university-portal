@@ -1,6 +1,0 @@
-spring:
-  config:
-    import: optional:configserver:http://localhost:1991
-  cloud:
-    config:
-      name: identity-service
