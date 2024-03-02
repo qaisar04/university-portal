@@ -1,17 +1,23 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:10190/auth/realms/university-portal-realm
+          jwk-set-uri: http://localhost:10190/auth/realms/university-portal-realm/protocol/openid-connect/certs
   kafka:
     queues:
       student: student-saving-queue
     consumer:
-        auto-offset-reset: earliest
-        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-        value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
-        properties:
-            spring:
-            json:
-                trusted:
-                packages: "*"
-        bootstrap-servers: http://localhost:9092
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      properties:
+        spring:
+        json:
+          trusted:
+          packages: "*"
+      bootstrap-servers: http://localhost:9092
   application:
     name: student-service
   datasource:
@@ -30,5 +36,9 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+springdoc:
+  api-docs:
+    enabled: true
+    path: /swagger-ui.html
 server:
   port: 8081
