@@ -11,17 +11,6 @@ services:
       - "5432:5432"
     volumes:
       - ./volumes/student:/data/postgres
-  postgres-identity:
-    container_name: identity-service-db
-    image: postgres:14
-    environment:
-      POSTGRES_DB: identity-service
-      POSTGRES_USER: qaisar
-      POSTGRES_PASSWORD: qaisar
-    ports:
-      - "5433:5432"
-    volumes:
-      - ./volumes/identity:/data/postgres
   postgres-grading:
     container_name: grading-service-db
     image: postgres:14
