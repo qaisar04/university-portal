@@ -1,12 +1,13 @@
-package kz.baltabayev.studentservice.model.service.impl;
+package kz.baltabayev.studentservice.service.impl;
 
 import kz.baltabayev.studentservice.client.GradingServiceClient;
 import kz.baltabayev.studentservice.client.StorageServiceClient;
 import kz.baltabayev.studentservice.exception.StudentNotFoundException;
 import kz.baltabayev.studentservice.mapper.StudentMapper;
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
+import kz.baltabayev.studentservice.model.dto.StudentResponse;
 import kz.baltabayev.studentservice.model.entity.Student;
-import kz.baltabayev.studentservice.model.service.StudentService;
+import kz.baltabayev.studentservice.service.StudentService;
 import kz.baltabayev.studentservice.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +24,20 @@ public class StudentServiceImpl implements StudentService {
     private final GradingServiceClient gradingServiceClient;
     private final StorageServiceClient storageServiceClient;
     private final StudentMapper studentMapper;
+    private final static String STUDENT_PROFILE = "USER_PROFILE_IMAGE";
 
     @Override
-    public StudentRequest getInfo(Long id) {
+    public StudentResponse getInfo(Long id) {
         Student student = get(id);
-        StudentRequest studentRequest = studentMapper.toDto(student);
-        studentRequest.setGpa(gradingServiceClient.getAverageScore(id).getBody());
-        return studentRequest;
+        StudentResponse studentResponse = studentMapper.toDto(student);
+        studentResponse.setGpa(gradingServiceClient.getAverageScore(id).getBody());
+        return studentResponse;
     }
 
     @Override
     public void uploadAvatar(Long id, MultipartFile file) {
         Student student = get(id);
-        ResponseEntity<String> uploadImage = storageServiceClient.uploadImage("USER_PROFILE_IMAGE", id, file);
+        ResponseEntity<String> uploadImage = storageServiceClient.upload(STUDENT_PROFILE, id, file);
         student.setAvatar(uploadImage.getBody());
         update(student);
     }

@@ -1,6 +1,7 @@
 package kz.baltabayev.studentservice.mapper;
 
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
+import kz.baltabayev.studentservice.model.dto.StudentResponse;
 import kz.baltabayev.studentservice.model.entity.Student;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -22,8 +23,23 @@ public interface StudentMapper {
             @Mapping(target = "facultyId", source = "facultyId"),
             @Mapping(target = "avatar", source = "avatar")
     })
+    Student toStudent(StudentResponse studentResponse);
+
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "avatar", ignore = true),
+            @Mapping(target = "gpa", ignore = true),
+            @Mapping(target = "firstname", source = "firstname"),
+            @Mapping(target = "lastname", source = "lastname"),
+            @Mapping(target = "birthDate", source = "birthdate"),
+            @Mapping(target = "email", source = "email"),
+            @Mapping(target = "gender", source = "gender"),
+            @Mapping(target = "course", source = "course"),
+            @Mapping(target = "facultyId", source = "facultyId")
+    })
     Student toStudent(StudentRequest studentRequest);
 
+
     @InheritInverseConfiguration(name = "toStudent")
-    StudentRequest toDto(Student student);
+    StudentResponse toDto(Student student);
 }

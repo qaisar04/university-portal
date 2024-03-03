@@ -2,8 +2,9 @@ package kz.baltabayev.studentservice.controller;
 
 import kz.baltabayev.studentservice.mapper.StudentMapper;
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
+import kz.baltabayev.studentservice.model.dto.StudentResponse;
 import kz.baltabayev.studentservice.model.entity.Student;
-import kz.baltabayev.studentservice.model.service.StudentService;
+import kz.baltabayev.studentservice.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class StudentController {
     }
 
     @GetMapping("/info/{id}")
-    public ResponseEntity<StudentRequest> getInfoStudent(@PathVariable Long id) {
+    public ResponseEntity<StudentResponse> getInfoStudent(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getInfo(id));
     }
 
