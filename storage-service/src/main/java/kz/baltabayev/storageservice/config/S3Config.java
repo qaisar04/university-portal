@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for Amazon S3.
+ * This class provides a bean that is used to interact with Amazon S3.
+ */
 @Slf4j
 @Configuration
 public class S3Config {
@@ -20,6 +24,11 @@ public class S3Config {
     @Value("${spring.cloud.aws.credentials.secret-key}")
     private String secretKey;
 
+    /**
+     * Creates a new AmazonS3 instance using the provided AWS credentials and region.
+     *
+     * @return a new AmazonS3 instance.
+     */
     @Bean
     AmazonS3 s3() {
         BasicAWSCredentials credentials = new BasicAWSCredentials
