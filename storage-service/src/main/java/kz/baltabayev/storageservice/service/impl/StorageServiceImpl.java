@@ -2,6 +2,7 @@ package kz.baltabayev.storageservice.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
+import kz.baltabayev.storageservice.exception.FileDownloadException;
 import kz.baltabayev.storageservice.exception.InvalidFileTypeException;
 import kz.baltabayev.storageservice.model.entity.S3File;
 import kz.baltabayev.storageservice.model.types.ContentSource;
@@ -17,10 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -84,12 +85,9 @@ public class StorageServiceImpl implements StorageService {
     //todo: use it in the future for logic
     public List<String> listFiles(String bucketName) {
         ListObjectsV2Result listObjectsV2 = s3.listObjectsV2(bucketName);
-        List<String> files = new ArrayList<>();
-        for (S3ObjectSummary summary : listObjectsV2.getObjectSummaries()) {
-            files.add(summary.getKey());
-        }
-
-        return files;
+        return listObjectsV2.getObjectSummaries().stream()
+                .map(S3ObjectSummary::getKey)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -109,7 +107,7 @@ public class StorageServiceImpl implements StorageService {
             return IOUtils.toByteArray(inputStream);
         } catch (IOException e) {
             log.error("Error downloading file", e);
-            throw new RuntimeException("Error downloading file", e);
+            throw new FileDownloadException(e.getMessage());
         }
     }
 
