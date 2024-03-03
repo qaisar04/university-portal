@@ -6,18 +6,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@FeignClient(name = "storage-service", path = "/api/v1/image")
+@FeignClient(name = "storage-service", path = "/api/v1/storage")
 public interface StorageServiceClient {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<String> uploadImage(
+    ResponseEntity<String> upload(
             @RequestParam("source") String source,
             @RequestParam("target") Long target,
-            @RequestPart MultipartFile file
+            @RequestPart("file") MultipartFile file
     );
 
-    @GetMapping("/{fileName}")
-    ResponseEntity<byte[]> downloadImage(
+    @DeleteMapping("/{source}/{fileName}")
+    ResponseEntity<?> delete(
+            @PathVariable String source,
             @PathVariable String fileName
     );
 }
