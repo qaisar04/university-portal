@@ -2,15 +2,15 @@ package kz.baltabayev.storageservice.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
+import kz.baltabayev.storageservice.exception.InvalidFileTypeException;
 import kz.baltabayev.storageservice.model.entity.S3File;
 import kz.baltabayev.storageservice.model.types.ContentSource;
 import kz.baltabayev.storageservice.service.S3FileService;
 import kz.baltabayev.storageservice.service.StorageService;
-import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +32,7 @@ public class StorageServiceImpl implements StorageService {
 
     public Bucket createBucket(String bucketName) {
         return listS3Buckets().stream()
-                .filter(s -> s.getName().equals(bucketName))
+                .filter(s -> StringUtils.equals(s.getName(), bucketName))
                 .findFirst()
                 .orElseGet(() -> s3.createBucket(bucketName));
     }
@@ -51,19 +51,34 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public String uploadFile(String source, Long id, MultipartFile file) {
-        String bucketName = ContentSource.valueOf(source.toUpperCase()).getBucketName();
+        ContentSource contentSource = ContentSource.valueOf(source.toUpperCase());
+        String bucketName = contentSource.getBucketName();
         String filename = file.getOriginalFilename();
 
+        if (contentSource == ContentSource.USER_PROFILE_IMAGE && !isImageFile(file)) {
+            throw new InvalidFileTypeException("image");
+        }
+
+        createBucket(bucketName);
         var fileToUpload = convertMultiPartFileToFile(file);
         s3.putObject(bucketName, filename, fileToUpload);
 
+        if (!fileToUpload.delete()) {
+            log.error("Could not delete temporary file " + fileToUpload.getAbsolutePath());
+        }
+
         s3FileService.save(S3File.builder()
                 .fileName(filename)
-                .source(ContentSource.valueOf(source.toUpperCase()))
+                .source(contentSource)
                 .target(id)
                 .build());
 
         return s3.getUrl(bucketName, filename).toString();
+    }
+
+    private boolean isImageFile(MultipartFile file) {
+        String contentType = file.getContentType();
+        return contentType != null && contentType.startsWith("image/");
     }
 
     //todo: use it in the future for logic
@@ -87,12 +102,15 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    @SneakyThrows
     public byte[] downloadFile(String source, String fileName) {
         ContentSource contentSource = ContentSource.valueOf(source.toUpperCase());
         S3Object object = s3.getObject(contentSource.getBucketName(), fileName);
-        @Cleanup S3ObjectInputStream inputStream = object.getObjectContent();
-        return IOUtils.toByteArray(inputStream);
+        try (S3ObjectInputStream inputStream = object.getObjectContent()) {
+            return IOUtils.toByteArray(inputStream);
+        } catch (IOException e) {
+            log.error("Error downloading file", e);
+            throw new RuntimeException("Error downloading file", e);
+        }
     }
 
     public static File convertMultiPartFileToFile(MultipartFile file) {
@@ -101,6 +119,7 @@ public class StorageServiceImpl implements StorageService {
             fos.write(file.getBytes());
         } catch (IOException e) {
             log.error("Error converting multipartFile to file", e);
+            throw new RuntimeException("Error converting multipartFile to file", e);
         }
         return convertedFile;
     }
