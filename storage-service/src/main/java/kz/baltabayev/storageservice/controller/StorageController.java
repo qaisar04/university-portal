@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/image")
+@RequestMapping("/api/v1/storage")
 public class StorageController {
 
     private final StorageService storageService;
@@ -22,11 +22,12 @@ public class StorageController {
             @RequestParam("target") Long target,
             @RequestPart("file") MultipartFile file
     ) {
-        String fileName = storageService.uploadFile(source, target, file);
-        return ResponseEntity.ok(fileName);
+        return ResponseEntity.ok(
+                storageService.uploadFile(source, target, file)
+        );
     }
 
-    @GetMapping("/{bucketName}/{fileName}")
+    @GetMapping("/{source}/{fileName}")
     public ResponseEntity<?> download(
             @PathVariable String source,
             @PathVariable String fileName
@@ -37,12 +38,12 @@ public class StorageController {
                 .body(new ByteArrayResource(content));
     }
 
-    @DeleteMapping("/{bucketName}/{fileName}")
+    @DeleteMapping("/{source}/{fileName}")
     public ResponseEntity<?> delete(
-            @PathVariable String bucketName,
+            @PathVariable String source,
             @PathVariable String fileName
     ) {
-        storageService.deleteFile(bucketName, fileName);
+        storageService.deleteFile(source, fileName);
         return ResponseEntity.ok("%s removed successfully".formatted(fileName));
     }
 }
