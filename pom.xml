@@ -72,6 +72,7 @@
         <module>config-server</module>
         <module>scheduling-service</module>
         <module>storage-service</module>
+        <module>faculty-department-service</module>
     </modules>
 
     <build>
