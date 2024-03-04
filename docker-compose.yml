@@ -1,5 +1,15 @@
 version: '3'
 services:
+  keycloak-database:
+    container_name: keycloak-database
+    image: postgres:14
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: keycloak_db
+    ports:
+      - "5432:5432"
   postgres-student:
     container_name: student-service-db
     image: postgres:14
@@ -22,6 +32,28 @@ services:
       - "5434:5432"
     volumes:
       - ./volumes/grading:/data/postgres
+  postgres-scheduling:
+    container_name: scheduling-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: scheduling-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./volumes/scheduling:/data/postgres
+  postgres-faculty:
+    container_name: faculty-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: faculty-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5436:5432"
+    volumes:
+      - ./volumes/faculty:/data/postgres
   mysql-subject:
     container_name: subject-service-db
     image: mysql:8.3.0
@@ -50,27 +82,6 @@ services:
       - "3308:3306"
     volumes:
       - ./volumes/storage:/var/lib/mysql
-  postgres-scheduling:
-    container_name: scheduling-service-db
-    image: postgres:14
-    environment:
-      POSTGRES_DB: scheduling-service
-      POSTGRES_USER: qaisar
-      POSTGRES_PASSWORD: qaisar
-    ports:
-      - "5435:5432"
-    volumes:
-      - ./volumes/scheduling:/data/postgres
-  keycloak-database:
-    container_name: keycloak-database
-    image: postgres:14
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: keycloak_db
-    ports:
-      - "5432:5432"
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:legacy

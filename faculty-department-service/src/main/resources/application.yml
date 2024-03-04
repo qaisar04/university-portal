@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: faculty-department-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5436/faculty-service
+    password: qaisar
+    username: qaisar
+  main:
+    banner-mode: off
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
