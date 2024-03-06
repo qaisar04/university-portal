@@ -2,14 +2,31 @@ package kz.baltabayev.facultydepartmentservice.mapper
 
 import kz.baltabayev.facultydepartmentservice.model.dto.DepartmentDto
 import kz.baltabayev.facultydepartmentservice.model.entity.Department
-import org.mapstruct.Mapper
-import org.mapstruct.Mapping
+import kz.baltabayev.facultydepartmentservice.service.FacultyService
+import org.springframework.stereotype.Component
 
-@Mapper(componentModel = "spring")
-interface DepartmentMapper {
+@Component
+class DepartmentMapper(
+    private val facultyService: FacultyService
+) {
 
-    @Mapping(target = "id", ignore = true)
-    fun toDto(entity: Department): Department
+    fun toEntity(departmentDto: DepartmentDto): Department {
+        val faculty = facultyService.findById(departmentDto.facultyId)
 
-    fun toEntity(dto: DepartmentDto): Department
+        return Department(
+            name = departmentDto.name,
+            head = departmentDto.head,
+            faculty = faculty
+        )
+    }
+
+    fun toDto(department: Department?): DepartmentDto? {
+        return department?.let {
+            DepartmentDto(
+                it.name!!,
+                it.head!!,
+                it.faculty?.id!!
+            )
+        }
+    }
 }
