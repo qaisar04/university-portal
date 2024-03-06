@@ -6,11 +6,14 @@ spring:
     url: jdbc:postgresql://localhost:5436/faculty-service
     password: qaisar
     username: qaisar
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/changelog.xml
   main:
     banner-mode: off
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
 springdoc:
   api-docs:
     enabled: true
