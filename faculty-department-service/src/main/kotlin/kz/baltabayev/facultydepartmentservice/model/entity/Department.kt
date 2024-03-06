@@ -1,5 +1,6 @@
 package kz.baltabayev.facultydepartmentservice.model.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
@@ -11,6 +12,7 @@ data class Department(
     var name: String? = null,
     var head: String? = null,
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")
     var faculty: Faculty? = null
