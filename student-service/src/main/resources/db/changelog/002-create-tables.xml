@@ -6,20 +6,6 @@
                       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="1" author="qaisar">
-        <createTable tableName="faculties">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" primaryKeyName="faculty_pkey" nullable="false"/>
-            </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="dean" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="qaisar">
         <createTable tableName="students">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="student_pkey" nullable="false"/>
@@ -41,9 +27,6 @@
             </column>
             <column name="course" type="int">
                 <constraints nullable="false"/>
-            </column>
-            <column name="faculty_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_student_faculty" referencedTableName="faculties" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
