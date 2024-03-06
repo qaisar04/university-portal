@@ -1,6 +1,8 @@
 package kz.baltabayev.facultydepartmentservice.service.impl
 
 import kz.baltabayev.facultydepartmentservice.exception.EntityNotFoundException
+import kz.baltabayev.facultydepartmentservice.mapper.DepartmentMapper
+import kz.baltabayev.facultydepartmentservice.model.dto.DepartmentDto
 import kz.baltabayev.facultydepartmentservice.model.entity.Department
 import kz.baltabayev.facultydepartmentservice.repository.DepartmentRepository
 import kz.baltabayev.facultydepartmentservice.service.DepartmentService
@@ -8,15 +10,20 @@ import org.springframework.stereotype.Service
 
 @Service
 class DepartmentServiceImpl(
-    private var departmentRepository: DepartmentRepository
+    private var departmentRepository: DepartmentRepository,
+    private var departmentMapper: DepartmentMapper
 ) : DepartmentService {
 
-    override fun save(department: Department) {
-        departmentRepository.save(department)
+    override fun save(departmentDto: DepartmentDto) {
+        val entity = departmentMapper.toEntity(departmentDto)
+        departmentRepository.save(entity)
     }
 
-    override fun update(department: Department) {
-        departmentRepository.save(department)
+    override fun update(departmentDto: DepartmentDto, id: Long) {
+        val existingDepartment = findById(id)
+        val updatedDepartment = departmentMapper.toEntity(departmentDto)
+        updatedDepartment.id = existingDepartment.id
+        departmentRepository.save(updatedDepartment)
     }
 
     override fun delete(id: Long) {
