@@ -1,6 +1,6 @@
 package kz.baltabayev.facultydepartmentservice.controller.advice
 
-import jakarta.persistence.EntityNotFoundException
+import kz.baltabayev.facultydepartmentservice.exception.EntityNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
