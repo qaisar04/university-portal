@@ -1,12 +1,13 @@
 package kz.baltabayev.facultydepartmentservice.service
 
+import kz.baltabayev.facultydepartmentservice.model.dto.FacultyDto
 import kz.baltabayev.facultydepartmentservice.model.entity.Faculty
 
 interface FacultyService {
 
-    fun save(faculty: Faculty)
+    fun save(facultyDto: FacultyDto)
 
-    fun update(faculty: Faculty)
+    fun update(facultyDto: FacultyDto, id: Long)
 
     fun delete(id: Long)
 
