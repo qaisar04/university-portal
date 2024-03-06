@@ -11,6 +11,6 @@ data class Faculty(
     var name: String? = null,
     var dean: String? = null,
 
-    @OneToMany(fetch = FetchType.LAZY)
-    var departments: List<Department> = listOf()
+    @OneToMany(mappedBy = "faculty", cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.LAZY)
+    var departments: List<Department> = mutableListOf()
 )

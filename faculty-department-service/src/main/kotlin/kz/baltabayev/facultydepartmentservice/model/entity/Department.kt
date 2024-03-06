@@ -10,4 +10,8 @@ data class Department(
     var id: Long? = null,
     var name: String? = null,
     var head: String? = null,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
+    var faculty: Faculty? = null
 )
