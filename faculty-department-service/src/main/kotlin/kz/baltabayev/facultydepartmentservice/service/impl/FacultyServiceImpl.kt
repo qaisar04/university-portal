@@ -1,6 +1,6 @@
 package kz.baltabayev.facultydepartmentservice.service.impl
 
-import jakarta.persistence.EntityNotFoundException
+import kz.baltabayev.facultydepartmentservice.exception.EntityNotFoundException
 import kz.baltabayev.facultydepartmentservice.model.entity.Faculty
 import kz.baltabayev.facultydepartmentservice.repository.FacultyRepository
 import kz.baltabayev.facultydepartmentservice.service.FacultyService
@@ -23,6 +23,6 @@ class FacultyServiceImpl(
 
     override fun findById(id: Long): Faculty {
         return facultyRepository.findById(id)
-            .orElseThrow { EntityNotFoundException("Faculty with id %s not found ".format(id)) }
+            .orElseThrow { EntityNotFoundException(Faculty::class.java, id) }
     }
 }
