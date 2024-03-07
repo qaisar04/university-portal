@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Qaisar
  */
 @RestController
-@RequestMapping("/invite-code")
+@RequestMapping("api/v1/invite-code")
 @RequiredArgsConstructor
 public class InviteCodeController {
 
