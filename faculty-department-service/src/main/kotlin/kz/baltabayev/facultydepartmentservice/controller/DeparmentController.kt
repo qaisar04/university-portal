@@ -2,14 +2,7 @@ package kz.baltabayev.facultydepartmentservice.controller
 
 import kz.baltabayev.facultydepartmentservice.model.dto.DepartmentDto
 import kz.baltabayev.facultydepartmentservice.service.DepartmentService
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api/v1/department")
@@ -34,4 +27,8 @@ class DeparmentController(
     fun save(@RequestBody departmentDto: DepartmentDto) {
         departmentService.save(departmentDto)
     }
+
+    @GetMapping("{facultyId}/{departmentId}")
+    fun isExist(@PathVariable facultyId: Long, @PathVariable departmentId: Long) =
+        departmentService.isExists(departmentId, facultyId)
 }

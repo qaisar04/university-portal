@@ -34,4 +34,9 @@ class DepartmentServiceImpl(
         return departmentRepository.findById(id)
             .orElseThrow { EntityNotFoundException(Department::class.java, id) }
     }
+
+    override fun isExists(id: Long, facultyId: Long): Boolean {
+        val department = findById(id)
+        return department.faculty?.id?.equals(facultyId) ?: false
+    }
 }

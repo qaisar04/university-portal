@@ -12,4 +12,6 @@ interface DepartmentService {
     fun delete(id: Long)
 
     fun findById(id: Long): Department
+
+    fun isExists(id: Long, facultyId: Long): Boolean
 }
