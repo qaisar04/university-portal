@@ -1,6 +1,7 @@
 package kz.baltabayev.facultydepartmentservice.mapper
 
 import kz.baltabayev.facultydepartmentservice.model.dto.DepartmentDto
+import kz.baltabayev.facultydepartmentservice.model.dto.DepartmentResponse
 import kz.baltabayev.facultydepartmentservice.model.entity.Department
 import kz.baltabayev.facultydepartmentservice.service.FacultyService
 import org.springframework.stereotype.Component
@@ -28,5 +29,14 @@ class DepartmentMapper(
                 it.faculty?.id!!
             )
         }
+    }
+
+    fun toResponse(department: Department): DepartmentResponse {
+        return DepartmentResponse(
+            id = department.id,
+            name = department.name,
+            head = department.head,
+            facultyId = department.faculty?.id
+        )
     }
 }
