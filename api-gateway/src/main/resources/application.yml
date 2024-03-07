@@ -10,26 +10,28 @@ spring:
     name: api-gateway
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}
       client:
         provider:
           keycloak:
-            authorization-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}/protocol/openid-connect/auth
-            token-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}/protocol/openid-connect/token
-            user-info-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}/protocol/openid-connect/userinfo
-            jwk-set-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}/protocol/openid-connect/certs
+#            authorization-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}/protocol/openid-connect/auth
+#            token-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}/protocol/openid-connect/token
+#            user-info-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}/protocol/openid-connect/userinfo
+#            jwk-set-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}/protocol/openid-connect/certs
             issuer-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}
-            user-name-attribute: qaisar04
+#            user-name-attribute: qaisar04
 #            user-info-authentication-method: header
         registration:
-          reg-client:
+          discovery:
             provider: keycloak
-            client-id: university-portal-app
-#            client-secret: PADebL0ChjTOhPPZLQs1Ecz8T3rREh8j
-            authorization-grant-type: authorization_code
-            client-authentication-method: client_secret_basic
-            scope: openid
+            client-id: api-gateway
+            client-secret: PADebL0ChjTOhPPZLQs1Ecz8T3rREh8j
+            authorization-grant-type: client_credentials
+#            client-authentication-method: client_secret_basic
+            scope: discovery
   main:
-    web-application-type: reactive
     banner-mode: off
   cloud:
     gateway:
@@ -66,6 +68,7 @@ logging:
     org.springframework.security: DEBUG
 server:
   port: 8080
+  forward-headers-strategy: framework
 cors:
   allowCredentials: false
   allowedOrigins: http://localhost:4200,http://127.0.0.1:5500
