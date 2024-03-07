@@ -11,7 +11,7 @@ class DeparmentController(
 ) {
 
     @GetMapping("{id}")
-    fun get(@PathVariable id: Long) = departmentService.findById(id)
+    fun get(@PathVariable id: Long) = departmentService.get(id)
 
     @PutMapping("{id}")
     fun update(@RequestBody departmentDto: DepartmentDto, @PathVariable id: Long) {

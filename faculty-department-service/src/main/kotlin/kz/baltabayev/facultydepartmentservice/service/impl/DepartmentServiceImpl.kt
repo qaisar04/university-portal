@@ -3,6 +3,7 @@ package kz.baltabayev.facultydepartmentservice.service.impl
 import kz.baltabayev.facultydepartmentservice.exception.EntityNotFoundException
 import kz.baltabayev.facultydepartmentservice.mapper.DepartmentMapper
 import kz.baltabayev.facultydepartmentservice.model.dto.DepartmentDto
+import kz.baltabayev.facultydepartmentservice.model.dto.DepartmentResponse
 import kz.baltabayev.facultydepartmentservice.model.entity.Department
 import kz.baltabayev.facultydepartmentservice.repository.DepartmentRepository
 import kz.baltabayev.facultydepartmentservice.service.DepartmentService
@@ -30,7 +31,11 @@ class DepartmentServiceImpl(
         departmentRepository.deleteById(id);
     }
 
-    override fun findById(id: Long): Department {
+    override fun get(id: Long): DepartmentResponse {
+        return departmentMapper.toResponse(findById(id))
+    }
+
+    fun findById(id: Long): Department {
         return departmentRepository.findById(id)
             .orElseThrow { EntityNotFoundException(Department::class.java, id) }
     }

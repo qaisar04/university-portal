@@ -1,7 +1,7 @@
 package kz.baltabayev.facultydepartmentservice.service
 
 import kz.baltabayev.facultydepartmentservice.model.dto.DepartmentDto
-import kz.baltabayev.facultydepartmentservice.model.entity.Department
+import kz.baltabayev.facultydepartmentservice.model.dto.DepartmentResponse
 
 interface DepartmentService {
 
@@ -11,7 +11,7 @@ interface DepartmentService {
 
     fun delete(id: Long)
 
-    fun findById(id: Long): Department
+    fun get(id: Long): DepartmentResponse
 
     fun isExists(id: Long, facultyId: Long): Boolean
 }
