@@ -1,21 +1,24 @@
 package kz.baltabayev.studentservice.service.impl;
 
+import kz.baltabayev.studentservice.client.FacultyServiceClient;
 import kz.baltabayev.studentservice.client.GradingServiceClient;
 import kz.baltabayev.studentservice.client.StorageServiceClient;
+import kz.baltabayev.studentservice.exception.InvalidArgumentException;
 import kz.baltabayev.studentservice.exception.StudentNotFoundException;
 import kz.baltabayev.studentservice.mapper.StudentMapper;
-import kz.baltabayev.studentservice.model.dto.StudentRequest;
 import kz.baltabayev.studentservice.model.dto.StudentResponse;
 import kz.baltabayev.studentservice.model.entity.Student;
-import kz.baltabayev.studentservice.service.StudentService;
 import kz.baltabayev.studentservice.repository.StudentRepository;
+import kz.baltabayev.studentservice.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
@@ -23,6 +26,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final GradingServiceClient gradingServiceClient;
     private final StorageServiceClient storageServiceClient;
+    private final FacultyServiceClient facultyServiceClient;
     private final StudentMapper studentMapper;
     private final static String STUDENT_PROFILE = "USER_PROFILE_IMAGE";
 
@@ -56,7 +60,19 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student save(Student student) {
-        return studentRepository.save(student);
+        if (student == null || student.getFacultyId() == null || student.getDepartmentId() == null) {
+            throw new InvalidArgumentException("Student, facultyId or departmentId cannot be null");
+        }
+
+        boolean isExist = facultyServiceClient.isExist(student.getFacultyId(), student.getDepartmentId());
+
+        if (isExist) {
+            log.info("Saving student with id: {}", student.getId());
+            return studentRepository.save(student);
+        } else {
+            log.error("Faculty with id: {} or department with id: {} does not exist", student.getFacultyId(), student.getDepartmentId());
+            throw new InvalidArgumentException("Faculty or department does not exist");
+        }
     }
 
     @Override

@@ -40,7 +40,6 @@ public class StudentController {
 
     @PostMapping("/create")
     public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
-        //todo facultyId
         return ResponseEntity.ok(studentService.save(studentMapper.toStudent(studentRequest)));
     }
 

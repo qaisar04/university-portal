@@ -29,5 +29,6 @@ public class Student {
     private Integer course;
     private Double gpa;
     private Long facultyId;
+    private Long departmentId;
     private String avatar;
 }
