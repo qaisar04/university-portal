@@ -6,6 +6,7 @@ import kz.baltabayev.studentservice.client.StorageServiceClient;
 import kz.baltabayev.studentservice.exception.InvalidArgumentException;
 import kz.baltabayev.studentservice.exception.StudentNotFoundException;
 import kz.baltabayev.studentservice.mapper.StudentMapper;
+import kz.baltabayev.studentservice.model.dto.StudentRequest;
 import kz.baltabayev.studentservice.model.dto.StudentResponse;
 import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.repository.StudentRepository;
@@ -28,12 +29,12 @@ public class StudentServiceImpl implements StudentService {
     private final StorageServiceClient storageServiceClient;
     private final FacultyServiceClient facultyServiceClient;
     private final StudentMapper studentMapper;
-    private final static String STUDENT_PROFILE = "USER_PROFILE_IMAGE";
+    private final static String STUDENT_PROFILE = "USER_PROFILE_IMAGE"; // todo value -> yml
 
     @Override
     public StudentResponse getInfo(Long id) {
         Student student = get(id);
-        StudentResponse studentResponse = studentMapper.toDto(student);
+        StudentResponse studentResponse = studentMapper.toResponse(student);
         studentResponse.setGpa(gradingServiceClient.getAverageScore(id).getBody());
         return studentResponse;
     }
@@ -43,7 +44,7 @@ public class StudentServiceImpl implements StudentService {
         Student student = get(id);
         ResponseEntity<String> uploadImage = storageServiceClient.upload(STUDENT_PROFILE, id, file);
         student.setAvatar(uploadImage.getBody());
-        update(student);
+        update(studentMapper.toRequest(student), id);
     }
 
     @Override
@@ -59,7 +60,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student save(Student student) {
+    public Student save(StudentRequest studentRequest) {
+        Student student = studentMapper.toStudent(studentRequest);
         if (student == null || student.getFacultyId() == null || student.getDepartmentId() == null) {
             throw new InvalidArgumentException("Student, facultyId or departmentId cannot be null");
         }
@@ -76,8 +78,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student update(Student student) {
-        return studentRepository.save(student);
+    public Student update(StudentRequest studentRequest, Long id) {
+        Student existingStudent = get(id);
+        Student updatedStudent = studentMapper.toStudent(studentRequest);
+        updatedStudent.setId(existingStudent.getId());
+        return studentRepository.save(updatedStudent);
     }
 
     @Override

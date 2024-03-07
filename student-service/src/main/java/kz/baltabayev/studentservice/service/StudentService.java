@@ -1,5 +1,6 @@
 package kz.baltabayev.studentservice.service;
 
+import kz.baltabayev.studentservice.model.dto.StudentRequest;
 import kz.baltabayev.studentservice.model.dto.StudentResponse;
 import kz.baltabayev.studentservice.model.entity.Student;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,9 +13,9 @@ public interface StudentService {
 
     Student get(Long id);
 
-    Student save(Student student);
+    Student save(StudentRequest studentRequest);
 
-    Student update(Student student);
+    Student update(StudentRequest studentRequest, Long id);
 
     List<Student> getAll();
 

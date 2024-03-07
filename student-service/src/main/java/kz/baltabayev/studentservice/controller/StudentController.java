@@ -1,5 +1,6 @@
 package kz.baltabayev.studentservice.controller;
 
+import jakarta.validation.Valid;
 import kz.baltabayev.studentservice.mapper.StudentMapper;
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
 import kz.baltabayev.studentservice.model.dto.StudentResponse;
@@ -18,7 +19,6 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
-    private final StudentMapper studentMapper;
 
     @GetMapping
     public ResponseEntity<List<Student>> getAllStudents() {
@@ -39,13 +39,13 @@ public class StudentController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Student> createStudent(@RequestBody StudentRequest studentRequest) {
-        return ResponseEntity.ok(studentService.save(studentMapper.toStudent(studentRequest)));
+    public ResponseEntity<Student> createStudent(@RequestBody @Valid StudentRequest studentRequest) {
+        return ResponseEntity.ok(studentService.save(studentRequest));
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<Student> updateStudent(@RequestBody StudentRequest studentRequest) {
-        return ResponseEntity.ok(studentService.update(studentMapper.toStudent(studentRequest)));
+    @PostMapping("/update/{id}")
+    public ResponseEntity<Student> updateStudent(@RequestBody StudentRequest studentRequest, @PathVariable Long id) {
+        return ResponseEntity.ok(studentService.update(studentRequest, id));
     }
 
     @DeleteMapping("/delete/{id}")
