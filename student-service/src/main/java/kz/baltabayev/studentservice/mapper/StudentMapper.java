@@ -13,15 +13,7 @@ public interface StudentMapper {
 
     @Mappings({
             @Mapping(target = "id", ignore = true),
-            @Mapping(target = "firstname", source = "firstname"),
-            @Mapping(target = "lastname", source = "lastname"),
             @Mapping(target = "birthDate", source = "birthdate"),
-            @Mapping(target = "email", source = "email"),
-            @Mapping(target = "gender", source = "gender"),
-            @Mapping(target = "course", source = "course"),
-            @Mapping(target = "gpa", source = "gpa"),
-            @Mapping(target = "facultyId", source = "facultyId"),
-            @Mapping(target = "avatar", source = "avatar")
     })
     Student toStudent(StudentResponse studentResponse);
 
@@ -29,17 +21,14 @@ public interface StudentMapper {
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "avatar", ignore = true),
             @Mapping(target = "gpa", ignore = true),
-            @Mapping(target = "firstname", source = "firstname"),
-            @Mapping(target = "lastname", source = "lastname"),
             @Mapping(target = "birthDate", source = "birthdate"),
-            @Mapping(target = "email", source = "email"),
-            @Mapping(target = "gender", source = "gender"),
-            @Mapping(target = "course", source = "course"),
-            @Mapping(target = "facultyId", source = "facultyId")
     })
     Student toStudent(StudentRequest studentRequest);
 
 
     @InheritInverseConfiguration(name = "toStudent")
-    StudentResponse toDto(Student student);
+    StudentResponse toResponse(Student student);
+
+    @Mapping(target = "birthdate", source = "birthDate")
+    StudentRequest toRequest(Student student);
 }

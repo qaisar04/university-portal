@@ -17,4 +17,5 @@ public class StudentResponse {
     private String avatar;
     private Double gpa;
     private Long facultyId;
+    private Long departmentId;
 }
