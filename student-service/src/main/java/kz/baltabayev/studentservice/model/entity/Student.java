@@ -32,3 +32,5 @@ public class Student {
     private Long departmentId;
     private String avatar;
 }
+// todo: генерация id по определенной логике
+// example: 210107091 (21 - год поступления, 01 - факультет, 07 - специальность, 091 - код студента)
