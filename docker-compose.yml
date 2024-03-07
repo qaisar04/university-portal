@@ -82,6 +82,20 @@ services:
       - "3308:3306"
     volumes:
       - ./volumes/storage:/var/lib/mysql
+  grafana:
+    image: grafana/grafana:10.2.4
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    user: '1000'
+  victoria-metrics:
+    image: victoriametrics/victoria-metrics:v1.93.12
+    command: -promscrape.config=/promscrape.yaml
+    volumes:
+      - ./config/victoria-metrics/promscrape.yaml:/promscrape.yaml
+    ports:
+      - '8428:8428'
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:legacy

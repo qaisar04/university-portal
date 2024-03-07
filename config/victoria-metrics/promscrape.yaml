@@ -1,0 +1,5 @@
+scrape_configs:
+  - job_name: university_portal_student_service
+    static_configs:
+      - targets: ["localhost:8081"]
+    metrics_path: "/actuator/prometheus"
