@@ -115,7 +115,7 @@ services:
       - keycloak-database
     command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/realm-settings.json" ]
     volumes:
-      - ./docker/keycloak/:/opt/keycloak/data/import/
+      - ./config/keycloak/:/opt/keycloak/data/import/
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     networks:
