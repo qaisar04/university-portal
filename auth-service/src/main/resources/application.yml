@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: auth-department-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5437/auth-service
+    password: qaisar
+    username: qaisar
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/changelog.xml
+  main:
+    banner-mode: off
+  jpa:
+    hibernate:
+#      ddl-auto: create
+keycloak:
+  issuer-uri: http://localhost:10190/auth/realms/university-portal-realm
+  keys: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsNDwiakmeX2VG1FBEdDwfqRJ5mXNpEFRjkMc5TRGYigezzbIDJSeOUrOBZ8gGylvXX81HO3hzz2Hw7IwSDys4K16oQfMtWbREHBXA34x+DIyDz/4Ev2oflHbEaKIGnbfZoilk0qU4W/mbOoAk4P8Svyslbq8XEHF7KjyI+7od1JTf/FQYcPgA1vaDlitbeznIF5egKMMDmTVrk98eaI3hvcJ/WAJVuav4tJzTT8WaCKbpK7JmqH1MIff/gjvDwFmzE95E7Bb4cWzE8RHH9WuL1vAqlSMzwAz1a4VTyBhgkctW3FImch+8n7nSeidZAwCQgAu6QYazPX3NxPmwGj09QIDAQAB
+server:
+  port: 8091
