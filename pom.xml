@@ -73,6 +73,7 @@
         <module>scheduling-service</module>
         <module>storage-service</module>
         <module>faculty-department-service</module>
+        <module>auth-service</module>
     </modules>
 
     <build>

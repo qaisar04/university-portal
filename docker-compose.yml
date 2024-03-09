@@ -54,6 +54,17 @@ services:
       - "5436:5432"
     volumes:
       - ./volumes/faculty:/data/postgres
+  postgres-auth:
+    container_name: auth-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: auth-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5437:5432"
+    volumes:
+      - ./volumes/auth:/data/postgres
   mysql-subject:
     container_name: subject-service-db
     image: mysql:8.3.0
