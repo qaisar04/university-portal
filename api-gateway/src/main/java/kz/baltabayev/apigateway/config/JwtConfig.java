@@ -13,7 +13,6 @@ public class JwtConfig {
     @Value("${spring.security.oauth2.client.provider.keycloak.issuer-uri}")
     public String issuerUri;
 
-
     @Bean
     public ReactiveJwtDecoder reactiveJwtDecoder() {
         return NimbusReactiveJwtDecoder.withJwkSetUri(issuerUri + "/.well-known/jwks.json")
