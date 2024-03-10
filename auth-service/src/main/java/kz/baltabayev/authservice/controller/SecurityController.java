@@ -17,7 +17,7 @@ public class SecurityController {
     private final TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<?> validToken(@RequestBody TokenRequest token) {
+    public ResponseEntity<Boolean> validateToken(@RequestBody TokenRequest token) {
         return ResponseEntity.ok(tokenService.valid(token));
     }
 }
