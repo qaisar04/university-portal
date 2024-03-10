@@ -2,13 +2,14 @@ package kz.baltabayev.authservice.security;
 
 import jakarta.annotation.PostConstruct;
 import kz.baltabayev.authservice.model.dto.TokenRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.JwtException;
 
+@Slf4j
 @Configuration
 public class TokenValidator {
 
@@ -23,9 +24,10 @@ public class TokenValidator {
 
     public boolean validate(TokenRequest token) {
         try {
-            Jwt jwt = decoder.decode(token.token());
+            decoder.decode(token.token());
             return true;
         } catch (JwtException e) {
+            log.error("Token validation failed: {}", e.getMessage());
             return false;
         }
     }
