@@ -33,17 +33,15 @@ spring:
             scope: discovery
   main:
     banner-mode: off
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
   cloud:
     gateway:
       routes:
-        - id: indentity-service
-          uri: lb://indentity-service
-          predicates:
-            - Path=/auth/**
         - id: student-service
           uri: lb://student-service
           predicates:
-            - Path=/students/**
+            - Path=/api/v1/students/**
         - id: grading-service
           uri: lb://grading-service
           predicates:
