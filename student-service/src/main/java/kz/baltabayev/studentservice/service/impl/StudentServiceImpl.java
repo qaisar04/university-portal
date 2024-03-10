@@ -13,6 +13,7 @@ import kz.baltabayev.studentservice.repository.StudentRepository;
 import kz.baltabayev.studentservice.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +30,9 @@ public class StudentServiceImpl implements StudentService {
     private final StorageServiceClient storageServiceClient;
     private final FacultyServiceClient facultyServiceClient;
     private final StudentMapper studentMapper;
-    private final static String STUDENT_PROFILE = "USER_PROFILE_IMAGE"; // todo value -> yml
+
+    @Value("${aws.s3.bucket.profile-bucket}")
+    private String STUDENT_PROFILE;
 
     @Override
     public StudentResponse getInfo(Long id) {
