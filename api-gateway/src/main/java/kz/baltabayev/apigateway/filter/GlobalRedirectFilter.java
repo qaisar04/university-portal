@@ -22,7 +22,7 @@ public class GlobalRedirectFilter implements GlobalFilter, Ordered {
         WebClient webClient = WebClient.create();
 
         Mono<AuthorizationResponse> responseMono = webClient.get()
-                .uri("http://security-service")
+                .uri("http://localhost:8091")
                 .retrieve()
                 .bodyToMono(AuthorizationResponse.class);
 
