@@ -1,6 +1,61 @@
+#spring:
+#  config:
+#    import: optional:configserver:http://localhost:1991
+#  cloud:
+#    config:
+#      name: student-service
+
 spring:
-  config:
-    import: optional:configserver:http://localhost:1991
-  cloud:
-    config:
-      name: student-service
+  security:
+    oauth2:
+     resourceserver:
+       jwt:
+         issuer-uri: http://localhost:8082/realms/university-portal-realm
+  kafka:
+    queues:
+      student: student-saving-queue
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      properties:
+        spring:
+        json:
+          trusted:
+          packages: "*"
+      bootstrap-servers: http://localhost:9092
+  application:
+    name: student-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/student-service
+    driver-class-name: org.postgresql.Driver
+    username: qaisar
+    password: qaisar
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/changelog.xml
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - prometheus
+aws:
+  s3:
+    bucket:
+      profile-bucket: USER_PROFILE_IMAGE
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+springdoc:
+  api-docs:
+    enabled: true
+    path: /swagger-ui.html
+server:
+  port: 8081
