@@ -1,4 +1,20 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}
+        registration:
+          discovery:
+            provider: keycloak
+            client-id: university-portal-app
+            client-secret: bKV7GaZ9qWXHi84Z5H2BKjfzn1GP8HsH
+#            authorization-grant-type: client_credentials
+            scope: openid
   application:
     name: security-service
   kafka:
@@ -27,9 +43,9 @@ spring:
     banner-mode: off
   jpa:
     hibernate:
-#      ddl-auto: create
+      ddl-auto: create
 keycloak:
-  issuer-uri: http://localhost:10190/auth/realms/university-portal-realm
-  keys: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6WUeKb2QCMa9DGrvW9GUQLqLAgXy9W5N80nXm4bz8bXcplZy70/4IvC6D1PyBVmfrbAda4mFN7ZwC0qf4afN5GFKqJtN8R6qOg4J1CvUNDThqcJegbjXHzh1pWkAPDyxIgH0sytOA2VFd8Ywmq+xkq8MUGs4+NZiyEOwQQ+yOdJMUk8eMMxm5perFVOZMuflx26g14UZuPHf3Qtiy33wLP6rtT0hCTyDT6nz+lAjKFwAs8DdnjHkRKwt2MXJYMqrt5n3d2saS5+V89Yu9EGZjUjSF5HVUs2FSs6MCaKqFW+Dmuaab2SxMsz8mfH3Zbbras2a7ud5yOwShIM+pgqxmwIDAQAB
+  issuer-uri: ${keycloak-client.server-url}/realms/${keycloak-client.realm}
+  keys: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiRMDNJDRiACia3RvyyRj8fiQfE5MIhFaqxLYGzZ8T5LmPgAXVd/BHlTBmK0SthPa82EttfcBQgWumqbzUUIa7YAl5AcZ5yfkfkboLl8zQEfUapQdxS/szwxc0hhlZ1Ig6BhBQkAwpeFR0IqMeZvfFRQRcoFQFd6Sj2eP1AaPNALfVAxdz9f7XO94Xt+rvuKqWVhZH6zPjeyObOMluqUmHha1unBIRf5/FW/ufuYDSbXLg5uY3ao8eX8SZ3bI4NyNuL11zAFjHiVaWcejdsfYhSDqWHgsFTjyj4sJERSr/pAZ92J81aiAsN4MtpkChEtK6fFk1MERhKbwfv0eMUpoyQIDAQAB
 server:
   port: 8091
