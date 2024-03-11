@@ -5,19 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Schedule {
+public class LessonSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long groupId;
-    private Long facultyId;
-
-    @OneToMany(mappedBy = "schedule")
-    private List<LessonSchedule> lessons;
+    @ManyToOne
+    private Lesson lesson;
+    @ManyToOne
+    private Schedule schedule;
+    private LocalDateTime lessonTime;
+    private LocalDateTime lessonEndTime;
 }
