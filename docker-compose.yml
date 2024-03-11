@@ -1,15 +1,15 @@
 version: '3'
 services:
-  keycloak-database:
-    container_name: keycloak-database
-    image: postgres:14
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: keycloak_db
-    ports:
-      - "5432:5432"
+#  keycloak-database:
+#    container_name: keycloak-database
+#    image: postgres:14
+#    environment:
+#      POSTGRES_HOST_AUTH_METHOD: trust
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_DB: keycloak_db
+#    ports:
+#      - "5432:5432"
   postgres-student:
     container_name: student-service-db
     image: postgres:14
@@ -108,25 +108,35 @@ services:
     ports:
       - '8428:8428'
   keycloak:
-    container_name: keycloak
-    image: quay.io/keycloak/keycloak:legacy
+    image: quay.io/keycloak/keycloak:23.0.7
     environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: keycloak-database
-      DB_DATABASE: keycloak_db
-      DB_USER: admin
-      DB_SCHEMA: public
-      DB_PASSWORD: admin
-      KEYCLOAK_HOST_NAME: backend-keycloak-auth
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-    ports:
-      - "10190:8080"
-    depends_on:
-      - keycloak-database
-    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/realm-settings.json" ]
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
     volumes:
-      - ./config/keycloak/:/opt/keycloak/data/import/
+      - './config/keycloak/import:/opt/keycloak/data/import'
+    ports:
+      - "8082:8080"
+    command: start-dev --import-realm
+#  keycloak:
+#    container_name: keycloak
+#    image: quay.io/keycloak/keycloak:legacy
+#    environment:
+#      DB_VENDOR: POSTGRES
+#      DB_ADDR: keycloak-database
+#      DB_DATABASE: keycloak_db
+#      DB_USER: admin
+#      DB_SCHEMA: public
+#      DB_PASSWORD: admin
+#      KEYCLOAK_HOST_NAME: backend-keycloak-auth
+#      KEYCLOAK_USER: admin
+#      KEYCLOAK_PASSWORD: admin
+#    ports:
+#      - "10190:8080"
+#    depends_on:
+#      - keycloak-database
+#    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/realm-settings.json" ]
+#    volumes:
+#      - ./config/keycloak/:/opt/keycloak/data/import/
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     networks:
