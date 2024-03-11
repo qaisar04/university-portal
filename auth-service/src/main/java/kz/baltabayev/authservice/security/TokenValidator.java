@@ -22,9 +22,9 @@ public class TokenValidator {
         this.decoder = JwtDecoders.fromIssuerLocation(issuerUri);
     }
 
-    public boolean validate(TokenRequest token) {
+    public boolean validate(String token) {
         try {
-            decoder.decode(token.token());
+            decoder.decode(token);
             return true;
         } catch (JwtException e) {
             log.error("Token validation failed: {}", e.getMessage());
