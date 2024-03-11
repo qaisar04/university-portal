@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @Controller
 @RestController
-@RequestMapping("/api/v1/grade")
+@RequestMapping("/api/v1/grades")
 @RequiredArgsConstructor
 public class GradingController {
 
