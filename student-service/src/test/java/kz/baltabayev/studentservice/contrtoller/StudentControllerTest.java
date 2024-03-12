@@ -1,6 +1,5 @@
 package kz.baltabayev.studentservice.contrtoller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import kz.baltabayev.studentservice.controller.StudentController;
@@ -10,14 +9,13 @@ import kz.baltabayev.studentservice.model.enums.Gender;
 import kz.baltabayev.studentservice.service.StudentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,27 +25,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(StudentController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class StudentControllerTest {
 
-    @Mock
+    @MockBean
     private StudentService studentService;
-
-    @InjectMocks
-    private StudentController studentController;
-
+    @Autowired
     private MockMvc mockMvc;
+    @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(studentController).build();
-        objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
     }
 
     @Test
-    void getAllStudentsTest() throws Exception {
+    void getAllStudents() throws Exception {
         Student s1 = Student.builder().firstname("qaisar").build();
         Student s2 = Student.builder().build();
         Student s3 = Student.builder().build();
@@ -61,16 +56,23 @@ class StudentControllerTest {
     }
 
     @Test
-    void createStudentTest() throws Exception {
+    void createStudent() throws Exception {
         StudentRequest request = new StudentRequest(
                 "qaisar", "baltabayev", LocalDate.of(2011, 11, 11), "test@test.io", Gender.MALE, 2, 1L, 1L
         );
+
         String requestJson = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/api/v1/students/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
                 .andExpect(status().isOk());
-
-//        verify(studentService, times(1)).save(request);
     }
+
+//    @Test
+//    void deleteStudent() throws Exception {
+//        Student s1 = Student.builder().id(1L).firstname("qaisar").build();
+//        when(studentService.get(1L)).thenReturn(s1);
+//        mockMvc.perform(delete("/api/v1/students/delete/{id}", 1L))
+//                .andExpect(status().isOk());
+//    }
 }
