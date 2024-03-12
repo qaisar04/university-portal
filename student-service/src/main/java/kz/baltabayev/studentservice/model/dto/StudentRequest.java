@@ -2,6 +2,7 @@ package kz.baltabayev.studentservice.model.dto;
 
 import jakarta.validation.constraints.*;
 import kz.baltabayev.studentservice.model.enums.Gender;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class StudentRequest {
     @NotBlank(message = "firstname cannot be blank")
     private String firstname;
