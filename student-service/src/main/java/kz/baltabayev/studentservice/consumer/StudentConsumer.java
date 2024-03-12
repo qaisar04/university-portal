@@ -1,4 +1,4 @@
-package kz.baltabayev.studentservice.comsumer;
+package kz.baltabayev.studentservice.consumer;
 
 import kz.baltabayev.studentservice.service.impl.StudentServiceImpl;
 import lombok.RequiredArgsConstructor;
