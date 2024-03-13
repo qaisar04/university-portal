@@ -3,13 +3,15 @@ package kz.baltabayev.studentservice.model.dto;
 import jakarta.validation.constraints.*;
 import kz.baltabayev.studentservice.model.enums.Gender;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class StudentRequest {
     @NotBlank(message = "firstname cannot be blank")

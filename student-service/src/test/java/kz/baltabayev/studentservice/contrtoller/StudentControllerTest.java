@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -63,16 +63,30 @@ class StudentControllerTest {
 
         String requestJson = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/api/v1/students/create")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    void deleteStudent() throws Exception {
-//        Student s1 = Student.builder().id(1L).firstname("qaisar").build();
-//        when(studentService.get(1L)).thenReturn(s1);
-//        mockMvc.perform(delete("/api/v1/students/delete/{id}", 1L))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    void updateStudent() throws Exception {
+        StudentRequest request = StudentRequest.builder()
+                .firstname("qaisar")
+                .email("test@gmail.com")
+                .build();
+
+        String requestJson = objectMapper.writeValueAsString(request);
+        mockMvc.perform(put("/api/v1/students/update/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteStudent() throws Exception {
+        Student s1 = Student.builder().id(1L).firstname("qaisar").build();
+        when(studentService.get(1L)).thenReturn(s1);
+        mockMvc.perform(delete("/api/v1/students/delete/{id}", 1L))
+                .andExpect(status().isOk());
+    }
 }
