@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import kz.baltabayev.studentservice.controller.StudentController;
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
+import kz.baltabayev.studentservice.model.dto.StudentResponse;
 import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.model.enums.Gender;
 import kz.baltabayev.studentservice.service.StudentService;
@@ -42,6 +43,21 @@ class StudentControllerTest {
     }
 
     @Test
+    void getInfo() throws Exception {
+        Long id = 1L;
+        StudentResponse response = new StudentResponse();
+        response.setGpa(3.55);
+        response.setEmail("test@test.com");
+
+        when(studentService.getInfo(id)).thenReturn(response);
+        mockMvc.perform(get("/api/v1/students/info/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(response.getEmail()))
+                .andExpect(jsonPath("$.gpa").value(response.getGpa()));
+        verify(studentService, times(1)).getInfo(id);
+    }
+
+    @Test
     void getAllStudents() throws Exception {
         Student s1 = Student.builder().firstname("qaisar").build();
         Student s2 = Student.builder().build();
@@ -67,6 +83,23 @@ class StudentControllerTest {
                         .content(requestJson))
                 .andExpect(status().isOk());
     }
+
+//    @Test
+//    void uploadAvatar() throws Exception {
+//        MockMultipartFile file = new MockMultipartFile(
+//                "avatar",
+//                "test.png",
+//                "image/png",
+//                "content".getBytes()
+//        );
+//
+//        when(studentService.get(1L)).thenReturn(new Student());
+//        mockMvc.perform(MockMvcRequestBuilders
+//                        .multipart("/api/v1/students/{id}/avatar", 1L)
+//                        .file("file", file.getBytes())
+//                        .contentType(MediaType.MULTIPART_FORM_DATA))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     void updateStudent() throws Exception {
