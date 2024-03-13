@@ -14,6 +14,16 @@ public class FileAttachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String fileName;
+    private String source;
+    private String url;
     @ManyToOne
     private News news;
+
+    public FileAttachment(String fileName, String source, String url, News news) {
+        this.fileName = fileName;
+        this.source = source;
+        this.url = url;
+        this.news = news;
+    }
 }
