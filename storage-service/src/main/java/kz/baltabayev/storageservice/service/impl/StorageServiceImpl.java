@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import kz.baltabayev.storageservice.exception.FileDownloadException;
 import kz.baltabayev.storageservice.exception.InvalidFileTypeException;
+import kz.baltabayev.storageservice.model.dto.FileUploadResponse;
 import kz.baltabayev.storageservice.model.entity.S3File;
 import kz.baltabayev.storageservice.model.types.ContentSource;
 import kz.baltabayev.storageservice.service.S3FileService;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -51,10 +53,10 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public String uploadFile(String source, Long id, MultipartFile file) {
+    public FileUploadResponse uploadFile(String source, Long id, MultipartFile file) {
         ContentSource contentSource = ContentSource.valueOf(source.toUpperCase());
         String bucketName = contentSource.getBucketName();
-        String filename = file.getOriginalFilename();
+        String filename = UUID.randomUUID().toString().replace("-", "");
 
         if (contentSource == ContentSource.USER_PROFILE_IMAGE && !isImageFile(file)) {
             throw new InvalidFileTypeException("image");
@@ -74,7 +76,7 @@ public class StorageServiceImpl implements StorageService {
                 .target(id)
                 .build());
 
-        return s3.getUrl(bucketName, filename).toString();
+        return new FileUploadResponse(filename, source, s3.getUrl(bucketName, filename).toString());
     }
 
     private boolean isImageFile(MultipartFile file) {

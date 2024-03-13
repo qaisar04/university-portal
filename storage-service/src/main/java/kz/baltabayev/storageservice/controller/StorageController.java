@@ -1,5 +1,6 @@
 package kz.baltabayev.storageservice.controller;
 
+import kz.baltabayev.storageservice.model.dto.FileUploadResponse;
 import kz.baltabayev.storageservice.service.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,8 +17,9 @@ public class StorageController {
 
     private final StorageService storageService;
 
+    // source - bucket | target - id | file
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> upload(
+    public ResponseEntity<FileUploadResponse> upload(
             @RequestParam("source") String source,
             @RequestParam("target") Long target,
             @RequestPart("file") MultipartFile file
