@@ -27,7 +27,7 @@ jobs:
           mvn -B package --file student-service/pom.xml
 
       - name: build docker image
-        uses: actions/build-push-action@v2
+        uses: docker/build-push-action@v2
         with:
           context: .
           dockerfile: Dockerfile
