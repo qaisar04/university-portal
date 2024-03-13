@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/storage")
@@ -19,10 +21,10 @@ public class StorageController {
 
     // source - bucket | target - id | file
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<FileUploadResponse> upload(
+    public ResponseEntity<FileUploadResponse[]> upload(
             @RequestParam("source") String source,
             @RequestParam("target") Long target,
-            @RequestPart("file") MultipartFile file
+            @RequestPart("file") List<MultipartFile> file
     ) {
         return ResponseEntity.ok(
                 storageService.uploadFile(source, target, file)

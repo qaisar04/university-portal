@@ -19,10 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -53,30 +50,41 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public FileUploadResponse uploadFile(String source, Long id, MultipartFile file) {
+    public FileUploadResponse[] uploadFile(String source, Long id, List<MultipartFile> files) {
         ContentSource contentSource = ContentSource.valueOf(source.toUpperCase());
         String bucketName = contentSource.getBucketName();
-        String filename = UUID.randomUUID().toString().replace("-", "");
 
-        if (contentSource == ContentSource.USER_PROFILE_IMAGE && !isImageFile(file)) {
-            throw new InvalidFileTypeException("image");
+        if (contentSource == ContentSource.USER_PROFILE_IMAGE) {
+            for (MultipartFile file : files) {
+                if (!isImageFile(file)) {
+                    throw new InvalidFileTypeException("image");
+                }
+            }
         }
 
         createBucket(bucketName);
-        var fileToUpload = convertMultiPartFileToFile(file);
-        s3.putObject(bucketName, filename, fileToUpload);
 
-        if (!fileToUpload.delete()) {
-            log.error("Could not delete temporary file " + fileToUpload.getAbsolutePath());
+        List<FileUploadResponse> responses = new ArrayList<>();
+        for (MultipartFile multipartFile : files) {
+            File fileToUpload = convertMultiPartFileToFile(multipartFile);
+            String filename = UUID.randomUUID().toString().replace("-", "");
+
+            s3.putObject(bucketName, filename, fileToUpload);
+
+            if (!fileToUpload.delete()) {
+                log.error("Could not delete temporary file " + fileToUpload.getAbsolutePath());
+            }
+
+            s3FileService.save(S3File.builder()
+                    .fileName(filename)
+                    .source(contentSource)
+                    .target(id)
+                    .build());
+
+            responses.add(new FileUploadResponse(filename, source, s3.getUrl(bucketName, filename).toString()));
         }
 
-        s3FileService.save(S3File.builder()
-                .fileName(filename)
-                .source(contentSource)
-                .target(id)
-                .build());
-
-        return new FileUploadResponse(filename, source, s3.getUrl(bucketName, filename).toString());
+        return responses.toArray(new FileUploadResponse[0]);
     }
 
     private boolean isImageFile(MultipartFile file) {
