@@ -21,7 +21,7 @@ spring:
     gateway:
       routes:
         student-server-url: lb://student-service
-        grading-server-url: lb://grading-service
+        grading-server-url: lb://faculty-service
         discovery-server-url: http://localhost:8761
 logging:
   level:
