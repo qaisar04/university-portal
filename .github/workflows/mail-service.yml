@@ -1,11 +1,11 @@
-name: CI/CD Api Gateway
+name: CI/CD Mail Service
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'api-gateway/**'
+      - 'mail-service/**'
 jobs:
   api-gateway:
     env:
@@ -13,7 +13,7 @@ jobs:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repository api gateway
+      - name: checkout repository mail service
         uses: actions/checkout@v3
 
       - name: set up jdk 17
@@ -30,7 +30,7 @@ jobs:
 
       - name: build and push docker image
         run: |
-          cd api-gateway
+          cd mail-service
           mvn compile jib:build  -DskipTests\
             -Djib.to.auth.username=$DOCKER_USERNAME\
             -Djib.to.auth.password=$DOCKER_PASSWORD
