@@ -12,10 +12,6 @@ spring:
       - develop
   main:
     banner-mode: off
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
 aws:
   s3:
     bucket:
