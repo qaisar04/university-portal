@@ -1,3 +1,14 @@
 spring:
   application:
     name: news-service
+  datasource:
+    url: jdbc:postgresql://localhost:5438/news-service
+    username: qaisar
+    password: qaisar
+    driver-class-name: org.postgresql.Driver
+  main:
+    banner-mode: off
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
