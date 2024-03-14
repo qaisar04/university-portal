@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum ContentSource {
-    USER_PROFILE_IMAGE("user-profile-image-uni-portal");
+    USER_PROFILE_IMAGE("user-profile-image-uni-portal"),
+    NEWS_CONTENT("news-content-image-uni-portal");
 
     private final String bucketName;
 

@@ -9,6 +9,7 @@ import kz.baltabayev.newsservice.repository.FileAttachmentRepository;
 import kz.baltabayev.newsservice.repository.NewsRepository;
 import kz.baltabayev.newsservice.service.NewsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +26,9 @@ public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
     private final StorageServiceClient storageServiceClient;
     private final FileAttachmentRepository fileAttachmentRepository;
-    private final String NEWS_CONTENT_SOURCE = ""; //todo
+
+    @Value("${aws.s3.bucket.content-bucket}")
+    private String NEWS_CONTENT_SOURCE;
 
     @Override
     public News save(String title, String content, List<String> tags, List<MultipartFile> multipartFiles) {
@@ -36,7 +39,7 @@ public class NewsServiceImpl implements NewsService {
                 .build();
 
         News savedNews = newsRepository.save(news);
-        FileUploadResponse[] responses = storageServiceClient.upload("NEWS_CONTENT_SOURCE", savedNews.getId(), multipartFiles).getBody();
+        FileUploadResponse[] responses = storageServiceClient.upload(NEWS_CONTENT_SOURCE, savedNews.getId(), multipartFiles).getBody();
         Set<FileAttachment> fileAttachments = Arrays.stream(Objects.requireNonNull(responses))
                 .map(r -> new FileAttachment(r.id(), r.source(), r.url(), savedNews))
                 .map(fileAttachmentRepository::save)

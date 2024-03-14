@@ -12,6 +12,10 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+aws:
+  s3:
+    bucket:
+      content-bucket: NEWS_CONTENT
 eureka:
   client:
     serviceUrl:
