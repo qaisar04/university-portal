@@ -3,7 +3,7 @@ name: CI/CD Api Gateway
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'api-gateway/**'
 
