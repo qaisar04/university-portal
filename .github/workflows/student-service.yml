@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'student-service/**'
 jobs:
   student-service:
     name: Student Service
