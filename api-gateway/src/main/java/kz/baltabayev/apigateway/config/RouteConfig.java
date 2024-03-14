@@ -19,7 +19,10 @@ public class RouteConfig {
     private String gradeServerUrl;
 
     @Value("${spring.cloud.gateway.routes.grading-server-url}")
-    private String facultyServerUrl;
+    private String newsServerUrl;
+
+    @Value("${spring.cloud.gateway.routes.faculty-server-url}")
+    private String facultyDepartmentServerUrl;
 
     @Bean
     RouteLocator routeLocator(
@@ -30,8 +33,12 @@ public class RouteConfig {
                         .uri(studentServerUrl))
                 .route("grading-service", r -> r.path("/api/v1/grades/**")
                         .uri(gradeServerUrl))
-//                .route("faculty-service", r -> r.path("/api/v1/faculty/**")
-//                        .uri(facultyServerUrl))
+                .route("faculty-service", r -> r.path("/api/v1/faculty/**")
+                        .uri(facultyDepartmentServerUrl))
+                .route("department-service", r -> r.path("/api/v1/department/**")
+                        .uri(facultyDepartmentServerUrl))
+                .route("news-service", r -> r.path("/api/v1/news/**")
+                        .uri(newsServerUrl))
                 .route("discovery-service", r -> r.path("/eureka/web")
                         .uri(discoveryServerUrl))
                 .build();
