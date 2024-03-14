@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "news")
+@Table(name = "news", schema = "develop")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,7 +26,9 @@ public class News {
     @Builder.Default
     @Column(name = "published_date")
     private LocalDateTime publishedDate = LocalDateTime.now();
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "news_tags", joinColumns = @JoinColumn(name = "news_id"))
+    @Column(name = "tag")
     private List<String> tags;
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private Set<FileAttachment> files;

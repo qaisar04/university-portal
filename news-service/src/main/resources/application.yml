@@ -6,11 +6,15 @@ spring:
     username: qaisar
     password: qaisar
     driver-class-name: org.postgresql.Driver
+  flyway:
+    schemas:
+      - public
+      - develop
   main:
     banner-mode: off
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
 aws:
   s3:
@@ -24,3 +28,5 @@ springdoc:
   api-docs:
     enabled: true
     path: /swagger-ui.html
+server:
+  port: 8780

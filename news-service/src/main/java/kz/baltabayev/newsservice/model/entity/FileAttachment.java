@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "file_attachment")
+@Table(name = "file_attachment", schema = "develop")
 @NoArgsConstructor
 @AllArgsConstructor
 public class FileAttachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "file_name")
     private String fileName;
     private String source;
     private String url;
