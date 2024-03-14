@@ -9,12 +9,12 @@ import kz.baltabayev.studentservice.mapper.StudentMapper;
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
 import kz.baltabayev.studentservice.model.dto.StudentResponse;
 import kz.baltabayev.studentservice.model.entity.Student;
+import kz.baltabayev.studentservice.model.payload.FileUploadResponse;
 import kz.baltabayev.studentservice.repository.StudentRepository;
 import kz.baltabayev.studentservice.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,8 +45,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void uploadAvatar(Long id, MultipartFile file) {
         Student student = get(id);
-        ResponseEntity<String> uploadImage = storageServiceClient.upload(STUDENT_PROFILE, id, file);
-        student.setAvatar(uploadImage.getBody());
+        FileUploadResponse[] fileUploadResponses = storageServiceClient.upload(STUDENT_PROFILE, id, file).getBody();
+        assert fileUploadResponses != null;
+        student.setAvatar(fileUploadResponses[0].url());
         update(studentMapper.toRequest(student), id);
     }
 
