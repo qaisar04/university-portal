@@ -37,8 +37,8 @@ public class RouteConfig {
                         .uri(facultyDepartmentServerUrl))
                 .route("department-service", r -> r.path("/api/v1/department/**")
                         .uri(facultyDepartmentServerUrl))
-                .route("news-service", r -> r.path("/api/v1/news/**")
-                        .uri(newsServerUrl))
+//                .route("news-service", r -> r.path("/api/v1/news/**")
+//                        .uri(newsServerUrl))
                 .route("discovery-service", r -> r.path("/eureka/web")
                         .uri(discoveryServerUrl))
                 .build();
