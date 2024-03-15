@@ -34,7 +34,7 @@ jobs:
           context: ./student-service
           dockerfile: Dockerfile
           push: false
-          tags: ${{ secrets.DOCKER_USERNAME }}/student-service-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/student-service:latest
 
       - name: login to docker hub
         uses: docker/login-action@v1
@@ -48,4 +48,4 @@ jobs:
           context: ./student-service
           dockerfile: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/student-service-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/student-service:latest
