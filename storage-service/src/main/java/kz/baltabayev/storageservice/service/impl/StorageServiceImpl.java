@@ -10,6 +10,7 @@ import kz.baltabayev.storageservice.model.types.ContentSource;
 import kz.baltabayev.storageservice.service.S3FileService;
 import kz.baltabayev.storageservice.service.StorageService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,7 +75,7 @@ public class StorageServiceImpl implements StorageService {
             s3.putObject(bucketName, filename, fileToUpload);
 
             if (!fileToUpload.delete()) {
-                log.error("Could not delete temporary file " + fileToUpload.getAbsolutePath());
+                log.error("Could not delete temporary file {}", fileToUpload.getAbsolutePath());
             }
 
             s3FileService.save(S3File.builder()
@@ -107,6 +110,17 @@ public class StorageServiceImpl implements StorageService {
         Optional<S3File> s3File = s3FileService.getByFileNameAndSource(fileName, contentSource);
         s3File.ifPresent(file -> s3FileService.delete(file.getId()));
         s3.deleteObject(bucketName, fileName);
+    }
+
+    @SneakyThrows
+    @Override
+    public void deleteFileUsingUrl(String url) {
+        URL fileUrl = new URL(url);
+        String host = fileUrl.getHost();
+        String bucketName = host.substring(0, host.indexOf('.'));
+        String key = fileUrl.getPath().substring(1);
+
+        s3.deleteObject(bucketName, key);
     }
 
     @Override

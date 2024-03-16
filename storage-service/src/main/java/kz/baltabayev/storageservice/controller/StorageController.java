@@ -43,11 +43,17 @@ public class StorageController {
     }
 
     @DeleteMapping("/{source}/{fileName}")
-    public ResponseEntity<?> delete(
+    public ResponseEntity<String> delete(
             @PathVariable String source,
             @PathVariable String fileName
     ) {
         storageService.deleteFile(source, fileName);
         return ResponseEntity.ok("%s removed successfully".formatted(fileName));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> delete(@RequestParam String url) {
+        storageService.deleteFileUsingUrl(url);
+        return ResponseEntity.ok("file removed successfully");
     }
 }
