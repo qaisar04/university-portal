@@ -1,5 +1,6 @@
 package kz.baltabayev.newsservice.service.impl;
 
+import io.micrometer.core.annotation.Timed;
 import kz.baltabayev.newsservice.client.StorageServiceClient;
 import kz.baltabayev.newsservice.exception.NewsNotFoundException;
 import kz.baltabayev.newsservice.model.entity.FileAttachment;

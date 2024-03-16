@@ -3,18 +3,19 @@ package kz.baltabayev.newsservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kz.baltabayev.newsservice.model.entity.News;
 import kz.baltabayev.newsservice.service.NewsService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(NewsController.class)
 public class NewsControllerTest {
@@ -38,11 +39,17 @@ public class NewsControllerTest {
         when(newsService.getAll()).thenReturn(newsList);
         mockMvc.perform(get("/api/v1/news"))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").value(buildNews.getId()))
                 .andExpect(jsonPath("$[0].title").value(buildNews.getTitle()))
-                .andExpect(jsonPath("$[0].title").value(buildNews.getTitle()))
-                .andExpect(jsonPath("$[0].title").value(buildNews.getTitle()))
+                .andExpect(jsonPath("$[0].content").value(buildNews.getContent()))
                 .andExpect(jsonPath("length()").value(newsList.size()));
 
         verify(newsService, times(1)).getAll();
+    }
+
+    @Test
+    void create() {
+
     }
 }

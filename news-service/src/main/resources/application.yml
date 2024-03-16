@@ -16,6 +16,20 @@ aws:
   s3:
     bucket:
       content-bucket: NEWS_CONTENT
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
 eureka:
   client:
     serviceUrl:
