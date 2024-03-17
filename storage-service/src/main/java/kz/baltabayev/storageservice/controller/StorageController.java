@@ -51,9 +51,8 @@ public class StorageController {
         return ResponseEntity.ok("%s removed successfully".formatted(fileName));
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> delete(@RequestParam String url) {
-        storageService.deleteFileUsingUrl(url);
-        return ResponseEntity.ok("file removed successfully");
+    @GetMapping("/info")
+    public ResponseEntity<String[]> info(@RequestParam String url) {
+        return ResponseEntity.ok(storageService.extractBucketNameAndFileName(url));
     }
 }

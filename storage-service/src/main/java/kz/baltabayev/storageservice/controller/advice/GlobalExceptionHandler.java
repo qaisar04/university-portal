@@ -2,6 +2,7 @@ package kz.baltabayev.storageservice.controller.advice;
 
 import kz.baltabayev.storageservice.exception.FileDownloadException;
 import kz.baltabayev.storageservice.exception.InvalidFileTypeException;
+import kz.baltabayev.storageservice.exception.InvalidUrlException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +18,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FileDownloadException.class)
     ProblemDetail handlerFileDownloadException(FileDownloadException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidUrlException.class)
+    ProblemDetail handlerInvalidUrlException(InvalidUrlException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
     }
 }

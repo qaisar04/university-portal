@@ -13,5 +13,5 @@ public interface StorageService {
 
     byte[] downloadFile(String source, String fileName);
 
-    void deleteFileUsingUrl(String url);
+    String[] extractBucketNameAndFileName(String url);
 }
