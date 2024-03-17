@@ -6,6 +6,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+/**
+ * This interface represents a repository for managing S3File entities.
+ * It extends JpaRepository, which provides methods for performing CRUD operations.
+ */
 public interface S3FileRepository extends JpaRepository<S3File, Long> {
-    Optional<S3File> findByFileNameAndSource(String fileName, ContentSource sourse);
+
+    /**
+     * Finds an S3File entity by its file name and source.
+     *
+     * @param fileName the name of the file.
+     * @param source the source of the file content.
+     * @return an Optional containing the found S3File entity, or an empty Optional if no entity was found.
+     */
+    Optional<S3File> findByFileNameAndSource(String fileName, ContentSource source);
 }

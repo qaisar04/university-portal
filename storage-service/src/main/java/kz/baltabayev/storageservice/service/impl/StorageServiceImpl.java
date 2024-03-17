@@ -27,14 +27,33 @@ import java.util.stream.Collectors;
 
 import static kz.baltabayev.storageservice.model.types.ContentSource.*;
 
+
+/**
+ * This class implements the StorageService interface.
+ * It is annotated with @Service, indicating that it is a Spring service.
+ * It uses Lombok's @RequiredArgsConstructor to automatically generate a constructor with required fields.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class StorageServiceImpl implements StorageService {
 
+    /**
+     * The Amazon S3 client.
+     */
     private final AmazonS3 s3;
+
+    /**
+     * The service for managing S3File entities.
+     */
     private final S3FileService s3FileService;
 
+    /**
+     * Creates a new S3 bucket with the specified name, or returns an existing one.
+     *
+     * @param bucketName the name of the bucket.
+     * @return the created or existing bucket.
+     */
     public Bucket createBucket(String bucketName) {
         return listS3Buckets().stream()
                 .filter(s -> StringUtils.equals(s.getName(), bucketName))
@@ -42,6 +61,11 @@ public class StorageServiceImpl implements StorageService {
                 .orElseGet(() -> s3.createBucket(bucketName));
     }
 
+    /**
+     * Deletes an S3 bucket with the specified name.
+     *
+     * @param bucketName the name of the bucket.
+     */
     public void removeS3Bucket(String bucketName) {
         s3.listObjects(bucketName)
                 .getObjectSummaries().stream()
@@ -50,10 +74,23 @@ public class StorageServiceImpl implements StorageService {
         s3.deleteBucket(bucketName);
     }
 
+    /**
+     * Lists all S3 buckets.
+     *
+     * @return a list of all S3 buckets.
+     */
     public List<Bucket> listS3Buckets() {
         return s3.listBuckets();
     }
 
+    /**
+     * Uploads a list of files to an S3 bucket.
+     *
+     * @param source the source of the file content.
+     * @param id the id of the target.
+     * @param files the files to upload.
+     * @return an array of responses from the file upload operations.
+     */
     @Override
     public FileUploadResponse[] uploadFile(String source, Long id, List<MultipartFile> files) {
         ContentSource contentSource = valueOf(source.toUpperCase());
@@ -92,12 +129,23 @@ public class StorageServiceImpl implements StorageService {
         return responses.toArray(new FileUploadResponse[0]);
     }
 
+    /**
+     * Checks if a file is an image file.
+     *
+     * @param file the file to check.
+     * @return true if the file is an image file, false otherwise.
+     */
     private boolean isImageFile(MultipartFile file) {
         String contentType = file.getContentType();
         return contentType != null && contentType.startsWith("image/");
     }
 
-    //todo: use it in the future for logic
+    /**
+     * Lists all files in an S3 bucket.
+     *
+     * @param bucketName the name of the bucket.
+     * @return a list of all files in the bucket.
+     */
     public List<String> listFiles(String bucketName) {
         ListObjectsV2Result listObjectsV2 = s3.listObjectsV2(bucketName);
         return listObjectsV2.getObjectSummaries().stream()
@@ -105,6 +153,12 @@ public class StorageServiceImpl implements StorageService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Deletes a file from an S3 bucket.
+     *
+     * @param source the source of the file content.
+     * @param fileName the name of the file.
+     */
     @Override
     public void deleteFile(String source, String fileName) {
         ContentSource contentSource = valueOf(source.toUpperCase());
@@ -114,6 +168,12 @@ public class StorageServiceImpl implements StorageService {
         s3.deleteObject(bucketName, fileName);
     }
 
+    /**
+     * Extracts the source and file name from a URL.
+     *
+     * @param url the URL to extract from.
+     * @return an array containing the source and file name.
+     */
     @Override
     public String[] extractSourceAndFileName(String url) {
         try {
@@ -127,6 +187,13 @@ public class StorageServiceImpl implements StorageService {
         }
     }
 
+    /**
+     * Downloads a file from an S3 bucket.
+     *
+     * @param source the source of the file content.
+     * @param fileName the name of the file.
+     * @return the downloaded file as a byte array.
+     */
     @Override
     public byte[] downloadFile(String source, String fileName) {
         ContentSource contentSource = valueOf(source.toUpperCase());
@@ -139,6 +206,13 @@ public class StorageServiceImpl implements StorageService {
         }
     }
 
+
+    /**
+     * Converts a MultipartFile to a File.
+     *
+     * @param file the MultipartFile to convert.
+     * @return the converted File.
+     */
     public static File convertMultiPartFileToFile(MultipartFile file) {
         File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {

@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * This class represents a file stored in S3.
+ * It is annotated with @Entity, indicating that it is a JPA entity.
+ * Lombok annotations are used to reduce boilerplate code.
+ */
 @Data
 @Entity
 @Builder
