@@ -21,5 +21,7 @@ public interface StudentService {
 
     void uploadAvatar(Long id, MultipartFile file);
 
+    void deleteAvatar(Long id);
+
     StudentResponse getInfo(Long id);
 }

@@ -22,4 +22,9 @@ public interface StorageServiceClient {
             @PathVariable String source,
             @PathVariable String fileName
     );
+
+    @GetMapping("/info")
+    ResponseEntity<String[]> info(
+            @RequestParam String url
+    );
 }

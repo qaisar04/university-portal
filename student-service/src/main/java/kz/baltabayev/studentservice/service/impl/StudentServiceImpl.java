@@ -34,6 +34,9 @@ public class StudentServiceImpl implements StudentService {
     @Value("${aws.s3.bucket.profile-bucket}")
     private String STUDENT_PROFILE;
 
+    @Value("${aws.s3.default.avatar}")
+    private String DEFAULT_AVATAR;
+
     @Override
     public StudentResponse getInfo(Long id) {
         Student student = get(id);
@@ -48,7 +51,15 @@ public class StudentServiceImpl implements StudentService {
         FileUploadResponse[] fileUploadResponses = storageServiceClient.upload(STUDENT_PROFILE, id, file).getBody();
         assert fileUploadResponses != null;
         student.setAvatar(fileUploadResponses[0].url());
-        update(studentMapper.toRequest(student), id);
+        studentRepository.saveAndFlush(student);
+    }
+
+    public void deleteAvatar(Long studentId) {
+        Student student = get(studentId);
+        String[] info = storageServiceClient.info(student.getAvatar()).getBody();
+        assert info != null;
+        storageServiceClient.delete(info[0], info[1]);
+        student.setAvatar(DEFAULT_AVATAR);
     }
 
     @Override

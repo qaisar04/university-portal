@@ -8,7 +8,6 @@ import kz.baltabayev.studentservice.model.entity.Student;
 import kz.baltabayev.studentservice.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +35,14 @@ public class StudentController {
             @RequestParam("file") MultipartFile file,
             @PathVariable Long id) {
         studentService.uploadAvatar(id, file);
+        return ResponseEntity.ok("Success");
+    }
+
+    @DeleteMapping("/{id}/avatar")
+    public ResponseEntity<String> deleteAvatar(
+            @PathVariable Long id
+    ) {
+        studentService.deleteAvatar(id);
         return ResponseEntity.ok("Success");
     }
 
