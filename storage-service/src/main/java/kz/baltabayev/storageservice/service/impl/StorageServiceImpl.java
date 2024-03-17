@@ -25,6 +25,8 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static kz.baltabayev.storageservice.model.types.ContentSource.*;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -54,10 +56,10 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public FileUploadResponse[] uploadFile(String source, Long id, List<MultipartFile> files) {
-        ContentSource contentSource = ContentSource.valueOf(source.toUpperCase());
+        ContentSource contentSource = valueOf(source.toUpperCase());
         String bucketName = contentSource.getBucketName();
 
-        if (contentSource == ContentSource.USER_PROFILE_IMAGE) {
+        if (contentSource == USER_PROFILE_IMAGE) {
             for (MultipartFile file : files) {
                 if (!isImageFile(file)) {
                     throw new InvalidFileTypeException("image");
@@ -105,7 +107,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public void deleteFile(String source, String fileName) {
-        ContentSource contentSource = ContentSource.valueOf(source.toUpperCase());
+        ContentSource contentSource = valueOf(source.toUpperCase());
         String bucketName = contentSource.getBucketName();
         Optional<S3File> s3File = s3FileService.getByFileNameAndSource(fileName, contentSource);
         s3File.ifPresent(file -> s3FileService.delete(file.getId()));
@@ -113,14 +115,13 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public String[] extractBucketNameAndFileName(String url) {
+    public String[] extractSourceAndFileName(String url) {
         try {
             URL fileUrl = new URL(url);
             String host = fileUrl.getHost();
             String bucketName = host.substring(0, host.indexOf('.'));
             String fileName = fileUrl.getPath().substring(1);
-
-            return new String[]{bucketName, fileName};
+            return new String[]{fromBucketName(bucketName).toString(), fileName};
         } catch (MalformedURLException e) {
             throw new InvalidUrlException("Invalid URL: " + e);
         }
@@ -128,7 +129,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public byte[] downloadFile(String source, String fileName) {
-        ContentSource contentSource = ContentSource.valueOf(source.toUpperCase());
+        ContentSource contentSource = valueOf(source.toUpperCase());
         S3Object object = s3.getObject(contentSource.getBucketName(), fileName);
         try (S3ObjectInputStream inputStream = object.getObjectContent()) {
             return IOUtils.toByteArray(inputStream);

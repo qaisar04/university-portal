@@ -60,6 +60,7 @@ public class StudentServiceImpl implements StudentService {
         assert info != null;
         storageServiceClient.delete(info[0], info[1]);
         student.setAvatar(DEFAULT_AVATAR);
+        studentRepository.saveAndFlush(student);
     }
 
     @Override

@@ -20,7 +20,7 @@ public interface StorageServiceClient {
     );
 
     @DeleteMapping("/{source}/{fileName}")
-    ResponseEntity<?> delete(
+    ResponseEntity<String> delete(
             @PathVariable String source,
             @PathVariable String fileName
     );

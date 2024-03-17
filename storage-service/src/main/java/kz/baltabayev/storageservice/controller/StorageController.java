@@ -53,6 +53,6 @@ public class StorageController {
 
     @GetMapping("/info")
     public ResponseEntity<String[]> info(@RequestParam String url) {
-        return ResponseEntity.ok(storageService.extractBucketNameAndFileName(url));
+        return ResponseEntity.ok(storageService.extractSourceAndFileName(url));
     }
 }

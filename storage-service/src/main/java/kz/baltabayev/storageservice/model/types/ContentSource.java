@@ -13,4 +13,13 @@ public enum ContentSource {
     ContentSource(String bucketName) {
         this.bucketName = bucketName;
     }
+
+    public static ContentSource fromBucketName(String bucketName) {
+        for (ContentSource contentSource : ContentSource.values()) {
+            if (contentSource.getBucketName().equals(bucketName)) {
+                return contentSource;
+            }
+        }
+        throw new IllegalArgumentException("No ContentSource with the provided bucketName found");
+    }
 }

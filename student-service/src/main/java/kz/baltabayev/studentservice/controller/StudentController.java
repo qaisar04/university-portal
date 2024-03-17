@@ -1,7 +1,6 @@
 package kz.baltabayev.studentservice.controller;
 
 import jakarta.validation.Valid;
-import kz.baltabayev.studentservice.mapper.StudentMapper;
 import kz.baltabayev.studentservice.model.dto.StudentRequest;
 import kz.baltabayev.studentservice.model.dto.StudentResponse;
 import kz.baltabayev.studentservice.model.entity.Student;
