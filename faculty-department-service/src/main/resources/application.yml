@@ -7,13 +7,11 @@ spring:
     password: qaisar
     username: qaisar
   liquibase:
-    enabled: false
     change-log: classpath:db/changelog/changelog.xml
+    enabled: true
+    liquibase-schema: migration
   main:
     banner-mode: off
-  jpa:
-    hibernate:
-      ddl-auto: create
 springdoc:
   api-docs:
     enabled: true

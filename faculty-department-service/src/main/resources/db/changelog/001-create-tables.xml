@@ -31,7 +31,8 @@
                 <constraints nullable="false"/>
             </column>
             <column name="faculty_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_faculty_pkey" referencedTableName="faculty" referencedColumnNames="id"/>
+                <constraints nullable="false" foreignKeyName="fk_faculty_pkey" referencedTableName="faculty"
+                             referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>

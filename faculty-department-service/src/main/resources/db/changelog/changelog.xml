@@ -7,4 +7,5 @@
         logicalFilePath="db/changelog.xml">
 
     <include file="001-create-tables.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
