@@ -1,5 +1,9 @@
 spring:
+  application:
+    name: teacher-service
   data:
     mongodb:
       uri: mongodb+srv://${MONGO_USER}:${MONGO_PASS}@university-portal.ibisknj.mongodb.net/?retryWrites=true&w=majority&appName=university-portal
       database: teacher-service
+  main:
+    banner-mode: off
