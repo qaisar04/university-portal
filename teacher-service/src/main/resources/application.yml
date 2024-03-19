@@ -7,3 +7,9 @@ spring:
       database: teacher-service
   main:
     banner-mode: off
+springdoc:
+  api-docs:
+    enabled: true
+    path: /swagger-ui.html
+server:
+  port: 8001
