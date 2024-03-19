@@ -75,6 +75,7 @@
         <module>faculty-department-service</module>
         <module>auth-service</module>
         <module>news-service</module>
+        <module>teacher-service</module>
     </modules>
 
     <build>
