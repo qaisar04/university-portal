@@ -98,6 +98,7 @@ public class StudentServiceImpl implements StudentService {
         Student existingStudent = get(id);
         Student updatedStudent = studentMapper.toStudent(studentRequest);
         updatedStudent.setId(existingStudent.getId());
+        updatedStudent.setAvatar(existingStudent.getAvatar());
         return studentRepository.save(updatedStudent);
     }
 
