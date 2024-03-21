@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -21,6 +22,7 @@ public class Teacher {
     private String lastname;
     @Field(name = "birth_date")
     private LocalDate birthDate;
+    @Indexed(unique = true)
     private String email;
     private Gender gender;
     private String avatar;

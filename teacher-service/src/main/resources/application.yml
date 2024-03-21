@@ -5,6 +5,7 @@ spring:
     mongodb:
       uri: mongodb+srv://${MONGO_USER}:${MONGO_PASS}@university-portal.ibisknj.mongodb.net/?retryWrites=true&w=majority&appName=university-portal
       database: teacher-service
+      auto-index-creation: true
   main:
     banner-mode: off
 eureka:
