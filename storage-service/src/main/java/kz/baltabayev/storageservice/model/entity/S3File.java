@@ -27,7 +27,7 @@ public class S3File {
     private LocalDateTime uploadedTime;
     @Enumerated(EnumType.STRING)
     private ContentSource source;
-    private Long target;
+    private String target;
 
     @PrePersist
     public void prePersist() {

@@ -23,7 +23,7 @@ public class StorageController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<FileUploadResponse[]> upload(
             @RequestParam("source") String source,
-            @RequestParam("target") Long target,
+            @RequestParam("target") String target,
             @RequestPart("file") List<MultipartFile> file
     ) {
         return ResponseEntity.ok(

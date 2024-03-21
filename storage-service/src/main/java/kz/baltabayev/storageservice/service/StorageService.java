@@ -19,7 +19,7 @@ public interface StorageService {
      * @param file the file to upload.
      * @return an array of responses from the file upload operations.
      */
-    FileUploadResponse[] uploadFile(String source, Long target, List<MultipartFile> file);
+    FileUploadResponse[] uploadFile(String source, String target, List<MultipartFile> file);
 
     /**
      * Deletes a file from a specified source.

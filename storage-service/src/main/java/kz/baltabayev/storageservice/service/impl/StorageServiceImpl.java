@@ -92,7 +92,7 @@ public class StorageServiceImpl implements StorageService {
      * @return an array of responses from the file upload operations.
      */
     @Override
-    public FileUploadResponse[] uploadFile(String source, Long id, List<MultipartFile> files) {
+    public FileUploadResponse[] uploadFile(String source, String id, List<MultipartFile> files) {
         ContentSource contentSource = valueOf(source.toUpperCase());
         String bucketName = contentSource.getBucketName();
 
