@@ -1,6 +1,5 @@
 package kz.baltabayev.newsservice.service.impl;
 
-import io.micrometer.core.annotation.Timed;
 import kz.baltabayev.newsservice.client.StorageServiceClient;
 import kz.baltabayev.newsservice.exception.NewsNotFoundException;
 import kz.baltabayev.newsservice.model.entity.FileAttachment;
@@ -40,7 +39,7 @@ public class NewsServiceImpl implements NewsService {
                 .build();
 
         News savedNews = newsRepository.save(news);
-        FileUploadResponse[] responses = storageServiceClient.upload(NEWS_CONTENT_SOURCE, savedNews.getId(), multipartFiles).getBody();
+        FileUploadResponse[] responses = storageServiceClient.upload(NEWS_CONTENT_SOURCE, String.valueOf(savedNews.getId()), multipartFiles).getBody();
         Set<FileAttachment> fileAttachments = Arrays.stream(Objects.requireNonNull(responses))
                 .map(r -> new FileAttachment(r.id(), r.source(), r.url(), savedNews))
                 .map(fileAttachmentRepository::save)

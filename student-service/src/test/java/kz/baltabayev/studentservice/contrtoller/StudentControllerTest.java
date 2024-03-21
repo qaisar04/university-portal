@@ -64,7 +64,7 @@ class StudentControllerTest {
         Student s3 = Student.builder().build();
 
         when(studentService.getAll()).thenReturn(List.of(s1, s2, s3));
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/students"))
+        mockMvc.perform(get("/api/v1/students"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].firstname").value(s1.getFirstname()))
                 .andExpect(jsonPath("length()").value(3));

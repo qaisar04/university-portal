@@ -48,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void uploadAvatar(Long id, MultipartFile file) {
         Student student = get(id);
-        FileUploadResponse[] fileUploadResponses = storageServiceClient.upload(STUDENT_PROFILE, id, file).getBody();
+        FileUploadResponse[] fileUploadResponses = storageServiceClient.upload(STUDENT_PROFILE, String.valueOf(id), file).getBody();
         assert fileUploadResponses != null;
         student.setAvatar(fileUploadResponses[0].url());
         studentRepository.saveAndFlush(student);

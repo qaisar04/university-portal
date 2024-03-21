@@ -36,7 +36,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     public void uploadAvatar(String id, MultipartFile file) {
         Teacher teacher = get(id);
-        FileUploadResponse[] responses = storageServiceClient.upload(TEACHER_PROFILE, id, file).getBody(); //fixme id Long -> String
+        FileUploadResponse[] responses = storageServiceClient.upload(TEACHER_PROFILE, id, file).getBody();
         assert responses != null;
         teacher.setAvatar(responses[0].url());
         teacherRepository.save(teacher);
