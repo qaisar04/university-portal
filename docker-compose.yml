@@ -107,6 +107,7 @@ services:
   prometheus:
     image: prom/prometheus:v2.50.1
     container_name: prometheus
+    restart: unless-stopped
     ports:
       - '9090:9090'
     volumes:
@@ -114,11 +115,13 @@ services:
     command: '--config.file=/etc/prometheus/prometheus.yml'
   grafana:
     image: grafana/grafana:10.2.4
+    network_mode: host
+    restart: unless-stopped
+    user: root
     ports:
       - '3000:3000'
     volumes:
       - ./data/grafana:/var/lib/grafana
-    restart: unless-stopped
   keycloak:
     image: quay.io/keycloak/keycloak:23.0.7
     environment:

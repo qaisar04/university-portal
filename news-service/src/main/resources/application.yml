@@ -16,20 +16,29 @@ aws:
   s3:
     bucket:
       content-bucket: NEWS_CONTENT
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include:
+#          - prometheus
+# Actuator Configuration
 management:
+  security:
+    enabled: false
   endpoints:
     web:
       exposure:
-        include:
-          - health
-          - prometheus
+        include: "*"
+    enabled-by-default: true
   endpoint:
-    prometheus:
+    health:
       enabled: true
-  metrics:
-    distribution:
-      percentiles-histogram:
-        "[http.server.requests]": true
+      show-details: always
+      circuitbreakers:
+        enabled: true
+    shutdown:
+      enabled: true
 eureka:
   client:
     serviceUrl:
