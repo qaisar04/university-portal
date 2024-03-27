@@ -30,7 +30,7 @@ jobs:
 
       - name: build and push docker image
         run: |
-          cd config-service
+          cd config-server
           mvn compile jib:build  -DskipTests\
             -Djib.to.auth.username=$DOCKER_USERNAME\
             -Djib.to.auth.password=$DOCKER_PASSWORD
