@@ -12,7 +12,5 @@ spring:
 #          default-label: main
         native:
           search-locations: classpath:/configurations
-  main:
-    banner-mode: off
 server:
   port: 1991
