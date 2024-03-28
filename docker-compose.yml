@@ -198,7 +198,7 @@ services:
 
   api-gateway:
     container_name: api-gateway
-    image: qaaaaisar04/api-gateaway:latest
+    image: qaaaaisar04/api-gateway:latest
     restart: always
     ports:
       - "8080:8080"

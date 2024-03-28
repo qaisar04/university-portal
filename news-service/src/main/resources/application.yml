@@ -12,8 +12,12 @@ spring:
     schemas:
       - public
       - develop
+    enabled: false
   main:
     banner-mode: off
+  jpa:
+    hibernate:
+      ddl-auto: create
 aws:
   s3:
     bucket:
