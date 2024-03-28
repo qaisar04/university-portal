@@ -33,4 +33,5 @@ jobs:
           cd api-gateway
           mvn compile jib:build  -DskipTests\
             -Djib.to.auth.username=$DOCKER_USERNAME\
-            -Djib.to.auth.password=$DOCKER_PASSWORD
+            -Djib.to.auth.password=$DOCKER_PASSWORD\
+            -Djib.to.platform=linux/amd64
