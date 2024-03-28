@@ -1,4 +1,6 @@
 spring:
+  jmx:
+    enabled: true
   application:
     name: news-service
   datasource:
@@ -16,29 +18,11 @@ aws:
   s3:
     bucket:
       content-bucket: NEWS_CONTENT
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include:
-#          - prometheus
-# Actuator Configuration
 management:
-  security:
-    enabled: false
   endpoints:
     web:
       exposure:
-        include: "*"
-    enabled-by-default: true
-  endpoint:
-    health:
-      enabled: true
-      show-details: always
-      circuitbreakers:
-        enabled: true
-    shutdown:
-      enabled: true
+        include: prometheus
 eureka:
   client:
     serviceUrl:
@@ -49,3 +33,6 @@ springdoc:
     path: /swagger-ui.html
 server:
   port: 8780
+logging:
+  pattern:
+    level: %5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]
