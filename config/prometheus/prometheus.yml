@@ -1,8 +1,11 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+
 scrape_configs:
-  - job_name: 'news-servce'
+  - job_name: 'news-service'
     metrics_path: '/actuator/prometheus'
-    scrape_interval: 2s
     static_configs:
-      - targets: [ "127.0.0.1:8780" ]
+      - targets: ['news-service:8780']
         labels:
-          application: 'news-servce'
+          application: 'News Service Application'

@@ -104,6 +104,7 @@ services:
       - "3308:3306"
     volumes:
       - ./volumes/storage:/var/lib/mysql
+
   prometheus:
     image: prom/prometheus:v2.50.1
     container_name: prometheus
@@ -113,15 +114,22 @@ services:
     volumes:
       - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command: '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      - news-service
+
   grafana:
     image: grafana/grafana:10.2.4
-    network_mode: host
-    restart: unless-stopped
-    user: root
+    container_name: grafana
+    restart: always
     ports:
       - '3000:3000'
+    links:
+      - prometheus:prometheus
     volumes:
       - ./data/grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
   keycloak:
     image: quay.io/keycloak/keycloak:23.0.7
     environment:
@@ -178,6 +186,41 @@ services:
     image: redis
     ports:
       - "6379:6379"
+
+  discovery-service:
+    container_name: discovery-service
+    image: qaaaaisar04/discovery-service:latest
+    restart: always
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-server
+
+  api-gateway:
+    container_name: api-gateway
+    image: qaaaaisar04/api-gateaway:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    entrypoint:
+      - KEYCLOAK-CLIENT.REALM=university-portal-realm
+      - KEYCLOAK-CLIENT.SERVER-URL=http://localhost:10190
+
+  news-service:
+    container_name: news-service
+    image: qaaaaisar04/news-service:latest
+    restart: always
+    depends_on:
+      - discovery-service
+      - postgres-news
+
+  config-server:
+    container_name: config-server
+    image: qaaaaisar04/config-server:latest
+    restart: always
+
 networks:
   university-portal:
     driver: bridge
