@@ -1,41 +1,6 @@
-#spring:
-#  config:
-#    import: optional:configserver:http://localhost:1991
-#  cloud:
-#    config:
-#      name: api-gateway
-
 spring:
-  application:
-    name: api-gateway
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${keycloak-client.server-url}/auth/realms/${keycloak-client.realm}
-  main:
-    banner-mode: off
-    allow-bean-definition-overriding: true
-    web-application-type: reactive
+  config:
+    import: optional:configserver:http://localhost:1991
   cloud:
-    gateway:
-      routes:
-        student-server-url: lb://student-service
-        grading-server-url: lb://grading-service
-        faculty-server-url: lb://faculty-department-service
-        news-server-url: lb://news-service
-        discovery-server-url: http://localhost:8761
-logging:
-  level:
-    root: info
-    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: info
-    org.springframework.cloud.gateway: trace
-    org.springframework.security: DEBUG
-server:
-  port: 8080
-  forward-headers-strategy: framework
-cors:
-  allowCredentials: false
-  allowedOrigins: http://localhost:4200,http://127.0.0.1:5500
-  allowedMethods: GET,POST,PUT,DELETE,OPTIONS,HEAD
-  allowedHeaders: origin,content-type,accept,authorization,cookie
+    config:
+      name: api-gateway

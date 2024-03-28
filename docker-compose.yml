@@ -204,9 +204,11 @@ services:
       - "8080:8080"
     expose:
       - "8080"
-    entrypoint:
-      - KEYCLOAK-CLIENT.REALM=university-portal-realm
-      - KEYCLOAK-CLIENT.SERVER-URL=http://localhost:10190
+    environment:
+      - keycloak-client.realm=university-portal-realm
+      - keycloak-client.server-url=http://localhost:10190
+    depends_on:
+      - keycloak
 
   news-service:
     container_name: news-service

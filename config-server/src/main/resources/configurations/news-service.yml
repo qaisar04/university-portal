@@ -1,0 +1,39 @@
+spring:
+  jmx:
+    enabled: true
+  application:
+    name: news-service
+  datasource:
+    url: jdbc:postgresql://localhost:5438/news-service
+    username: qaisar
+    password: qaisar
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    schemas:
+      - public
+      - develop
+    enabled: false
+  main:
+    banner-mode: off
+  jpa:
+    hibernate:
+      ddl-auto: create
+aws:
+  s3:
+    bucket:
+      content-bucket: NEWS_CONTENT
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+springdoc:
+  api-docs:
+    enabled: true
+    path: /swagger-ui.html
+server:
+  port: 8780
