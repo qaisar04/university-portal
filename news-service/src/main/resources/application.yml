@@ -33,6 +33,3 @@ springdoc:
     path: /swagger-ui.html
 server:
   port: 8780
-logging:
-  pattern:
-    level: %5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]
