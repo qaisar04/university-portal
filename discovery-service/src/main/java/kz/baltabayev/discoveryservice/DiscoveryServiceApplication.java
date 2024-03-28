@@ -8,6 +8,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * This is the main application class for the Discovery Service.
  * It is annotated with @SpringBootApplication to indicate that it is a Spring Boot application.
  * It is also annotated with @EnableEurekaServer to enable the Eureka Server for service discovery.
+ *
+ * @Author qaisar
  */
 @SpringBootApplication
 @EnableEurekaServer

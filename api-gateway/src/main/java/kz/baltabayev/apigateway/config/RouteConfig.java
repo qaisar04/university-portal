@@ -18,7 +18,7 @@ public class RouteConfig {
     @Value("${spring.cloud.gateway.routes.grading-server-url}")
     private String gradeServerUrl;
 
-    @Value("${spring.cloud.gateway.routes.grading-server-url}")
+    @Value("${spring.cloud.gateway.routes.news-server-url}")
     private String newsServerUrl;
 
     @Value("${spring.cloud.gateway.routes.faculty-server-url}")
@@ -37,8 +37,8 @@ public class RouteConfig {
                         .uri(facultyDepartmentServerUrl))
                 .route("department-service", r -> r.path("/api/v1/department/**")
                         .uri(facultyDepartmentServerUrl))
-//                .route("news-service", r -> r.path("/api/v1/news/**")
-//                        .uri(newsServerUrl))
+                .route("news-service", r -> r.path("/api/v1/news/**")
+                        .uri(newsServerUrl))
                 .route("discovery-service", r -> r.path("/eureka/web")
                         .uri(discoveryServerUrl))
                 .build();

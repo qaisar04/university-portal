@@ -10,6 +10,8 @@ import org.springframework.cloud.config.server.EnableConfigServer;
  * It is annotated with @SpringBootApplication to indicate that it is a Spring Boot application.
  * It is also annotated with @EnableConfigServer to enable the Config Server functionality.
  * Additionally, it is annotated with @EnableDiscoveryClient to indicate that it is a discovery client.
+ *
+ * @Author qaisar
  */
 @SpringBootApplication
 @EnableConfigServer
