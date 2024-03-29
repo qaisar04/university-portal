@@ -3,9 +3,51 @@ global:
   evaluation_interval: 10s
 
 scrape_configs:
-  - job_name: 'news-service'
+  - job_name: 'student_service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['news-service:8780']
+      - targets: [ 'student-service:8081' ]
+        labels:
+          application: 'Student Service Application'
+  - job_name: 'news_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'news-service:8780' ]
         labels:
           application: 'News Service Application'
+  - job_name: 'auth-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'security-service:8091' ]
+        labels:
+          application: 'Security Service Application'
+  - job_name: 'faculty_department_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'faculty-department-service:57505' ]
+        labels:
+          application: 'Faculty Department Service Application'
+  - job_name: 'grading_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'grading-service:8087' ]
+        labels:
+          application: 'Grading Service Application'
+  - job_name: 'mail_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'mail-service:8765' ]
+        labels:
+          application: 'Mail Service Application'
+  - job_name: 'subject_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'subject-service:8308' ]
+        labels:
+          application: 'Subject Service Application'
+  - job_name: 'teacher_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'teacher-service:8001' ]
+        labels:
+          application: 'Teacher Service Application'

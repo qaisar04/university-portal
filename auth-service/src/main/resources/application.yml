@@ -49,3 +49,8 @@ keycloak:
   keys: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiRMDNJDRiACia3RvyyRj8fiQfE5MIhFaqxLYGzZ8T5LmPgAXVd/BHlTBmK0SthPa82EttfcBQgWumqbzUUIa7YAl5AcZ5yfkfkboLl8zQEfUapQdxS/szwxc0hhlZ1Ig6BhBQkAwpeFR0IqMeZvfFRQRcoFQFd6Sj2eP1AaPNALfVAxdz9f7XO94Xt+rvuKqWVhZH6zPjeyObOMluqUmHha1unBIRf5/FW/ufuYDSbXLg5uY3ao8eX8SZ3bI4NyNuL11zAFjHiVaWcejdsfYhSDqWHgsFTjyj4sJERSr/pAZ92J81aiAsN4MtpkChEtK6fFk1MERhKbwfv0eMUpoyQIDAQAB
 server:
   port: 8091
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus

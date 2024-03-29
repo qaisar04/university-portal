@@ -29,6 +29,11 @@ spring:
     port: 587
   freemarker:
     template-loader-path: "classpath:/templates"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 server:
   port: 8765
 

@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: teacher-service
+  data:
+    mongodb:
+      uri: mongodb+srv://${MONGO_USER}:${MONGO_PASS}@university-portal.ibisknj.mongodb.net/?retryWrites=true&w=majority&appName=university-portal
+      database: teacher-service
+      auto-index-creation: true
+  main:
+    banner-mode: off
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+springdoc:
+  api-docs:
+    enabled: true
+    path: /swagger-ui.html
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+server:
+  port: 8001

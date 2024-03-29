@@ -1,6 +1,15 @@
 spring:
+  application:
+    name: scheduling-service
   datasource:
     driver-class-name: org.postgresql.Driver
     username: qaisar
     password: qaisar
     url: jdbc:postgresql://localhost:5435/scheduling-service
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+server:
+  port: 8182

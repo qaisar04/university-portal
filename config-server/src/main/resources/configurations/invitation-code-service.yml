@@ -5,5 +5,10 @@ spring:
       port: 6379
   application:
     name: invitation-code-service
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 server:
   port: 1465

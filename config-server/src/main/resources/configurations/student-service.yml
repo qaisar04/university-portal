@@ -1,10 +1,16 @@
+#spring:
+#  config:
+#    import: optional:configserver:http://localhost:1991
+#  cloud:
+#    config:
+#      name: student-service
+
 spring:
-  security:
-      oauth2:
-        resourceserver:
-          jwt:
-            issuer-uri: http://localhost:8082/realms/university-portal-realm
-            jwk-set-uri: http://localhost:8082/realms/university-portal-realm/protocol/openid-connect/certs
+  #  security:
+  #    oauth2:
+  #     resourceserver:
+  #       jwt:
+  #         issuer-uri: http://localhost:8082/realms/university-portal-realm
   kafka:
     queues:
       student: student-saving-queue
@@ -30,17 +36,17 @@ spring:
     change-log: classpath:db/changelog/changelog.xml
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: create
+#    hibernate:
+#      ddl-auto: create
 management:
   endpoints:
     web:
       exposure:
-        include:
-          - health
-          - prometheus
+        include: prometheus
 aws:
   s3:
+    default:
+      avatar: https://placeholder-images-uni-portal-v1.s3.ap-south-1.amazonaws.com/d2244ea084c84df19a022eb43e58351e
     bucket:
       profile-bucket: USER_PROFILE_IMAGE
 eureka:
