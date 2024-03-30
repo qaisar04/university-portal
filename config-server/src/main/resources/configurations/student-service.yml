@@ -1,16 +1,10 @@
-#spring:
-#  config:
-#    import: optional:configserver:http://localhost:1991
-#  cloud:
-#    config:
-#      name: student-service
-
 spring:
-  #  security:
-  #    oauth2:
-  #     resourceserver:
-  #       jwt:
-  #         issuer-uri: http://localhost:8082/realms/university-portal-realm
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:10190/auth/realms/university-portal-realm
+          jwk-set-uri: http://localhost:10190/auth/realms/university-portal-realm/protocol/openid-connect/certs
   kafka:
     queues:
       student: student-saving-queue

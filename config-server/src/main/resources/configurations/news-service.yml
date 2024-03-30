@@ -1,4 +1,10 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:10190/auth/realms/university-portal-realm
+          jwk-set-uri: http://localhost:10190/auth/realms/university-portal-realm/protocol/openid-connect/certs
   jmx:
     enabled: true
   application:
