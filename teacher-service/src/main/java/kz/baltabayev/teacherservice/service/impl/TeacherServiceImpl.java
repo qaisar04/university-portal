@@ -34,11 +34,22 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherRepository.save(teacher);
     }
 
-    public void uploadAvatar(String id, MultipartFile file) {
-        Teacher teacher = get(id);
-        FileUploadResponse[] responses = storageServiceClient.upload(TEACHER_PROFILE, id, file).getBody();
+    public void uploadAvatar(String teacherId, MultipartFile file) {
+        Teacher teacher = get(teacherId);
+        FileUploadResponse[] responses = storageServiceClient.upload(TEACHER_PROFILE, teacherId, file).getBody();
         assert responses != null;
         teacher.setAvatar(responses[0].url());
+        teacherRepository.save(teacher);
+    }
+
+    @Override
+    public void deleteAvatar(String teacherId) {
+        Teacher teacher = get(teacherId);
+        String url = teacher.getAvatar();
+        String[] resp = storageServiceClient.info(url).getBody();
+        assert resp != null;
+        storageServiceClient.delete(resp[0], resp[1]);
+        teacher.setAvatar(""); // here default url :)
         teacherRepository.save(teacher);
     }
 

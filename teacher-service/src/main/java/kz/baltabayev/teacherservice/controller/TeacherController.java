@@ -6,6 +6,7 @@ import kz.baltabayev.teacherservice.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,6 +25,22 @@ public class TeacherController {
     @GetMapping("/{id}")
     public ResponseEntity<Teacher> get(@PathVariable String id) {
         return ResponseEntity.ok(teacherService.get(id));
+    }
+
+    @PatchMapping("/{id}/avatar")
+    public ResponseEntity<String> uploadAvatar(
+            @RequestParam("file") MultipartFile file,
+            @PathVariable String id) {
+        teacherService.uploadAvatar(id, file);
+        return ResponseEntity.ok("Success");
+    }
+
+    @DeleteMapping("/{id}/avatar")
+    public ResponseEntity<String> deleteAvatar(
+            @PathVariable String id
+    ) {
+        teacherService.deleteAvatar(id);
+        return ResponseEntity.ok("Success");
     }
 
     @PostMapping("/create")

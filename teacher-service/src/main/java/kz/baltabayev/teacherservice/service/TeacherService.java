@@ -12,6 +12,8 @@ public interface TeacherService {
 
     void uploadAvatar(String id, MultipartFile file);
 
+    void deleteAvatar(String id);
+
     Teacher get(String id);
 
     void delete(String id);
