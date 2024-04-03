@@ -76,6 +76,7 @@
         <module>auth-service</module>
         <module>news-service</module>
         <module>teacher-service</module>
+        <module>qr-service</module>
     </modules>
 
     <build>
