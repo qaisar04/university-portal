@@ -10,12 +10,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @see <a href="https://github.com/youngAndMad/social-network/tree/master/qr-service">Source Code</a>
  */
 @SpringBootApplication
-public class QrServiceApplication {
+public class QRServiceApplication {
     /**
      * The main method which serves as the entry point for the JVM.
      * @param args command line arguments passed to the application. Not currently used in this application.
      */
     public static void main(String[] args) {
-        SpringApplication.run(QrServiceApplication.class, args);
+        SpringApplication.run(QRServiceApplication.class, args);
     }
 }
