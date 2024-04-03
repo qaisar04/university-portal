@@ -1,0 +1,16 @@
+qr:
+  width: 600
+  height: 600
+  charset: UTF-8
+server:
+  port: 8070
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: qr-service
+logging:
+  level:
+    org.springframework:
+      web: debug
+      security: debug
