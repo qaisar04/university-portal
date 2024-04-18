@@ -9,6 +9,10 @@ spring:
     banner-mode: off
   application:
     name: qr-service
+management:
+  tracing:
+    sampling:
+      probability: 1.0
 logging:
   level:
     org.springframework:

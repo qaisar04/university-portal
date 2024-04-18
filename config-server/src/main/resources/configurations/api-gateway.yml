@@ -27,6 +27,11 @@ logging:
 server:
   port: 8080
   forward-headers-strategy: framework
+management:
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
 cors:
   allowCredentials: false
   allowedOrigins: http://localhost:4200,http://127.0.0.1:5500
