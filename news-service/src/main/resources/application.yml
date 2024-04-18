@@ -1,6 +1,55 @@
+#spring:
+#  config:
+#    import: optional:configserver:http://localhost:1991
+#  cloud:
+#    config:
+#      name: news-service
 spring:
-  config:
-    import: optional:configserver:http://localhost:1991
-  cloud:
-    config:
-      name: news-service
+  #  security:
+  #    oauth2:
+  #      resourceserver:
+  #        jwt:
+  #          issuer-uri: http://localhost:10190/auth/realms/university-portal-realm
+  #          jwk-set-uri: http://localhost:10190/auth/realms/university-portal-realm/protocol/openid-connect/certs
+  jmx:
+    enabled: true
+  application:
+    name: news-service
+  datasource:
+    url: jdbc:postgresql://localhost:5438/news-service
+    username: qaisar
+    password: qaisar
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    schemas:
+      - public
+      - develop
+    enabled: true
+  main:
+    banner-mode: off
+  jpa:
+    hibernate:
+      ddl-auto: none
+aws:
+  s3:
+    bucket:
+      content-bucket: NEWS_CONTENT
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+springdoc:
+  api-docs:
+    enabled: true
+    path: /swagger-ui.html
+server:
+  port: 8780

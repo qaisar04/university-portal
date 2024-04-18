@@ -30,6 +30,10 @@ spring:
   freemarker:
     template-loader-path: "classpath:/templates"
 management:
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
   endpoints:
     web:
       exposure:

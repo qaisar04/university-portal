@@ -1,65 +1,64 @@
 version: '3'
 services:
+  postgres-student:
+    container_name: student-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: student-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./volumes/student:/data/postgres
 
-#  postgres-student:
-#    container_name: student-service-db
-#    image: postgres:14
-#    environment:
-#      POSTGRES_DB: student-service
-#      POSTGRES_USER: qaisar
-#      POSTGRES_PASSWORD: qaisar
-#    ports:
-#      - "5433:5432"
-#    volumes:
-#      - ./volumes/student:/data/postgres
+  postgres-grading:
+    container_name: grading-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: grading-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./volumes/grading:/data/postgres
 
-#  postgres-grading:
-#    container_name: grading-service-db
-#    image: postgres:14
-#    environment:
-#      POSTGRES_DB: grading-service
-#      POSTGRES_USER: qaisar
-#      POSTGRES_PASSWORD: qaisar
-#    ports:
-#      - "5434:5432"
-#    volumes:
-#      - ./volumes/grading:/data/postgres
+  postgres-scheduling:
+    container_name: scheduling-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: scheduling-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./volumes/scheduling:/data/postgres
 
-#  postgres-scheduling:
-#    container_name: scheduling-service-db
-#    image: postgres:14
-#    environment:
-#      POSTGRES_DB: scheduling-service
-#      POSTGRES_USER: qaisar
-#      POSTGRES_PASSWORD: qaisar
-#    ports:
-#      - "5435:5432"
-#    volumes:
-#      - ./volumes/scheduling:/data/postgres
+  postgres-faculty:
+    container_name: faculty-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: faculty-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5436:5432"
+    volumes:
+      - ./volumes/faculty:/data/postgres
 
-#  postgres-faculty:
-#    container_name: faculty-service-db
-#    image: postgres:14
-#    environment:
-#      POSTGRES_DB: faculty-service
-#      POSTGRES_USER: qaisar
-#      POSTGRES_PASSWORD: qaisar
-#    ports:
-#      - "5436:5432"
-#    volumes:
-#      - ./volumes/faculty:/data/postgres
-
-#  postgres-auth:
-#    container_name: auth-service-db
-#    image: postgres:14
-#    environment:
-#      POSTGRES_DB: auth-service
-#      POSTGRES_USER: qaisar
-#      POSTGRES_PASSWORD: qaisar
-#    ports:
-#      - "5437:5432"
-#    volumes:
-#      - ./volumes/auth:/data/postgres
+  postgres-auth:
+    container_name: auth-service-db
+    image: postgres:14
+    environment:
+      POSTGRES_DB: auth-service
+      POSTGRES_USER: qaisar
+      POSTGRES_PASSWORD: qaisar
+    ports:
+      - "5437:5432"
+    volumes:
+      - ./volumes/auth:/data/postgres
 
   postgres-news:
     container_name: news-service-db
@@ -73,35 +72,35 @@ services:
     volumes:
       - ./volumes/news:/data/postgres
 
-#  mysql-subject:
-#    container_name: subject-service-db
-#    image: mysql:8.3.0
-#    restart: always
-#    command: --default-authentication-plugin=mysql_native_password
-#    environment:
-#      MYSQL_ROOT_PASSWORD: root
-#      MYSQL_DATABASE: subject-service
-#      MYSQL_USER: qaisar
-#      MYSQL_PASSWORD: qaisar
-#    ports:
-#      - "3306:3306"
-#    volumes:
-#      - ./volumes/subject:/var/lib/mysql
+  mysql-subject:
+    container_name: subject-service-db
+    image: mysql:8.3.0
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: subject-service
+      MYSQL_USER: qaisar
+      MYSQL_PASSWORD: qaisar
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./volumes/subject:/var/lib/mysql
 
-#  mysql-storage:
-#    container_name: storage-service-db
-#    image: mysql:8.3.0
-#    restart: always
-#    command: --default-authentication-plugin=mysql_native_password
-#    environment:
-#      MYSQL_ROOT_PASSWORD: root
-#      MYSQL_DATABASE: storage-service
-#      MYSQL_USER: qaisar
-#      MYSQL_PASSWORD: qaisar
-#    ports:
-#      - "3308:3306"
-#    volumes:
-#      - ./volumes/storage:/var/lib/mysql
+  mysql-storage:
+    container_name: storage-service-db
+    image: mysql:8.3.0
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: storage-service
+      MYSQL_USER: qaisar
+      MYSQL_PASSWORD: qaisar
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./volumes/storage:/var/lib/mysql
 
   prometheus:
     image: prom/prometheus:v2.50.1
@@ -129,6 +128,15 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
 
+  zipkin:
+    image: ghcr.io/openzipkin/zipkin-slim:3.3
+    container_name: zipkin
+    environment:
+        - STORAGE_TYPE=mem
+        - MYSQL_HOST=mysql
+    ports:
+        - "9411:9411"
+
   keycloak:
     image: quay.io/keycloak/keycloak:23.0.7
     environment:
@@ -140,70 +148,70 @@ services:
       - "8082:8080"
     command: start-dev --import-realm
 
-#  zookeeper:
-#    image: confluentinc/cp-zookeeper:latest
-#    networks:
-#      - university-portal
-#    environment:
-#      ZOOKEEPER_CLIENT_PORT: 2181
-#      ZOOKEEPER_TICK_TIME: 2000
-#
-#  kafka:
-#    image: confluentinc/cp-kafka:latest
-#    networks:
-#      - university-portal
-#    depends_on:
-#      - zookeeper
-#    ports:
-#      - "9092:9092"
-#    environment:
-#      KAFKA_BROKER_ID: 1
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
-#  redis:
-#    image: redis
-#    ports:
-#      - "6379:6379"
-
-  discovery-service:
-    container_name: discovery-service
-    image: qaaaaisar04/discovery-service:latest
-    restart: always
-    ports:
-      - "8761:8761"
-    depends_on:
-      - config-server
-
-  api-gateway:
-    container_name: api-gateway
-    image: qaaaaisar04/api-gateway:latest
-    restart: always
-    ports:
-      - "8080:8080"
-    expose:
-      - "8080"
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    networks:
+      - university-portal
     environment:
-      - keycloak-client.realm=university-portal-realm
-      - keycloak-client.server-url=http://localhost:10190
-    depends_on:
-      - keycloak
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
 
-  news-service:
-    container_name: news-service
-    image: qaaaaisar04/news-service:latest
-    restart: always
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    networks:
+      - university-portal
     depends_on:
-      - discovery-service
-      - postgres-news
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  config-server:
-    container_name: config-server
-    image: qaaaaisar04/config-server:latest
-    restart: always
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+#  discovery-service:
+#    container_name: discovery-service
+#    image: qaaaaisar04/discovery-service:latest
+#    restart: always
+#    ports:
+#      - "8761:8761"
+#    depends_on:
+#      - config-server
+#
+#  api-gateway:
+#    container_name: api-gateway
+#    image: qaaaaisar04/api-gateway:latest
+#    restart: always
+#    ports:
+#      - "8080:8080"
+#    expose:
+#      - "8080"
+#    environment:
+#      - keycloak-client.realm=university-portal-realm
+#      - keycloak-client.server-url=http://localhost:10190
+#    depends_on:
+#      - keycloak
+#
+#  news-service:
+#    container_name: news-service
+#    image: qaaaaisar04/news-service:latest
+#    restart: always
+#    depends_on:
+#      - discovery-service
+#      - postgres-news
+#
+#  config-server:
+#    container_name: config-server
+#    image: qaaaaisar04/config-server:latest
+#    restart: always
 
 networks:
   university-portal:

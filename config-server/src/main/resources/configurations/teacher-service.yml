@@ -23,6 +23,10 @@ springdoc:
     enabled: true
     path: /swagger-ui.html
 management:
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
   endpoints:
     web:
       exposure:
